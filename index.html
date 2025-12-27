@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raghav Kulkarni | Cinematic Portfolio</title>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --brand-blue: #00638C;
+            --text-main: #111111;
+            --bg: #ffffff;
+            --radius: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- 1. NAVBAR (Sticky Top) --- */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; 
+            padding: 20px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
+            z-index: 100;
+        }
+
+        .nav-logo-img {
+            height: 50px; 
+            width: auto;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .nav-logo-img:hover { opacity: 0.8; }
+
+        .nav-about { 
+            color: var(--brand-blue); 
+            font-weight: 500; 
+            cursor: pointer; 
+            font-size: 0.9rem; 
+            letter-spacing: 0.5px;
+        }
+
+        /* --- 2. HERO SECTION --- */
+        .hero {
+            height: 90vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; padding: 0 20px;
+        }
+
+        .hero-logo-img {
+            max-width: 320px; 
+            width: 80%; 
+            height: auto;
+            margin-bottom: 50px;
+            animation: fadeUp 1s ease;
+        }
+
+        .hero-options { display: flex; gap: 20px; animation: fadeUp 1s ease 0.2s backwards; }
+        
+        .option-btn {
+            padding: 15px 35px; background: transparent; border: 1px solid #e0e0e0;
+            border-radius: 50px; font-family: 'Inter', sans-serif; font-size: 0.9rem;
+            color: #666; cursor: pointer; transition: all 0.3s ease;
+        }
+        .option-btn:hover { border-color: var(--brand-blue); color: var(--brand-blue); transform: translateY(-3px); }
+        .option-btn.active { background: var(--brand-blue); border-color: var(--brand-blue); color: #fff; }
+
+        /* --- GALLERY --- */
+        .gallery-container { padding: 0 5% 100px; min-height: 100vh; }
+        .pinterest-grid { column-count: 3; column-gap: 30px; }
+        .pin-item {
+            break-inside: avoid; margin-bottom: 30px; cursor: zoom-in;
+            opacity: 0; transform: translateY(40px); transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .pin-item.visible { opacity: 1; transform: translateY(0); }
+        .pin-item img {
+            width: 100%; display: block; border-radius: var(--radius);
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .pin-item:hover img { transform: scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+
+        /* --- LIGHTBOX (Snap Scroll) --- */
+        #lightbox-view {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: #000; z-index: 9999; overflow-y: scroll; scroll-snap-type: y mandatory;
+        }
+        .lightbox-slide {
+            width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center;
+            scroll-snap-align: start; position: relative;
+        }
+        .lightbox-slide img { max-width: 90%; max-height: 90vh; object-fit: contain; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
+
+        /* --- CLOSE BUTTON FIXED LOGIC --- */
+        .close-text-btn {
+            position: absolute; /* Default: attached to the container */
+            top: 30px; right: 40px; 
+            font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 500;
+            cursor: pointer; z-index: 10000; padding: 10px;
+            transition: opacity 0.3s;
+        }
+        
+        /* Overwrite for Lightbox specifically to keep it fixed on screen */
+        #lightbox-view .close-text-btn {
+            position: fixed;
+        }
+
+        .close-text-btn:hover { opacity: 0.7; }
+        
+        .scroll-hint {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            color: rgba(255,255,255,0.6); font-size: 0.8rem; letter-spacing: 2px;
+            text-transform: uppercase; z-index: 10000; animation: bounce 2s infinite;
+        }
+
+        /* --- UTILS --- */
+        #loader { display: none; width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid var(--brand-blue); border-radius: 50%; margin: 50px auto; animation: spin 1s linear infinite; }
+        
+        /* About Overlay */
+        .about-overlay { 
+            position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
+            background: #fff; z-index: 200; padding: 40px; 
+            transition: right 0.5s ease; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; 
+        }
+        .about-overlay.open { right: 0; }
+        
+        .contact-link { color: var(--brand-blue); text-decoration: none; font-weight: 600; transition: opacity 0.3s; }
+        .contact-link:hover { opacity: 0.7; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translate(-50%, 0);} 40% {transform: translate(-50%, -10px);} 60% {transform: translate(-50%, -5px);} }
+        
+        @media (max-width: 768px) {
+            .hero { height: 80vh; }
+            .hero-options { flex-direction: column; width: 100%; max-width: 300px; } 
+            .pinterest-grid { column-count: 1; }
+            .hero-logo-img { max-width: 250px; }
+            .close-text-btn { top: 20px; right: 20px; } 
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <img src="cornerlogo.png" alt="R" class="nav-logo-img" onclick="window.scrollTo(0,0)" onerror="this.style.display='none'">
+        
+        <div class="nav-about" onclick="toggleAbout()">About Me</div>
+    </nav>
+
+    <section class="hero">
+        <img src="logo.png" alt="Raghav Kulkarni" class="hero-logo-img">
+        
+        <div class="hero-options">
+            <button class="option-btn" onclick="selectCategory('product', this)">Product & Jewelry</button>
+            <button class="option-btn" onclick="selectCategory('interior', this)">Interior Media</button>
+            <button class="option-btn" onclick="selectCategory('corporate', this)">Corporate Work</button>
+        </div>
+    </section>
+
+    <section class="gallery-container" id="gallery-anchor">
+        <div id="loader"></div>
+        <div class="pinterest-grid" id="gridContainer"></div>
+    </section>
+
+    <div id="lightbox-view">
+        <div class="close-text-btn" style="color: #fff;" onclick="closeLightbox()">CLOSE</div>
+        
+        <div class="scroll-hint">Scroll Down</div>
+        <div id="lightbox-content"></div>
+    </div>
+
+    <div class="about-overlay" id="aboutPanel">
+        <div class="close-text-btn" style="color: #000;" onclick="toggleAbout()">CLOSE</div>
+        
+        <img src="profile.jpg" style="width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:20px;">
+        
+        <h2 style="font-family:'Playfair Display'; font-size:2rem; margin-bottom:10px;">About Me</h2>
+        
+        <p style="max-width:600px; color:#555; line-height:1.8; margin-bottom: 30px;">
+            More than a photographer, I am a visual artist dedicated to translating concepts into tangible imagery.<br><br>
+            A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach within a controlled environment. I use light, composition, and technical precision to convert abstract ideas into high-impact commercial visuals.
+        </p>
+
+        <div style="font-size: 0.95rem; line-height: 2;">
+            <div>Based in Pune, India</div>
+            <div>
+                Phone: <a href="tel:+918888248590" class="contact-link">+91 88882 48590</a>
+            </div>
+            <div>
+                Email: <a href="mailto:raghavkulkarniphotography@gmail.com" class="contact-link">raghavkulkarniphotography@gmail.com</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA GENERATION ---
+        function generatePaths(prefix, count) {
+            var paths = [];
+            for (var i = 1; i <= count; i++) { paths.push(prefix + i + ".webp"); }
+            return paths;
+        }
+        const portfolioData = {
+            product: generatePaths('product', 22),   
+            interior: generatePaths('interior', 12), 
+            corporate: generatePaths('corporate', 6) 
+        };
+
+        let currentCatData = [];
+
+        // --- NAVIGATION & LOADING ---
+        function selectCategory(category, btn) {
+            $('.option-btn').removeClass('active');
+            $(btn).addClass('active');
+            document.getElementById('gallery-anchor').scrollIntoView({ behavior: 'smooth' });
+            loadImages(category);
+        }
+
+        function loadImages(category) {
+            const $grid = $('#gridContainer');
+            const $loader = $('#loader');
+            $grid.empty();
+            $loader.show();
+
+            currentCatData = portfolioData[category];
+            let loadedCount = 0;
+
+            currentCatData.forEach((url, index) => {
+                const img = new Image();
+                img.src = url;
+                const div = document.createElement('div');
+                div.className = 'pin-item';
+                div.appendChild(img);
+                
+                div.onclick = () => openLightbox(index);
+
+                $grid.append(div);
+
+                img.onload = () => {
+                    loadedCount++;
+                    setTimeout(() => { div.classList.add('visible'); }, index * 80);
+                    if(loadedCount > 1) $loader.hide();
+                };
+                img.onerror = () => { div.style.display='none'; loadedCount++; }
+            });
+        }
+
+        // --- LIGHTBOX LOGIC ---
+        function openLightbox(startIndex) {
+            const lbView = document.getElementById('lightbox-view');
+            const lbContent = document.getElementById('lightbox-content');
+            lbContent.innerHTML = '';
+            
+            // Populate all images in category (Vertical Feed Style)
+            currentCatData.forEach(url => {
+                const slide = document.createElement('div');
+                slide.className = 'lightbox-slide';
+                const img = document.createElement('img');
+                img.src = url;
+                slide.appendChild(img);
+                lbContent.appendChild(slide);
+            });
+
+            lbView.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Lock background scroll
+
+            // Snap to the clicked image
+            setTimeout(() => {
+                const slides = document.querySelectorAll('.lightbox-slide');
+                if(slides[startIndex]) slides[startIndex].scrollIntoView();
+            }, 10);
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox-view').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Unlock background scroll
+        }
+
+        function toggleAbout() { $('#aboutPanel').toggleClass('open'); }
+
+        // --- INIT ---
+        window.onload = function() {
+            // Load Product category by default
+            loadImages('product');
+            document.querySelector('.option-btn').classList.add('active');
+        };
+    </script>
+</body>
+</html>

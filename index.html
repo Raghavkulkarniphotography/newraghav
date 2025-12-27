@@ -13,6 +13,7 @@
             --brand-blue: #00638C;
             --text-main: #111111;
             --bg: #ffffff;
+            --ease: cubic-bezier(0.77, 0, 0.175, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,12 +22,54 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
-            overflow: hidden; /* No scrolling allowed */
+            overflow: hidden; /* No scrolling */
             height: 100vh;
             width: 100vw;
         }
 
-        /* --- 1. NAVBAR --- */
+        /* --- 1. THE INTRO LANDING PAGE --- */
+        #intro-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff;
+            z-index: 5000; /* High, but lower than About Panel (6000) */
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: transform 1s var(--ease);
+        }
+
+        #intro-layer.closed { transform: translateY(-100%); }
+
+        .intro-logo {
+            max-width: 300px; width: 80%; height: auto;
+            margin-bottom: 40px;
+            opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
+        }
+
+        .enter-btn {
+            background: transparent;
+            border: 1px solid #000;
+            padding: 15px 40px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
+        }
+        .enter-btn:hover { background: var(--brand-blue); border-color: var(--brand-blue); color: #fff; }
+
+        /* NEW: Intro About Link */
+        .intro-about-link {
+            margin-top: 25px;
+            font-size: 0.85rem; color: #888;
+            cursor: pointer; text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s;
+            opacity: 0; animation: fadeUp 1s ease forwards 0.8s;
+        }
+        .intro-about-link:hover { color: var(--brand-blue); border-color: var(--brand-blue); }
+
+        /* --- 2. NAVBAR --- */
         nav {
             position: fixed; top: 0; left: 0; width: 100%; 
             padding: 30px 40px;
@@ -36,7 +79,24 @@
         .nav-logo-img { height: 40px; width: auto; cursor: pointer; }
         .nav-about { font-weight: 500; cursor: pointer; letter-spacing: 1px; font-size: 0.9rem; }
 
-        /* --- 2. CATEGORY SELECTOR (Bottom Left) --- */
+        /* --- 3. THE STAGE (Slider) --- */
+        .slider-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.8s ease 0.5s;
+        }
+        .slider-container.visible { opacity: 1; }
+
+        .slide-image {
+            max-width: 85vw; max-height: 80vh;
+            object-fit: contain;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            opacity: 0; transform: scale(0.95);
+            transition: all 0.6s var(--ease);
+        }
+        .slide-image.active { opacity: 1; transform: scale(1); }
+
+        /* --- CATEGORIES & CONTROLS --- */
         .category-menu {
             position: fixed; bottom: 40px; left: 40px;
             display: flex; flex-direction: column; gap: 10px;
@@ -50,31 +110,12 @@
         .cat-btn:hover { color: var(--brand-blue); }
         .cat-btn.active { color: var(--text-main); font-weight: 600; padding-left: 10px; border-left: 2px solid var(--brand-blue); }
 
-        /* --- 3. THE STAGE (Full Screen Slider) --- */
-        .slider-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.5s ease;
-        }
-        .slider-container.visible { opacity: 1; }
-
-        .slide-image {
-            max-width: 85vw; max-height: 80vh;
-            object-fit: contain;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            opacity: 0; transform: scale(0.95);
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .slide-image.active { opacity: 1; transform: scale(1); }
-
-        /* --- CONTROLS (Right Side) --- */
         .controls {
             position: fixed; bottom: 40px; right: 40px;
             display: flex; gap: 20px; align-items: center;
             z-index: 100;
         }
         .counter { font-family: 'Playfair Display', serif; font-size: 1.2rem; min-width: 60px; text-align: center; }
-        
         .arrow-btn {
             width: 50px; height: 50px; border: 1px solid #ddd; border-radius: 50%;
             display: flex; justify-content: center; align-items: center; cursor: pointer;
@@ -82,25 +123,28 @@
         }
         .arrow-btn:hover { border-color: var(--text-main); background: var(--text-main); color: #fff; }
 
-        /* --- LOADING SPINNER --- */
+        /* --- ABOUT OVERLAY --- */
+        .about-overlay {
+            position: fixed; top: 0; right: -100%; width: 500px; height: 100%;
+            background: #fff; 
+            z-index: 6000; /* HIGHER THAN INTRO LAYER (5000) */
+            padding: 60px;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+            transition: right 0.5s ease;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .about-overlay.open { right: 0; }
+        .close-text-btn { position: absolute; top: 30px; right: 30px; cursor: pointer; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; }
+
         #loader {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 40px; height: 40px; border: 3px solid #f3f3f3; 
             border-top: 3px solid var(--brand-blue); border-radius: 50%;
             animation: spin 1s linear infinite; display: none;
         }
+        
+        @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
         @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
-
-        /* --- ABOUT OVERLAY --- */
-        .about-overlay {
-            position: fixed; top: 0; right: -100%; width: 500px; height: 100%;
-            background: #fff; z-index: 200; padding: 60px;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.05);
-            transition: right 0.5s ease;
-            display: flex; flex-direction: column; justify-content: center;
-        }
-        .about-overlay.open { right: 0; }
-        .close-btn { position: absolute; top: 30px; right: 30px; cursor: pointer; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; }
 
         @media (max-width: 768px) {
             nav { padding: 20px; }
@@ -113,6 +157,14 @@
     </style>
 </head>
 <body>
+
+    <div id="intro-layer">
+        <img src="logo.png" alt="Raghav Kulkarni" class="intro-logo">
+        
+        <button class="enter-btn" onclick="enterSite()">Enter Portfolio</button>
+        
+        <div class="intro-about-link" onclick="toggleAbout()">About / Contact</div>
+    </div>
 
     <nav>
         <img src="cornerlogo.png" alt="R" class="nav-logo-img" onclick="location.reload()">
@@ -138,16 +190,17 @@
     </div>
 
     <div class="about-overlay" id="aboutPanel">
-        <div class="close-btn" onclick="toggleAbout()">CLOSE</div>
+        <div class="close-text-btn" onclick="toggleAbout()">CLOSE</div>
+        
         <img src="profile.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:30px;">
         <h2 style="font-family:'Playfair Display'; margin-bottom:20px;">About Me</h2>
         <p style="color:#555; line-height:1.6; font-size:0.95rem; margin-bottom:30px;">
             More than a photographer, I am a visual artist dedicated to translating concepts into tangible imagery.<br><br>
-            A graduate of MIT WPU, applying technical precision to high-impact commercial visuals.
+            A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach within a controlled environment. I use light, composition, and technical precision to convert abstract ideas into high-impact commercial visuals.
         </p>
         <div>
             <div><b>Phone:</b> <a href="tel:+918888248590" style="color:inherit; text-decoration:none;">+91 88882 48590</a></div>
-            <div style="margin-top:5px;"><b>Email:</b> <a href="mailto:raghavkulkarniphotography@gmail.com" style="color:inherit; text-decoration:none;">raghav@gmail.com</a></div>
+            <div style="margin-top:5px;"><b>Email:</b> <a href="mailto:raghavkulkarniphotography@gmail.com" style="color:inherit; text-decoration:none;">raghavkulkarniphotography@gmail.com</a></div>
         </div>
     </div>
 
@@ -171,10 +224,19 @@
 
         // --- INIT ---
         window.onload = function() {
-            loadCategory('product');
+            // Start preloading images immediately in background
+            loadCategory('product'); 
         };
 
-        // --- LOGIC ---
+        // --- FUNCTIONS ---
+        
+        function enterSite() {
+            // Lift the curtain
+            document.getElementById('intro-layer').classList.add('closed');
+            // Reveal the stage
+            document.getElementById('stage').classList.add('visible');
+        }
+
         function loadCategory(cat) {
             currentCat = cat;
             currentIndex = 0;
@@ -183,11 +245,8 @@
         }
 
         function changeCategory(cat, btn) {
-            // UI Update
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
-            // Logic Update
             loadCategory(cat);
         }
 
@@ -196,15 +255,14 @@
             const counter = document.getElementById('counter');
             const loader = document.getElementById('loader');
             
-            // fade out old
+            // Fade out current
             imgEl.classList.remove('active');
             loader.style.display = 'block';
 
-            // Swap Source
             setTimeout(() => {
                 imgEl.src = images[currentIndex];
                 
-                // Preload Next Image (Magic Trick for Speed)
+                // Speed Trick: Preload NEXT image
                 if(currentIndex < images.length - 1) {
                     new Image().src = images[currentIndex + 1];
                 }
@@ -212,11 +270,9 @@
                 imgEl.onload = function() {
                     loader.style.display = 'none';
                     imgEl.classList.add('active');
-                    document.getElementById('stage').classList.add('visible');
                 };
             }, 300);
 
-            // Update Counter
             counter.innerText = (currentIndex + 1) + " / " + images.length;
         }
 
@@ -225,8 +281,7 @@
                 currentIndex++;
                 updateDisplay();
             } else {
-                // Loop back to start?
-                currentIndex = 0;
+                currentIndex = 0; // Loop
                 updateDisplay();
             }
         }

@@ -13,7 +13,6 @@
             --brand-blue: #00638C;
             --text-main: #111111;
             --bg: #ffffff;
-            --radius: 20px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,126 +21,138 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+            overflow: hidden; /* No scrolling allowed */
+            height: 100vh;
+            width: 100vw;
         }
 
         /* --- 1. NAVBAR --- */
         nav {
             position: fixed; top: 0; left: 0; width: 100%; 
-            padding: 20px 5%;
+            padding: 30px 40px;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
             z-index: 100;
         }
+        .nav-logo-img { height: 40px; width: auto; cursor: pointer; }
+        .nav-about { font-weight: 500; cursor: pointer; letter-spacing: 1px; font-size: 0.9rem; }
 
-        .nav-logo-img { height: 50px; width: auto; cursor: pointer; transition: opacity 0.3s; }
-        .nav-logo-img:hover { opacity: 0.8; }
-        .nav-about { color: var(--brand-blue); font-weight: 500; cursor: pointer; font-size: 0.9rem; letter-spacing: 0.5px; }
-
-        /* --- 2. HERO SECTION --- */
-        .hero {
-            height: 90vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center; padding: 0 20px;
+        /* --- 2. CATEGORY SELECTOR (Bottom Left) --- */
+        .category-menu {
+            position: fixed; bottom: 40px; left: 40px;
+            display: flex; flex-direction: column; gap: 10px;
+            z-index: 100;
         }
-        .hero-logo-img { max-width: 320px; width: 80%; height: auto; margin-bottom: 50px; animation: fadeUp 1s ease; }
-        .hero-options { display: flex; gap: 20px; animation: fadeUp 1s ease 0.2s backwards; }
+        .cat-btn {
+            background: none; border: none; text-align: left;
+            font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #999;
+            cursor: pointer; transition: color 0.3s;
+        }
+        .cat-btn:hover { color: var(--brand-blue); }
+        .cat-btn.active { color: var(--text-main); font-weight: 600; padding-left: 10px; border-left: 2px solid var(--brand-blue); }
+
+        /* --- 3. THE STAGE (Full Screen Slider) --- */
+        .slider-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.5s ease;
+        }
+        .slider-container.visible { opacity: 1; }
+
+        .slide-image {
+            max-width: 85vw; max-height: 80vh;
+            object-fit: contain;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            opacity: 0; transform: scale(0.95);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .slide-image.active { opacity: 1; transform: scale(1); }
+
+        /* --- CONTROLS (Right Side) --- */
+        .controls {
+            position: fixed; bottom: 40px; right: 40px;
+            display: flex; gap: 20px; align-items: center;
+            z-index: 100;
+        }
+        .counter { font-family: 'Playfair Display', serif; font-size: 1.2rem; min-width: 60px; text-align: center; }
         
-        .option-btn {
-            padding: 15px 35px; background: transparent; border: 1px solid #e0e0e0;
-            border-radius: 50px; font-family: 'Inter', sans-serif; font-size: 0.9rem;
-            color: #666; cursor: pointer; transition: all 0.3s ease;
+        .arrow-btn {
+            width: 50px; height: 50px; border: 1px solid #ddd; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+            transition: all 0.2s; background: #fff;
         }
-        .option-btn:hover { border-color: var(--brand-blue); color: var(--brand-blue); transform: translateY(-3px); }
-        .option-btn.active { background: var(--brand-blue); border-color: var(--brand-blue); color: #fff; }
+        .arrow-btn:hover { border-color: var(--text-main); background: var(--text-main); color: #fff; }
 
-        /* --- GALLERY --- */
-        .gallery-container { padding: 0 5% 100px; min-height: 100vh; }
-        .pinterest-grid { column-count: 3; column-gap: 30px; }
-        .pin-item { break-inside: avoid; margin-bottom: 30px; cursor: zoom-in; opacity: 0; transform: translateY(40px); transition: opacity 0.6s ease, transform 0.6s ease; }
-        .pin-item.visible { opacity: 1; transform: translateY(0); }
-        .pin-item img {
-            width: 100%; display: block; border-radius: var(--radius);
-            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        /* --- LOADING SPINNER --- */
+        #loader {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 40px; height: 40px; border: 3px solid #f3f3f3; 
+            border-top: 3px solid var(--brand-blue); border-radius: 50%;
+            animation: spin 1s linear infinite; display: none;
         }
-        .pin-item:hover img { transform: scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        /* --- LIGHTBOX --- */
-        #lightbox-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 9999; overflow-y: scroll; scroll-snap-type: y mandatory; }
-        .lightbox-slide { width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; scroll-snap-align: start; position: relative; }
-        .lightbox-slide img { max-width: 90%; max-height: 90vh; object-fit: contain; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
-
-        /* --- CLOSE BUTTONS --- */
-        .close-text-btn { position: absolute; top: 30px; right: 40px; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; cursor: pointer; z-index: 10000; padding: 10px; transition: opacity 0.3s; }
-        #lightbox-view .close-text-btn { position: fixed; } /* Keeps Lightbox close button fixed */
-        .close-text-btn:hover { opacity: 0.7; }
-        
-        .scroll-hint { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; z-index: 10000; animation: bounce 2s infinite; }
-
-        /* --- UTILS --- */
-        #loader { display: none; width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid var(--brand-blue); border-radius: 50%; margin: 50px auto; animation: spin 1s linear infinite; }
-        .about-overlay { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: #fff; z-index: 200; padding: 40px; transition: right 0.5s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        /* --- ABOUT OVERLAY --- */
+        .about-overlay {
+            position: fixed; top: 0; right: -100%; width: 500px; height: 100%;
+            background: #fff; z-index: 200; padding: 60px;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+            transition: right 0.5s ease;
+            display: flex; flex-direction: column; justify-content: center;
+        }
         .about-overlay.open { right: 0; }
-        .contact-link { color: var(--brand-blue); text-decoration: none; font-weight: 600; transition: opacity 0.3s; }
-        .contact-link:hover { opacity: 0.7; }
+        .close-btn { position: absolute; top: 30px; right: 30px; cursor: pointer; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translate(-50%, 0);} 40% {transform: translate(-50%, -10px);} 60% {transform: translate(-50%, -5px);} }
-        
         @media (max-width: 768px) {
-            .hero { height: 80vh; }
-            .hero-options { flex-direction: column; width: 100%; max-width: 300px; } 
-            .pinterest-grid { column-count: 1; }
-            .hero-logo-img { max-width: 250px; }
-            .close-text-btn { top: 20px; right: 20px; } 
+            nav { padding: 20px; }
+            .category-menu { top: 80px; bottom: auto; left: 20px; flex-direction: row; gap: 15px; }
+            .cat-btn { font-size: 0.8rem; }
+            .slide-image { max-width: 90vw; max-height: 60vh; }
+            .controls { bottom: 30px; right: 50%; transform: translateX(50%); width: 100%; justify-content: center; }
+            .about-overlay { width: 100%; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <img src="cornerlogo.png" alt="R" class="nav-logo-img" onclick="window.scrollTo(0,0)" onerror="this.style.display='none'">
-        <div class="nav-about" onclick="toggleAbout()">About Me</div>
+        <img src="cornerlogo.png" alt="R" class="nav-logo-img" onclick="location.reload()">
+        <div class="nav-about" onclick="toggleAbout()">ABOUT</div>
     </nav>
 
-    <section class="hero">
-        <img src="logo.png" alt="Raghav Kulkarni" class="hero-logo-img">
-        <div class="hero-options">
-            <button class="option-btn" onclick="selectCategory('product', this)">Product & Jewelry</button>
-            <button class="option-btn" onclick="selectCategory('interior', this)">Interior Media</button>
-            <button class="option-btn" onclick="selectCategory('corporate', this)">Corporate Work</button>
-        </div>
-    </section>
+    <div id="loader"></div>
 
-    <section class="gallery-container" id="gallery-anchor">
-        <div id="loader"></div>
-        <div class="pinterest-grid" id="gridContainer"></div>
-    </section>
+    <div class="slider-container" id="stage">
+        <img src="" class="slide-image" id="mainImage" alt="Portfolio Work">
+    </div>
 
-    <div id="lightbox-view">
-        <div class="close-text-btn" style="color: #fff;" onclick="closeLightbox()">CLOSE</div>
-        <div class="scroll-hint">Scroll Down</div>
-        <div id="lightbox-content"></div>
+    <div class="category-menu">
+        <button class="cat-btn active" onclick="changeCategory('product', this)">Product</button>
+        <button class="cat-btn" onclick="changeCategory('interior', this)">Interior</button>
+        <button class="cat-btn" onclick="changeCategory('corporate', this)">Corporate</button>
+    </div>
+
+    <div class="controls">
+        <div class="arrow-btn" onclick="prevSlide()">&#8592;</div>
+        <div class="counter" id="counter">1 / 22</div>
+        <div class="arrow-btn" onclick="nextSlide()">&#8594;</div>
     </div>
 
     <div class="about-overlay" id="aboutPanel">
-        <div class="close-text-btn" style="color: #000;" onclick="toggleAbout()">CLOSE</div>
-        <img src="profile.jpg" style="width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:20px;">
-        <h2 style="font-family:'Playfair Display'; font-size:2rem; margin-bottom:10px;">About Me</h2>
-        <p style="max-width:600px; color:#555; line-height:1.8; margin-bottom: 30px;">
+        <div class="close-btn" onclick="toggleAbout()">CLOSE</div>
+        <img src="profile.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:30px;">
+        <h2 style="font-family:'Playfair Display'; margin-bottom:20px;">About Me</h2>
+        <p style="color:#555; line-height:1.6; font-size:0.95rem; margin-bottom:30px;">
             More than a photographer, I am a visual artist dedicated to translating concepts into tangible imagery.<br><br>
-            A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach within a controlled environment. I use light, composition, and technical precision to convert abstract ideas into high-impact commercial visuals.
+            A graduate of MIT WPU, applying technical precision to high-impact commercial visuals.
         </p>
-        <div style="font-size: 0.95rem; line-height: 2;">
-            <div>Based in Pune, India</div>
-            <div>Phone: <a href="tel:+918888248590" class="contact-link">+91 88882 48590</a></div>
-            <div>Email: <a href="mailto:raghavkulkarniphotography@gmail.com" class="contact-link">raghavkulkarniphotography@gmail.com</a></div>
+        <div>
+            <div><b>Phone:</b> <a href="tel:+918888248590" style="color:inherit; text-decoration:none;">+91 88882 48590</a></div>
+            <div style="margin-top:5px;"><b>Email:</b> <a href="mailto:raghavkulkarniphotography@gmail.com" style="color:inherit; text-decoration:none;">raghav@gmail.com</a></div>
         </div>
     </div>
 
     <script>
+        // --- DATA ---
         function generatePaths(prefix, count) {
             var paths = [];
             for (var i = 1; i <= count; i++) { paths.push(prefix + i + ".webp"); }
@@ -153,92 +164,90 @@
             corporate: generatePaths('corporate', 6) 
         };
 
-        let currentCatData = [];
+        // --- STATE ---
+        let currentCat = 'product';
+        let currentIndex = 0;
+        let images = [];
 
-        function selectCategory(category, btn) {
-            $('.option-btn').removeClass('active');
-            $(btn).addClass('active');
-            document.getElementById('gallery-anchor').scrollIntoView({ behavior: 'smooth' });
-            loadImages(category);
+        // --- INIT ---
+        window.onload = function() {
+            loadCategory('product');
+        };
+
+        // --- LOGIC ---
+        function loadCategory(cat) {
+            currentCat = cat;
+            currentIndex = 0;
+            images = portfolioData[cat];
+            updateDisplay();
         }
 
-        // --- LAZY LOADING SPEED FIX ---
-        function loadImages(category) {
-            const $grid = $('#gridContainer');
-            const $loader = $('#loader');
-            $grid.empty();
-            $loader.show();
+        function changeCategory(cat, btn) {
+            // UI Update
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Logic Update
+            loadCategory(cat);
+        }
 
-            currentCatData = portfolioData[category];
-            let loadedCount = 0;
+        function updateDisplay() {
+            const imgEl = document.getElementById('mainImage');
+            const counter = document.getElementById('counter');
+            const loader = document.getElementById('loader');
+            
+            // fade out old
+            imgEl.classList.remove('active');
+            loader.style.display = 'block';
 
-            currentCatData.forEach((url, index) => {
-                const img = new Image();
-                img.src = url;
-                img.loading = "lazy"; // Allows browser to skip loading off-screen images
+            // Swap Source
+            setTimeout(() => {
+                imgEl.src = images[currentIndex];
                 
-                const div = document.createElement('div');
-                div.className = 'pin-item';
-                div.appendChild(img);
-                div.onclick = () => openLightbox(index);
-
-                $grid.append(div);
-
-                // Speed Check: Only wait for the first 3 images to hide loader
-                img.onload = () => {
-                    loadedCount++;
-                    div.classList.add('visible');
-                    if(loadedCount >= 3) $loader.hide(); 
-                };
-                
-                // If browser caches it, show instantly
-                if(img.complete) {
-                    loadedCount++;
-                    div.classList.add('visible');
-                    if(loadedCount >= 3) $loader.hide();
+                // Preload Next Image (Magic Trick for Speed)
+                if(currentIndex < images.length - 1) {
+                    new Image().src = images[currentIndex + 1];
                 }
 
-                img.onerror = () => { div.style.display='none'; loadedCount++; }
-            });
-            
-            // Safety: Hide loader after 3 seconds regardless
-            setTimeout(() => { $loader.hide(); }, 3000);
+                imgEl.onload = function() {
+                    loader.style.display = 'none';
+                    imgEl.classList.add('active');
+                    document.getElementById('stage').classList.add('visible');
+                };
+            }, 300);
+
+            // Update Counter
+            counter.innerText = (currentIndex + 1) + " / " + images.length;
         }
 
-        function openLightbox(startIndex) {
-            const lbView = document.getElementById('lightbox-view');
-            const lbContent = document.getElementById('lightbox-content');
-            lbContent.innerHTML = '';
-            
-            currentCatData.forEach(url => {
-                const slide = document.createElement('div');
-                slide.className = 'lightbox-slide';
-                const img = document.createElement('img');
-                img.src = url;
-                slide.appendChild(img);
-                lbContent.appendChild(slide);
-            });
-
-            lbView.style.display = 'block';
-            document.body.style.overflow = 'hidden'; 
-
-            setTimeout(() => {
-                const slides = document.querySelectorAll('.lightbox-slide');
-                if(slides[startIndex]) slides[startIndex].scrollIntoView();
-            }, 10);
+        function nextSlide() {
+            if (currentIndex < images.length - 1) {
+                currentIndex++;
+                updateDisplay();
+            } else {
+                // Loop back to start?
+                currentIndex = 0;
+                updateDisplay();
+            }
         }
 
-        function closeLightbox() {
-            document.getElementById('lightbox-view').style.display = 'none';
-            document.body.style.overflow = 'auto'; 
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateDisplay();
+            }
         }
 
-        function toggleAbout() { $('#aboutPanel').toggleClass('open'); }
+        function toggleAbout() {
+            document.getElementById('aboutPanel').classList.toggle('open');
+        }
 
-        window.onload = function() {
-            loadImages('product');
-            document.querySelector('.option-btn').classList.add('active');
-        };
+        // Keyboard Support
+        document.addEventListener('keydown', function(e) {
+            if(e.key === "ArrowRight") nextSlide();
+            if(e.key === "ArrowLeft") prevSlide();
+        });
+
     </script>
 </body>
 </html>

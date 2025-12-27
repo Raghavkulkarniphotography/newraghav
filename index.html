@@ -101,37 +101,48 @@
             background: var(--brand-blue); border-color: var(--brand-blue); color: #fff;
         }
 
-        /* Animation Classes */
+        /* Animation Classes for Stage 2 */
         .animate-in .main-title { animation: fadeUp 1s ease forwards 0.2s; }
         .animate-in .subtitle { animation: fadeUp 1s ease forwards 0.4s; }
         .animate-in .options-container { animation: fadeUp 1s ease forwards 0.6s; }
 
-        /* --- 4. THE GALLERY (Hidden until selected) --- */
+        /* --- 4. THE GALLERY --- */
         #gallery-section {
-            min-height: 20vh; /* Small until filled */
+            min-height: 20vh;
             padding: 0 5% 100px;
         }
 
         .pinterest-grid { column-count: 3; column-gap: 30px; }
-        .pin-item { break-inside: avoid; margin-bottom: 30px; cursor: zoom-in; opacity: 0; transform: translateY(40px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        
+        .pin-item { 
+            break-inside: avoid; margin-bottom: 30px; cursor: zoom-in; 
+            opacity: 0; transform: translateY(50px); /* Start lower for effect */
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
         .pin-item.visible { opacity: 1; transform: translateY(0); }
+        
         .pin-item img {
             width: 100%; display: block; border-radius: var(--radius);
-            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
         .pin-item:hover img { transform: scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
 
-        /* --- LIGHTBOX --- */
+        /* --- LIGHTBOX (Snap Scroll) --- */
         #lightbox-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 9999; overflow-y: scroll; scroll-snap-type: y mandatory; }
         .lightbox-slide { width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; scroll-snap-align: start; position: relative; }
         .lightbox-slide img { max-width: 90%; max-height: 90vh; object-fit: contain; }
-        #lightbox-view .close-text-btn { position: fixed; color: #fff; top: 30px; right: 40px; font-weight: 500; cursor: pointer; letter-spacing: 2px; }
+        
+        /* CLOSE BUTTON (FIXED) */
+        .close-fixed { position: fixed; top: 30px; right: 40px; color: #fff; font-weight: 500; cursor: pointer; letter-spacing: 2px; z-index: 10001; }
 
         /* --- ABOUT & UTILS --- */
         .about-overlay { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: #fff; z-index: 9500; padding: 40px; transition: right 0.5s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .about-overlay.open { right: 0; }
-        .close-text-btn { position: absolute; top: 30px; right: 40px; cursor: pointer; letter-spacing: 2px; }
+        
+        /* CLOSE BUTTON (ABSOLUTE for About) */
+        .close-abs { position: absolute; top: 30px; right: 40px; color: #000; cursor: pointer; letter-spacing: 2px; font-weight: 500;}
 
         .contact-link { color: var(--brand-blue); text-decoration: none; font-weight: 600; }
         #loader { display: none; width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid var(--brand-blue); border-radius: 50%; margin: 50px auto; animation: spin 1s linear infinite; }
@@ -176,19 +187,20 @@
     </div>
 
     <div id="lightbox-view">
-        <div class="close-text-btn" onclick="closeLightbox()">CLOSE</div>
+        <div class="close-fixed" onclick="closeLightbox()">CLOSE</div>
         <div id="lightbox-content"></div>
     </div>
 
     <div class="about-overlay" id="aboutPanel">
-        <div class="close-text-btn" onclick="toggleAbout()">CLOSE</div>
+        <div class="close-abs" onclick="toggleAbout()">CLOSE</div>
         <img src="profile.jpg" style="width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:20px;">
         <h2 style="font-family:'Playfair Display'; font-size:2rem; margin-bottom:10px;">About Me</h2>
         <p style="max-width:600px; color:#555; line-height:1.8; margin-bottom: 30px;">
             More than a photographer, I am a visual artist dedicated to translating concepts into tangible imagery.<br><br>
-            A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach.
+            A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach within a controlled environment. I use light, composition, and technical precision to convert abstract ideas into high-impact commercial visuals.
         </p>
         <div style="font-size: 0.95rem; line-height: 2;">
+            <div>Based in Pune, India</div>
             <div>Phone: <a href="tel:+918888248590" class="contact-link">+91 88882 48590</a></div>
             <div>Email: <a href="mailto:raghavkulkarniphotography@gmail.com" class="contact-link">raghavkulkarniphotography@gmail.com</a></div>
         </div>
@@ -211,29 +223,23 @@
 
         // 1. ENTER SITE
         function enterSite() {
-            // Lift Curtain
             document.getElementById('intro-layer').classList.add('closed');
-            // Show Nav
             document.getElementById('main-nav').classList.add('visible');
-            // Animate Menu In
             document.getElementById('menuSection').classList.add('animate-in');
         }
 
         // 2. CHOOSE OPTION
         function chooseOption(category, btn) {
-            // Highlight Button
             document.querySelectorAll('.opt-card').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            // Scroll down a bit to show movement
             const gallery = document.getElementById('gallery-section');
             gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            // Load
             loadImages(category);
         }
 
-        // 3. LOAD IMAGES (Lazy)
+        // 3. LOAD IMAGES (One by One Animation)
         function loadImages(category) {
             const $grid = $('#gridContainer');
             const $loader = $('#loader');
@@ -257,12 +263,21 @@
 
                 img.onload = () => {
                     loadedCount++;
-                    div.classList.add('visible');
+                    // WATERFALL ANIMATION:
+                    // Each image waits 100ms longer than the previous one
+                    setTimeout(() => { 
+                        div.classList.add('visible'); 
+                    }, index * 100); 
+
                     if(loadedCount >= 3) $loader.hide();
                 };
+                
+                // Fallback for cached images
                 if(img.complete) {
                     loadedCount++;
-                    div.classList.add('visible');
+                    setTimeout(() => { 
+                        div.classList.add('visible'); 
+                    }, index * 100);
                     if(loadedCount >= 3) $loader.hide();
                 }
             });
@@ -302,9 +317,8 @@
             document.getElementById('aboutPanel').classList.toggle('open');
         }
         
-        // Background Preload of Product Images
         window.onload = function() {
-            // Optional: Preload first few product images
+            // Optional: Preload first few product images for speed
             new Image().src = "product1.webp";
             new Image().src = "product2.webp";
         }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raghav Kulkarni | The Brochure</title>
+    <title>Raghav Kulkarni | The Folio</title>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -11,8 +11,8 @@
     <style>
         :root {
             --brand-blue: #00638C;
-            --book-w: 420px;
-            --book-h: 600px;
+            --book-w: 440px;
+            --book-h: 620px;
             --ease: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
@@ -20,223 +20,177 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            height: 100vh; width: 100vw;
-            overflow: hidden;
+            height: 100vh; width: 100vw; overflow: hidden;
             display: flex; justify-content: center; align-items: center;
-            background: #000;
+            background: #1a1a1a;
         }
 
-        /* --- 1. ENVIRONMENT (Table vs Studio) --- */
+        /* --- 1. THE ENVIRONMENT --- */
         .environment {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            transition: all 1.5s var(--ease);
-            /* Wooden Table Texture (CSS Generated) */
-            background-color: #3e2723;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.05) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 2px, transparent 2px),
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-            box-shadow: inset 0 0 150px #000;
+            transition: all 1.2s var(--ease);
+            /* Wood Table Look */
+            background: #2c241b;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 10px);
+            box-shadow: inset 0 0 200px #000;
         }
-
-        /* Studio State (When book is open) */
+        
         body.reading-mode .environment {
-            background: #e0e5ec; /* Clean Studio Grey */
-            background-image: radial-gradient(#fff 20%, transparent 20%);
-            background-size: 20px 20px;
-            transform: scale(1.2); /* Zoom effect */
-            filter: blur(5px); /* Depth of field */
+            /* Studio Grey Look */
+            background: #e6e6e6;
+            transform: scale(1.1);
         }
 
-        /* --- 2. 3D SCENE CONTAINER --- */
+        /* --- 2. 3D SCENE --- */
         .scene {
             width: var(--book-w); height: var(--book-h);
-            perspective: 2000px;
-            z-index: 10;
+            perspective: 2500px; z-index: 10;
             transition: transform 1.2s var(--ease);
         }
-
-        /* Initial State: Lying on Table (Tilted) */
-        .scene.resting {
-            transform: rotateX(40deg) rotateZ(-10deg) scale(0.8);
-            cursor: pointer;
-        }
-        /* Hover State on Table */
-        .scene.resting:hover {
-            transform: rotateX(35deg) rotateZ(-8deg) scale(0.85) translateY(-20px);
-        }
         
-        /* Reading State: Upright & Open */
-        .scene.active {
-            transform: rotateX(0deg) rotateZ(0deg) translateX(50%); /* Shift right to center open book */
-        }
+        /* Resting Angle */
+        .scene.resting { transform: rotateX(35deg) rotateZ(-5deg) scale(0.85); cursor: pointer; }
+        .scene.resting:hover { transform: rotateX(30deg) rotateZ(-3deg) scale(0.9) translateY(-20px); }
+        
+        /* Active Angle (Reading) */
+        .scene.active { transform: rotateX(0deg) rotateZ(0deg) translateX(220px); /* Shift right to center spread */ }
 
-        /* --- 3. THE BOOK --- */
         .book {
-            width: 100%; height: 100%;
+            width: 100%; height: 100%; position: relative;
             transform-style: preserve-3d;
-            position: relative;
         }
 
-        /* PAGES */
+        /* --- 3. PAGES --- */
         .page {
-            width: 100%; height: 100%;
-            position: absolute; top: 0; left: 0;
-            transform-origin: left center;
-            transform-style: preserve-3d;
-            transition: transform 1s var(--ease);
-            background: #fff;
-            box-shadow: inset 5px 0 10px rgba(0,0,0,0.05); /* Paper curve shadow */
-            border-radius: 2px 5px 5px 2px;
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+            transform-origin: left center; transform-style: preserve-3d;
+            transition: transform 0.8s var(--ease);
+            background: #fff; border-radius: 2px 5px 5px 2px;
+            box-shadow: inset 5px 0 15px rgba(0,0,0,0.05), 5px 5px 15px rgba(0,0,0,0.1);
         }
-        
         .page.flipped { transform: rotateY(-180deg); }
         
-        /* Faces */
         .front, .back {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            backface-visibility: hidden;
-            overflow: hidden;
+            backface-visibility: hidden; overflow: hidden;
         }
-        .back { transform: rotateY(180deg); background: #fff; }
+        .back { transform: rotateY(180deg); background: #fdfdfd; }
 
-        /* --- PAGE CONTENT DESIGN --- */
-        
-        /* COVER */
+        /* COVER DESIGN */
         #cover {
-            background: #fdfdfd; 
-            /* Paper Texture */
-            background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3h1v1H1V3zm2-2h1v1H3V1z' fill='%23cccccc' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
-            border-left: 5px solid #ddd; /* Spine */
+            background: #111; color: #fff;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            box-shadow: 5px 10px 30px rgba(0,0,0,0.3); /* Drop shadow on table */
+            border-left: 8px solid #333; /* Spine */
+            /* Leather Texture */
+            background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3h1v1H1V3zm2-2h1v1H3V1z' fill='%23333' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
-        .cover-logo { width: 60%; max-width: 250px; margin-bottom: 40px; }
-        .tap-hint { margin-top: 40px; font-size: 0.8rem; letter-spacing: 2px; color: var(--brand-blue); text-transform: uppercase; animation: pulse 2s infinite; }
+        .logo-box { padding: 20px; border: 1px solid rgba(255,255,255,0.3); margin-bottom: 30px; }
 
-        /* PAGE 1: INSIDE LEFT (About & Photo) */
-        .page-intro {
-            padding: 50px 40px;
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            background: #fafafa;
+        /* LEFT PAGE (Static Info) */
+        .static-left-content {
+            padding: 50px 40px; height: 100%;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
-        .profile-pic {
-            width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
-            border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+        .info-block h3 { font-family: 'Playfair Display'; font-size: 1.5rem; margin-bottom: 10px; color: var(--brand-blue); }
+        .info-block p { font-size: 0.9rem; color: #666; line-height: 1.6; }
+        .info-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #aaa; margin-bottom: 5px; margin-top: 20px;}
+
+        /* RIGHT PAGE (Photos) */
+        .photo-wrapper { width: 100%; height: 100%; padding: 30px; display: flex; justify-content: center; align-items: center; }
+        .photo-img { 
+            max-width: 100%; max-height: 100%; object-fit: contain; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15); 
         }
 
-        /* PAGE 2: INDEX (Menu) */
-        .page-index {
-            padding: 60px 50px;
-            display: flex; flex-direction: column; justify-content: center;
+        /* --- 4. INDEX TABS (The "Organizer" Look) --- */
+        .tabs-container {
+            position: absolute; right: -40px; top: 50px;
+            display: flex; flex-direction: column; gap: 10px;
+            z-index: 5; /* Behind pages initially */
+            transform-style: preserve-3d;
+            opacity: 0; transition: opacity 0.5s;
         }
-        .index-list { list-style: none; margin-top: 40px; width: 100%; }
-        .index-item {
-            padding: 20px 0; border-bottom: 1px solid #eee;
-            font-family: 'Playfair Display', serif; font-size: 1.4rem;
-            cursor: pointer; display: flex; justify-content: space-between;
-            transition: color 0.3s;
-        }
-        .index-item:hover { color: var(--brand-blue); padding-left: 10px; }
-        .index-num { font-family: 'Inter'; font-size: 0.9rem; color: #ccc; }
+        body.reading-mode .tabs-container { opacity: 1; }
 
-        /* PHOTO PAGES */
-        .photo-wrapper {
-            width: 100%; height: 100%; padding: 30px;
+        .tab {
+            width: 50px; height: 40px; background: #fff;
+            border-radius: 0 5px 5px 0;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
             display: flex; justify-content: center; align-items: center;
+            font-size: 0.7rem; font-weight: 600; color: #999;
+            cursor: pointer; transition: width 0.3s, background 0.3s;
         }
-        .photo-img {
-            max-width: 100%; max-height: 100%;
-            object-fit: contain;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
+        .tab:hover { width: 60px; color: var(--brand-blue); }
+        .tab.active { background: var(--brand-blue); color: #fff; width: 65px; }
 
-        /* CONTROLS (Hidden until active) */
+        /* --- CONTROLS --- */
         .controls {
-            position: absolute; bottom: 30px; right: -300px; /* Offset right */
-            display: flex; gap: 20px; z-index: 100;
-            opacity: 0; pointer-events: none; transition: all 1s;
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 20px; z-index: 200; opacity: 0; pointer-events: none; transition: 1s;
         }
         body.reading-mode .controls { opacity: 1; pointer-events: auto; }
+        .btn-round { width: 50px; height: 50px; border-radius: 50%; border: none; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; color: var(--brand-blue); }
 
-        .ctrl-btn {
-            width: 50px; height: 50px; border-radius: 50%; border: none;
-            background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            cursor: pointer; transition: transform 0.2s;
-        }
-        .ctrl-btn:hover { transform: scale(1.1); color: var(--brand-blue); }
-
-        /* UTILS */
-        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-        
-        /* Mobile Scale Down */
+        /* --- UTILS --- */
         @media (max-width: 900px) {
             :root { --book-w: 320px; --book-h: 480px; }
-            .scene.active { transform: rotateX(0deg) translateX(0); } /* Center on mobile, don't shift right */
-            .page.flipped { transform: rotateY(-180deg); opacity: 0; pointer-events:none; } /* Hide left page on mobile to save space */
-            .controls { right: 50%; transform: translateX(50%); bottom: 20px; }
+            .scene.active { transform: translateX(0); }
+            .page.flipped { opacity: 0; pointer-events: none; } /* Mobile optimization */
+            .tabs-container { display: none; } /* Hide tabs on mobile */
         }
-
     </style>
 </head>
 <body>
 
     <div class="environment"></div>
 
-    <div class="scene resting" id="scene" onclick="activateBook()">
+    <div class="scene resting" id="bookScene" onclick="openBook()">
         <div class="book">
+            
+            <div class="tabs-container">
+                <div class="tab" onclick="jumpToCategory('product', this)">PROD</div>
+                <div class="tab" onclick="jumpToCategory('interior', this)">INTR</div>
+                <div class="tab" onclick="jumpToCategory('corporate', this)">CORP</div>
+            </div>
 
             <div class="page" id="page-cover" style="z-index: 100;">
                 <div class="front" id="cover">
-                    <img src="logo.png" alt="Raghav Kulkarni" class="cover-logo">
-                    <h2 style="font-family:'Playfair Display'; letter-spacing:1px; color:#444;">PORTFOLIO</h2>
-                    <div class="tap-hint">Tap to Open</div>
+                    <div class="logo-box">
+                        <img src="logo.png" style="width: 150px; filter: invert(1);">
+                    </div>
+                    <h1 style="font-family:'Playfair Display'; font-size:1.5rem; letter-spacing:2px;">RAGHAV KULKARNI</h1>
+                    <p style="font-size:0.8rem; color:#888; margin-top:10px;">VOL. 2025</p>
+                    <div style="margin-top:40px; font-size:0.7rem; letter-spacing:2px; color:#666;">TAP TO VIEW</div>
                 </div>
-                <div class="back page-intro">
-                    <img src="profile.jpg" class="profile-pic">
-                    <h2 style="font-family:'Playfair Display'; margin-bottom:15px;">Raghav Kulkarni</h2>
-                    <p style="font-size:0.9rem; color:#666; line-height:1.6;">
-                        Visual Artist & Photographer.<br>
-                        Creating tangible imagery through light, composition, and technical precision.
-                    </p>
-                    <div style="margin-top:30px; font-size:0.8rem; color:#888;">
-                        Pune, India<br>
-                        +91 88882 48590
+                
+                <div class="back">
+                    <div class="static-left-content">
+                        <div id="dynamic-info">
+                            <div class="info-label">Current Section</div>
+                            <h3 id="info-title">Introduction</h3>
+                            <div class="info-label">Description</div>
+                            <p id="info-desc">
+                                Welcome to my portfolio. This collection highlights my work in commercial, interior, and product photography.
+                            </p>
+                        </div>
+
+                        <div>
+                            <div style="width: 50px; height: 1px; background: #ddd; margin: 20px 0;"></div>
+                            <div style="font-size:0.8rem; font-weight:600;">Raghav Kulkarni</div>
+                            <div style="font-size:0.75rem; color:#888;">Visual Artist</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="page" id="page-index" style="z-index: 99;">
-                <div class="front page-index">
-                    <h3 style="font-size:0.8rem; letter-spacing:2px; color:#999; text-transform:uppercase;">Contents</h3>
-                    <ul class="index-list">
-                        <li class="index-item" onclick="loadGallery('product')">
-                            <span>Product</span> <span class="index-num">01</span>
-                        </li>
-                        <li class="index-item" onclick="loadGallery('interior')">
-                            <span>Interior</span> <span class="index-num">02</span>
-                        </li>
-                        <li class="index-item" onclick="loadGallery('corporate')">
-                            <span>Corporate</span> <span class="index-num">03</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="back">
-                    <div style="width:100%; height:100%; background:#fcfcfc;"></div>
-                </div>
-            </div>
-
-            <div id="dynamicPages"></div>
+            <div id="pagesStack"></div>
 
         </div>
     </div>
 
     <div class="controls">
-        <button class="ctrl-btn" onclick="prevPage()">&#8592;</button>
-        <button class="ctrl-btn" onclick="nextPage()">&#8594;</button>
+        <button class="btn-round" onclick="prevPage()">&#8592;</button>
+        <button class="btn-round" onclick="nextPage()">&#8594;</button>
     </div>
 
     <script>
@@ -246,6 +200,23 @@
             for (var i = 1; i <= count; i++) { paths.push(prefix + i + ".webp"); }
             return paths;
         }
+        
+        // Metadata for the "Smart" Left Page
+        const categoryInfo = {
+            product: {
+                title: "Product & Jewelry",
+                desc: "Precision lighting and macro details. Showcasing textures, reflections, and the intricate craftsmanship of high-end jewelry."
+            },
+            interior: {
+                title: "Interior Media",
+                desc: "Capturing the soul of a space. Balancing ambient and artificial light to highlight architectural lines and design aesthetics."
+            },
+            corporate: {
+                title: "Corporate Work",
+                desc: "Professional branding and event coverage. Creating a visual narrative that aligns with corporate identity and values."
+            }
+        };
+
         const portfolioData = {
             product: generatePaths('product', 22),   
             interior: generatePaths('interior', 12), 
@@ -253,45 +224,58 @@
         };
 
         // --- STATE ---
-        let isActive = false;
-        let currentPage = 0; // 0 = Cover, 1 = Index, 2+ = Photos
-        let totalDynamicPages = 0;
+        let isBookOpen = false;
+        let currentCat = null;
+        let currentPageIndex = -1; // -1 = Cover
+        let totalPages = 0;
 
-        // 1. ACTIVATE (Pick up book)
-        function activateBook() {
-            if(isActive) return; // Already active
-            isActive = true;
-            
+        // --- 1. OPEN BOOK ---
+        function openBook() {
+            if(isBookOpen) return;
+            isBookOpen = true;
+
             document.body.classList.add('reading-mode');
-            const scene = document.getElementById('scene');
+            const scene = document.getElementById('bookScene');
             scene.classList.remove('resting');
             scene.classList.add('active');
 
-            // Open Cover automatically after lift
+            // Delay cover flip for effect
             setTimeout(() => {
                 document.getElementById('page-cover').classList.add('flipped');
-                currentPage = 1; // Now at Index
+                // Load default category
+                jumpToCategory('product', document.querySelector('.tab')); 
             }, 800);
         }
 
-        // 2. LOAD GALLERY (Generate Pages)
-        function loadGallery(cat) {
-            // Flip the Index page to reveal photos
-            document.getElementById('page-index').classList.add('flipped');
-            currentPage = 2;
+        // --- 2. LOAD CATEGORY ---
+        function jumpToCategory(cat, tabBtn) {
+            if(!isBookOpen) return; // Prevent clicking tabs when closed
 
-            const container = document.getElementById('dynamicPages');
-            container.innerHTML = ''; // Clear old
+            // Update Tabs UI
+            if(tabBtn) {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tabBtn.classList.add('active');
+            }
 
+            // Update Left Page Text (The "Smart" Feature)
+            const info = categoryInfo[cat];
+            document.getElementById('info-title').innerText = info.title;
+            document.getElementById('info-desc').innerText = info.desc;
+
+            // Generate Pages
             const images = portfolioData[cat];
-            totalDynamicPages = images.length;
+            const container = document.getElementById('pagesStack');
+            container.innerHTML = '';
+            
+            totalPages = images.length;
+            currentPageIndex = 0; // Reset photo index
 
-            // Create pages in reverse stack order
+            // Create pages (Reverse order for Z-stacking)
             for(let i = images.length - 1; i >= 0; i--) {
                 const page = document.createElement('div');
-                page.className = 'page photo-page';
+                page.className = 'page';
                 page.id = 'photo-' + i;
-                page.style.zIndex = 50 - i; // Stack them
+                page.style.zIndex = 50 - i; 
                 
                 page.innerHTML = `
                     <div class="front">
@@ -299,69 +283,36 @@
                             <img src="${images[i]}" class="photo-img">
                         </div>
                     </div>
-                    <div class="back"></div>
+                    <div class="back" style="background:#f8f8f8;"></div>
                 `;
                 container.appendChild(page);
             }
         }
 
-        // 3. NAVIGATION
+        // --- 3. NAVIGATION ---
         function nextPage() {
-            // Determine what we are flipping
-            if(currentPage === 0) {
-                document.getElementById('page-cover').classList.add('flipped');
-                currentPage++;
-            } 
-            else if (currentPage === 1) {
-                // If on index, default to Product if they just click next without choosing
-                loadGallery('product'); 
-            }
-            else {
-                // Photo Pages
-                const photoIndex = currentPage - 2;
-                if(photoIndex < totalDynamicPages) {
-                    const p = document.getElementById('photo-' + photoIndex);
-                    if(p) {
-                        p.classList.add('flipped');
-                        currentPage++;
-                    }
+            if(currentPageIndex < totalPages - 1) {
+                const p = document.getElementById('photo-' + currentPageIndex);
+                if(p) {
+                    p.classList.add('flipped');
+                    currentPageIndex++;
                 }
             }
         }
 
         function prevPage() {
-            if(currentPage === 2) {
-                // Back to Index
-                document.getElementById('page-index').classList.remove('flipped');
-                currentPage--;
-            }
-            else if(currentPage === 1) {
-                // Back to Cover (Close Book)
-                document.getElementById('page-cover').classList.remove('flipped');
-                currentPage--;
-                
-                // Optional: Put book back on table?
-                // For now, let's keep it in "Reading Mode"
-            }
-            else if (currentPage > 2) {
-                // Previous Photo
-                const photoIndex = currentPage - 3; // The one currently flipped on left
-                const p = document.getElementById('photo-' + photoIndex);
+            if(currentPageIndex > 0) {
+                currentPageIndex--;
+                const p = document.getElementById('photo-' + currentPageIndex);
                 if(p) {
                     p.classList.remove('flipped');
-                    currentPage--;
                 }
             }
         }
 
-        // Keyboard Support
         document.addEventListener('keydown', (e) => {
-            if(!isActive) return;
             if(e.key === "ArrowRight") nextPage();
             if(e.key === "ArrowLeft") prevPage();
-            if(e.key === "Escape") {
-                // Reset to table?
-            }
         });
 
     </script>

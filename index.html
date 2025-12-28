@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raghav Kulkarni | Visual Artist</title>
+    <title>Raghav Kulkarni | Kinetic Experience</title>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -12,60 +12,39 @@
         :root {
             --brand-blue: #00638C;
             --text-main: #111111;
-            --bg-color: #ffffff;
+            --bg-color: #f4f4f4; /* Slightly grey for gallery feel */
             --ease: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* HIDE DEFAULT CURSOR */
+        /* HIDE DEFAULT SCROLLBARS & CURSOR */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        ::-webkit-scrollbar { display: none; }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            overflow: hidden;
+            overflow: hidden; /* We handle scroll via JS */
             height: 100vh; width: 100vw;
-            /* 25% Opacity Tech Grid Pattern */
-            background-image: radial-gradient(rgba(0, 99, 140, 0.25) 1px, transparent 1px);
-            background-size: 30px 30px;
         }
 
-        /* --- 1. CUSTOM SCOPE CURSOR --- */
+        /* --- 1. CUSTOM CURSOR (The "Lens") --- */
         .cursor-dot {
             position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
-            width: 6px; height: 6px; background: var(--brand-blue); border-radius: 50%;
+            width: 8px; height: 8px; background: var(--brand-blue); border-radius: 50%;
             pointer-events: none; z-index: 10000;
         }
         .cursor-circle {
             position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
-            width: 40px; height: 40px; border: 1px solid rgba(0, 99, 140, 0.5); border-radius: 50%;
-            pointer-events: none; z-index: 10000; transition: width 0.2s, height 0.2s, border-color 0.2s;
+            width: 50px; height: 50px; border: 1px solid rgba(0,0,0,0.2); border-radius: 50%;
+            pointer-events: none; z-index: 10000; transition: width 0.2s, height 0.2s, background 0.2s;
         }
-        /* Hover State */
         body.hovering .cursor-circle {
-            width: 60px; height: 60px; border-color: var(--brand-blue); border-width: 2px;
-            background: rgba(0,99,140,0.05);
+            width: 80px; height: 80px; background: rgba(0, 99, 140, 0.1); border-color: var(--brand-blue);
         }
+        .drag-cursor .cursor-circle { width: 30px; height: 30px; background: var(--brand-blue); }
 
-        /* --- 2. SHUTTER OVERLAY (The Camera Snap) --- */
-        .shutter-blinds {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #111; z-index: 8000;
-            transform: scaleY(0); transform-origin: top;
-            pointer-events: none;
-        }
-        /* The snap animation */
-        .shutter-blinds.snap {
-            animation: shutterSnap 0.6s cubic-bezier(0.8, 0, 0.2, 1);
-        }
-        @keyframes shutterSnap {
-            0% { transform: scaleY(0); transform-origin: top; }
-            45% { transform: scaleY(1); transform-origin: top; } /* Closed */
-            55% { transform: scaleY(1); transform-origin: bottom; } /* Closed */
-            100% { transform: scaleY(0); transform-origin: bottom; }
-        }
-
-        /* --- 3. INTRO LAYER --- */
+        /* --- 2. INTRO LANDING --- */
         #intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: #ffffff; z-index: 9000;
@@ -81,82 +60,95 @@
         .enter-btn {
             background: transparent; border: 1px solid var(--brand-blue); color: var(--brand-blue);
             padding: 15px 45px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
-            font-weight: 600; opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
-            transition: all 0.2s ease;
+            font-weight: 600; opacity: 0; animation: fadeUp 1s ease forwards 0.6s; transition: all 0.3s;
+        }
+        .enter-btn:hover { background: var(--brand-blue); color: #fff; }
+
+        /* --- 3. BACKGROUND PARALLAX TEXT --- */
+        .bg-text {
+            position: fixed; top: 50%; left: 0; transform: translateY(-50%);
+            white-space: nowrap; font-family: 'Playfair Display', serif;
+            font-size: 15vw; color: rgba(0,0,0,0.03); /* Very subtle */
+            pointer-events: none; z-index: 0;
+            will-change: transform;
         }
 
-        /* --- 4. MAIN LAYOUT (25/75 Split) --- */
-        .main-wrapper { display: flex; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease 0.5s; }
-        .main-wrapper.visible { opacity: 1; }
-
-        /* SIDEBAR (25%) */
-        .sidebar {
-            width: 25%; height: 100%; padding: 60px 40px;
-            display: flex; flex-direction: column; justify-content: space-between;
-            border-right: 1px solid rgba(0,0,0,0.05);
-            background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); z-index: 50;
-        }
-        .brand-header { }
-        .sidebar-logo { width: 50px; margin-bottom: 25px; }
-        .artist-name { font-family: 'Playfair Display', serif; font-size: 2rem; line-height: 1.1; margin-bottom: 5px; }
-        .artist-role { font-size: 0.85rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* MAGNETIC MENU */
-        .menu-nav { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
-        .menu-btn {
-            background: none; border: none; text-align: left; padding: 10px 20px;
-            font-family: 'Inter', sans-serif; font-size: 1rem; color: #999;
-            position: relative; transition: color 0.3s;
-            /* Magnetic properties handled by JS */
-            display: inline-block;
-        }
-        .menu-btn:hover { color: var(--brand-blue); }
-        .menu-btn.active { color: var(--text-main); font-weight: 600; }
-        .menu-btn.active::before {
-            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-            width: 6px; height: 6px; background: var(--brand-blue); border-radius: 50%;
+        /* --- 4. THE HORIZONTAL FILM STRIP --- */
+        .scroll-container {
+            position: fixed; top: 0; left: 0; height: 100%;
+            display: flex; align-items: center;
+            padding-left: 20vw; /* Start with some space */
+            padding-right: 20vw;
+            will-change: transform; /* Optimizer */
+            z-index: 10;
         }
 
-        /* STAGE AREA (75%) - DRAGGABLE */
-        .stage-area {
-            width: 75%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            perspective: 1500px; overflow: hidden;
-            cursor: grab; /* Indicates dragging */
-        }
-        .stage-area:active { cursor: grabbing; }
-
-        .tilt-box {
-            width: 80%; height: 80%;
-            display: flex; justify-content: center; align-items: center;
-            transform-style: preserve-3d; transition: transform 0.1s ease-out;
-            pointer-events: none; /* Let clicks pass through to stage for drag */
+        .gallery-item {
+            position: relative;
+            flex-shrink: 0;
+            width: 40vw; /* Large images */
+            height: 60vh;
+            margin-right: 8vw; /* Spacing between photos */
+            perspective: 1000px;
         }
 
-        .slide-image {
-            max-width: 90%; max-height: 90%;
-            object-fit: contain;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.15); border-radius: 4px;
-            opacity: 0; transform: translateZ(50px) scale(0.9);
-            transition: opacity 0.1s, transform 0.6s var(--ease); /* Fast opacity for shutter sync */
+        .gallery-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            transition: transform 0.1s; /* Fast transition for skew effect */
+            filter: grayscale(100%); /* B&W initially */
+            transition: filter 0.5s ease;
         }
-        .slide-image.active { opacity: 1; transform: translateZ(50px) scale(1); }
-
-        /* Controls */
-        .controls { position: absolute; bottom: 40px; right: 40px; display: flex; gap: 20px; align-items: center; }
-        .counter { font-family: 'Playfair Display', serif; font-size: 1.2rem; min-width: 60px; text-align: center; }
-        .arrow-btn {
-            width: 50px; height: 50px; border: 1px solid #eee; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            transition: transform 0.2s, background 0.2s; background: #fff;
-        }
-        .arrow-btn:hover { border-color: var(--brand-blue); background: var(--brand-blue); color: #fff; transform: scale(1.1); }
         
-        /* Drag hint */
-        .drag-hint {
-            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: #ccc;
-            opacity: 0.6; pointer-events: none;
+        /* Color on hover/center */
+        .gallery-item:hover .gallery-img, .gallery-item.centered .gallery-img {
+            filter: grayscale(0%);
+        }
+
+        /* Number indicator */
+        .img-number {
+            position: absolute; bottom: -40px; left: 0;
+            font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #999;
+            letter-spacing: 1px;
+        }
+
+        /* --- 5. UI ELEMENTS (Fixed) --- */
+        .fixed-ui {
+            position: fixed; width: 100%; height: 100%; pointer-events: none; z-index: 100;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            position: absolute; top: 0; left: 0; width: 100%; padding: 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            pointer-events: auto;
+        }
+        .logo-small { width: 40px; cursor: pointer; }
+        .menu-trigger { font-weight: 600; font-size: 0.9rem; cursor: pointer; color: var(--text-main); }
+
+        /* Bottom Bar (Categories) */
+        .bottom-bar {
+            position: absolute; bottom: 40px; left: 40px;
+            pointer-events: auto;
+            display: flex; gap: 30px;
+        }
+        .cat-link {
+            font-size: 0.9rem; color: #aaa; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            transition: color 0.3s; position: relative;
+        }
+        .cat-link:hover { color: var(--brand-blue); }
+        .cat-link.active { color: var(--text-main); font-weight: 700; }
+        .cat-link.active::after {
+            content:''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 1px; background: var(--text-main);
+        }
+
+        /* Scroll Progress Line */
+        .progress-line {
+            position: absolute; bottom: 0; left: 0; height: 4px; background: var(--brand-blue);
+            width: 0%; transition: width 0.1s;
         }
 
         /* --- ABOUT OVERLAY --- */
@@ -165,25 +157,21 @@
             background: #fff; z-index: 9500; padding: 60px; 
             box-shadow: -20px 0 50px rgba(0,0,0,0.05); 
             transition: right 0.6s var(--ease); 
-            display: flex; flex-direction: column; justify-content: center; 
+            display: flex; flex-direction: column; justify-content: center; pointer-events: auto;
         }
         .about-overlay.open { right: 0; }
-        .close-text-btn { position: absolute; top: 30px; right: 30px; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; }
+        .close-btn { position: absolute; top: 30px; right: 30px; cursor: pointer; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; }
 
         @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 
-        /* Mobile Reset */
-        @media (max-width: 900px) {
-            .main-wrapper { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; padding: 20px 30px; flex-direction: row; border-bottom: 1px solid #eee; }
-            .stage-area { width: 100%; height: 80vh; perspective: none; }
-            .tilt-box { transform: none !important; }
-            .menu-nav { display: none; }
-            .mobile-menu-trigger { display: block; font-weight: 600; color: var(--brand-blue); }
-            * { cursor: auto; } .cursor-dot, .cursor-circle { display: none; }
-            .drag-hint { display: none; }
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .gallery-item { width: 80vw; margin-right: 5vw; }
+            .bg-text { display: none; }
+            .bottom-bar { display: none; } /* Hide bottom menu on mobile, put in overlay */
+            .cursor-dot, .cursor-circle { display: none; }
+            * { cursor: auto; }
         }
-        @media (min-width: 901px) { .mobile-menu-trigger { display: none; } }
     </style>
 </head>
 <body>
@@ -191,53 +179,31 @@
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-circle" id="cursorCircle"></div>
 
-    <div class="shutter-blinds" id="shutter"></div>
-
     <div id="intro-layer">
         <img src="logo.png" alt="Raghav Kulkarni" class="intro-logo hover-target">
-        <button class="enter-btn hover-target" onclick="enterSite()">ENTER PORTFOLIO</button>
+        <button class="enter-btn hover-target" onclick="enterSite()">ENTER EXPERIENCE</button>
     </div>
 
-    <div class="main-wrapper" id="mainWrapper">
-        
-        <div class="sidebar">
-            <div class="brand-header">
-                <img src="cornerlogo.png" alt="R" class="sidebar-logo hover-target" onclick="location.reload()">
-                <div>
-                    <h1 class="artist-name">Raghav Kulkarni</h1>
-                    <div class="artist-role">Visual Artist</div>
-                </div>
-            </div>
-
-            <div class="menu-nav">
-                <button class="menu-btn active hover-target magnetic" onclick="changeCategory('product', this)">Product & Jewelry</button>
-                <button class="menu-btn hover-target magnetic" onclick="changeCategory('interior', this)">Interior Media</button>
-                <button class="menu-btn hover-target magnetic" onclick="changeCategory('corporate', this)">Corporate Work</button>
-            </div>
-
-            <div class="sidebar-footer">
-                <div class="about-link hover-target" onclick="toggleAbout()" style="font-weight:600; color:var(--brand-blue); cursor:pointer;">About Me</div>
-                <div style="margin-top: 10px; color: #999; font-size:0.8rem;">&copy; 2025</div>
-            </div>
+    <div class="fixed-ui">
+        <div class="top-bar">
+            <img src="cornerlogo.png" class="logo-small hover-target" onclick="location.reload()">
+            <div class="menu-trigger hover-target" onclick="toggleAbout()">MENU +</div>
         </div>
-
-        <div class="stage-area" id="stageArea">
-            <div class="drag-hint">DRAG TO NAVIGATE</div>
-            
-            <div class="tilt-box" id="tiltBox">
-                <img src="" class="slide-image" id="mainImage" alt="Portfolio Work">
-            </div>
-
-            <div class="controls">
-                <div class="arrow-btn hover-target magnetic" onclick="prevSlide()">&#8592;</div>
-                <div class="counter" id="counter">1 / 22</div>
-                <div class="arrow-btn hover-target magnetic" onclick="nextSlide()">&#8594;</div>
-            </div>
+        <div class="bottom-bar">
+            <div class="cat-link active hover-target" onclick="switchCategory('product', this)">Product</div>
+            <div class="cat-link hover-target" onclick="switchCategory('interior', this)">Interior</div>
+            <div class="cat-link hover-target" onclick="switchCategory('corporate', this)">Corporate</div>
         </div>
+        <div class="progress-line" id="progressBar"></div>
     </div>
+
+    <div class="bg-text" id="bgText">RAGHAV KULKARNI — PHOTOGRAPHY</div>
+
+    <div class="scroll-container" id="scrollContainer">
+        </div>
 
     <div class="about-overlay" id="aboutPanel">
-        <div class="close-text-btn hover-target" onclick="toggleAbout()">CLOSE</div>
+        <div class="close-btn hover-target" onclick="toggleAbout()">CLOSE</div>
         <img src="profile.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:30px;">
         <h2 style="font-family:'Playfair Display'; margin-bottom:20px;">About Me</h2>
         <p style="color:#555; line-height:1.6; font-size:0.95rem; margin-bottom:30px;">
@@ -246,7 +212,7 @@
         </p>
         <div>
             <div><b>Phone:</b> <a href="tel:+918888248590" class="hover-target" style="color:var(--brand-blue); text-decoration:none;">+91 88882 48590</a></div>
-            <div style="margin-top:5px;"><b>Email:</b> <a href="mailto:raghavkulkarniphotography@gmail.com" class="hover-target" style="color:var(--brand-blue); text-decoration:none;">raghavkulkarniphotography@gmail.com</a></div>
+            <div style="margin-top:5px;"><b>Email:</b> <a href="mailto:raghavkulkarniphotography@gmail.com" class="hover-target" style="color:var(--brand-blue); text-decoration:none;">raghav@gmail.com</a></div>
         </div>
     </div>
 
@@ -263,132 +229,148 @@
             corporate: generatePaths('corporate', 6) 
         };
 
-        // --- STATE ---
-        let currentCat = 'product';
-        let currentIndex = 0;
-        let images = [];
-        let isDragging = false;
-        let startX = 0;
+        // --- PHYSICS VARIABLES ---
+        let current = 0;
+        let target = 0;
+        let ease = 0.075; // The "smoothness" factor
+        let skewDiff = 0;
+        let containerWidth = 0;
+        let maxScroll = 0;
 
-        // --- 1. MOUSE PHYSICS & 3D TILT ---
+        const container = document.getElementById('scrollContainer');
+        const bgText = document.getElementById('bgText');
+        const progressBar = document.getElementById('progressBar');
+
+        // --- 1. SETUP ---
+        function initGallery(category) {
+            container.innerHTML = ''; // Clear
+            const images = portfolioData[category];
+
+            images.forEach((url, i) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${url}" class="gallery-img">
+                    <div class="img-number">0${i+1}</div>
+                `;
+                container.appendChild(item);
+            });
+
+            // Recalculate dimensions
+            setTimeout(() => {
+                containerWidth = container.scrollWidth;
+                maxScroll = containerWidth - window.innerWidth;
+            }, 100);
+
+            // Reset positions
+            target = 0;
+            current = 0;
+        }
+
+        // --- 2. ANIMATION LOOP (The Engine) ---
+        function animate() {
+            // Linear Interpolation (Lerp) for smoothness
+            current = lerp(current, target, ease);
+            
+            // Calculate Velocity for SKEW Effect
+            // faster scroll = higher skew
+            let velocity = target - current;
+            let skew = velocity * 0.15; // sensitivity
+
+            // Apply Transform to Container (Move it left)
+            container.style.transform = `translate3d(${-current}px, 0, 0)`;
+
+            // Apply SKEW to images (The "Jelly" effect)
+            const images = document.querySelectorAll('.gallery-img');
+            images.forEach(img => {
+                img.style.transform = `skewX(${-skew}deg) scale(${1 - Math.abs(velocity)*0.0005})`;
+            });
+
+            // Parallax Text (Moves slower than images)
+            bgText.style.transform = `translate3d(${-current * 0.2}px, -50%, 0)`;
+
+            // Progress Bar
+            let progress = (current / maxScroll) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            requestAnimationFrame(animate);
+        }
+
+        function lerp(start, end, t) {
+            return start * (1 - t) + end * t;
+        }
+
+        // --- 3. SCROLL EVENT ---
+        window.addEventListener('wheel', (e) => {
+            // Add scroll amount to target
+            target += e.deltaY; // Horizontal scroll using vertical wheel
+            target += e.deltaX;
+
+            // Clamp (Don't scroll past ends)
+            target = Math.max(0, target);
+            target = Math.min(target, maxScroll);
+        });
+
+        // Touch Support (Mobile Drag)
+        let touchStart = 0;
+        let touchCurrent = 0;
+        window.addEventListener('touchstart', (e) => { touchStart = e.touches[0].clientX; touchCurrent = target; });
+        window.addEventListener('touchmove', (e) => {
+            let diff = touchStart - e.touches[0].clientX;
+            target = touchCurrent + (diff * 2);
+            target = Math.max(0, Math.min(target, maxScroll));
+        });
+
+        // --- 4. CATEGORY SWITCHING ---
+        function switchCategory(cat, btn) {
+            document.querySelectorAll('.cat-link').forEach(l => l.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Fade out effect
+            container.style.opacity = 0;
+            setTimeout(() => {
+                initGallery(cat);
+                container.style.opacity = 1;
+            }, 300);
+        }
+
+        // --- 5. CURSOR LOGIC ---
         const cursorDot = document.getElementById('cursorDot');
         const cursorCircle = document.getElementById('cursorCircle');
-        const tiltBox = document.getElementById('tiltBox');
         
-        document.addEventListener('mousemove', (e) => {
-            // A. Cursor
+        window.addEventListener('mousemove', (e) => {
             cursorDot.style.left = e.clientX + 'px';
             cursorDot.style.top = e.clientY + 'px';
+            
+            // Circle lags behind slightly
             setTimeout(() => {
                 cursorCircle.style.left = e.clientX + 'px';
                 cursorCircle.style.top = e.clientY + 'px';
             }, 50);
+        });
 
-            // B. Magnetic Buttons
-            document.querySelectorAll('.magnetic').forEach(btn => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - (rect.left + rect.width / 2);
-                const y = e.clientY - (rect.top + rect.height / 2);
-                
-                // If close enough (100px), pull button
-                if (Math.abs(x) < 100 && Math.abs(y) < 100) {
-                    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-                } else {
-                    btn.style.transform = `translate(0px, 0px)`;
-                }
-            });
-
-            // C. 3D Tilt (Only if not dragging)
-            if(!isDragging) {
-                const xPct = e.clientX / window.innerWidth;
-                const yPct = e.clientY / window.innerHeight;
-                tiltBox.style.transform = `rotateX(${(yPct - 0.5) * -15}deg) rotateY(${(xPct - 0.5) * 15}deg)`;
+        // Hover detection
+        document.addEventListener('mouseover', (e) => {
+            if(e.target.classList.contains('hover-target') || e.target.tagName === 'BUTTON' || e.target.closest('.gallery-item')) {
+                document.body.classList.add('hovering');
+            } else {
+                document.body.classList.remove('hovering');
             }
         });
 
-        // Hover Detection
-        document.querySelectorAll('.hover-target').forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-        });
-
-        // --- 2. DRAG NAVIGATION (Swipe) ---
-        const stage = document.getElementById('stageArea');
-        
-        stage.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX;
-        });
-
-        document.addEventListener('mouseup', (e) => {
-            if(!isDragging) return;
-            isDragging = false;
-            const diff = e.clientX - startX;
-            if(diff > 50) prevSlide(); // Drag Right -> Prev
-            if(diff < -50) nextSlide(); // Drag Left -> Next
-        });
-
-        // --- 3. CORE LOGIC ---
-        window.onload = function() { loadCategoryData('product'); };
+        // --- INIT ---
+        window.onload = function() {
+            initGallery('product');
+            animate(); // Start the physics engine
+        };
 
         function enterSite() {
             document.getElementById('intro-layer').classList.add('closed');
-            document.getElementById('mainWrapper').classList.add('visible');
-            updateDisplay();
+        }
+        function toggleAbout() {
+            document.getElementById('aboutPanel').classList.toggle('open');
         }
 
-        function loadCategoryData(cat) {
-            currentCat = cat;
-            currentIndex = 0;
-            images = portfolioData[cat];
-        }
-
-        function changeCategory(cat, btn) {
-            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            loadCategoryData(cat);
-            updateDisplay();
-        }
-
-        // --- 4. SHUTTER TRANSITION ---
-        function updateDisplay() {
-            const imgEl = document.getElementById('mainImage');
-            const counter = document.getElementById('counter');
-            const shutter = document.getElementById('shutter');
-            
-            // A. Trigger Shutter
-            shutter.classList.remove('snap');
-            void shutter.offsetWidth; // Force reflow to restart animation
-            shutter.classList.add('snap');
-
-            // B. Swap Image while Shutter is closed (at 300ms)
-            setTimeout(() => {
-                imgEl.src = images[currentIndex];
-                imgEl.classList.add('active'); // Ensure opacity is 1
-                
-                // Preload Next
-                if(currentIndex < images.length - 1) new Image().src = images[currentIndex + 1];
-            }, 300);
-
-            counter.innerText = (currentIndex + 1) + " / " + images.length;
-        }
-
-        function nextSlide() {
-            if (currentIndex < images.length - 1) currentIndex++; else currentIndex = 0;
-            updateDisplay();
-        }
-
-        function prevSlide() {
-            if (currentIndex > 0) currentIndex--;
-            updateDisplay();
-        }
-
-        function toggleAbout() { document.getElementById('aboutPanel').classList.toggle('open'); }
-        
-        document.addEventListener('keydown', (e) => {
-            if(e.key === "ArrowRight") nextSlide();
-            if(e.key === "ArrowLeft") prevSlide();
-        });
     </script>
 </body>
 </html>

@@ -62,13 +62,11 @@
             display: flex;
             gap: 30px; /* Default Gap */
             align-items: flex-start;
-            transition: gap 0.4s ease; /* Smooth transition when changing gaps */
+            transition: gap 0.4s ease;
         }
 
         /* WIDER MARGIN for Interior/Corporate */
-        .masonry-wrapper.wide-gap {
-            gap: 60px; /* Double spacing */
-        }
+        .masonry-wrapper.wide-gap { gap: 60px; }
         
         .masonry-col {
             flex: 1;
@@ -78,10 +76,7 @@
             transition: gap 0.4s ease;
         }
 
-        /* Vertical spacing matches horizontal */
-        .masonry-wrapper.wide-gap .masonry-col {
-            gap: 60px;
-        }
+        .masonry-wrapper.wide-gap .masonry-col { gap: 60px; }
 
         .item {
             position: relative;
@@ -119,7 +114,7 @@
         .lb-prev { top: 50%; left: 30px; transform: translateY(-50%); }
         .lb-next { top: 50%; right: 30px; transform: translateY(-50%); }
 
-        /* --- 4. ABOUT PANEL --- */
+        /* --- 4. ABOUT PANEL (UPDATED) --- */
         .about-panel {
             position: fixed; top: 0; left: 0; width: 100%; height: 0;
             background: #fff; z-index: 150; overflow: hidden;
@@ -127,27 +122,49 @@
             border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.1);
         }
-        .about-panel.open { height: 420px; }
+        .about-panel.open { height: 600px; }
+        
         .about-inner {
-            max-width: 800px; margin: 0 auto; padding: 80px 20px;
-            display: flex; gap: 40px; align-items: center; justify-content: center;
+            max-width: 1000px; margin: 0 auto; padding: 80px 20px;
+            display: flex; 
+            flex-direction: row; 
+            gap: 60px; 
+            align-items: center; justify-content: center;
         }
-        .profile-pic { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 4px solid #fff; }
-        .bio h2 { margin-bottom: 10px; font-weight: 700; font-size: 2rem; color: var(--text-main); }
-        .bio p { color: #666; font-size: 1rem; line-height: 1.7; max-width: 450px; margin-bottom: 30px; }
+        
+        .profile-pic { 
+            /* UPDATED SIZE: 300px */
+            width: 300px; height: 300px; 
+            border-radius: 40px; /* Slightly larger curve for bigger image */
+            object-fit: cover; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15); 
+            border: 8px solid #fff;
+            flex-shrink: 0;
+        }
+        
+        .bio { max-width: 500px; text-align: left; }
+        .bio h2 { margin-bottom: 20px; font-weight: 700; font-size: 2.2rem; color: var(--text-main); }
+        .bio p { color: #555; font-size: 1rem; line-height: 1.7; margin-bottom: 15px; }
+        
         .contact-btn {
             display: inline-block; text-decoration: none; padding: 12px 30px; background: var(--brand-blue); color: #fff;
-            border-radius: var(--radius-pill); font-weight: 600; box-shadow: 0 10px 20px rgba(0, 99, 140, 0.3); transition: transform 0.2s; margin-right: 10px;
+            border-radius: var(--radius-pill); font-weight: 600; box-shadow: 0 10px 20px rgba(0, 99, 140, 0.3); transition: transform 0.2s; margin-right: 10px; margin-top: 10px;
         }
         .contact-btn:hover { transform: translateY(-3px); }
         .contact-btn.secondary { background: #f0f2f5; color: #555; box-shadow: none; }
         .contact-btn.secondary:hover { background: #e5e8ec; color: #222; }
 
-        @media (max-width: 768px) {
-            .masonry-wrapper { flex-direction: column; gap: 40px !important; } /* Always wide gap on mobile */
+        @media (max-width: 900px) {
+            .masonry-wrapper { flex-direction: column; gap: 40px !important; }
             .menu-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #fff; padding: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 90; width: 90%; justify-content: center; }
-            .about-panel.open { height: 100vh; border-radius: 0; }
-            .about-inner { flex-direction: column; text-align: center; padding-top: 80px; }
+            
+            /* Mobile About Stack */
+            .about-panel.open { height: 100vh; border-radius: 0; overflow-y: auto; }
+            .about-inner { flex-direction: column; text-align: center; padding-top: 80px; gap: 40px; }
+            .bio { text-align: center; }
+            /* Resize profile pic on mobile so it fits screen */
+            .profile-pic { width: 200px; height: 200px; }
+            
             .lb-prev, .lb-next { display: none; }
         }
     </style>
@@ -161,9 +178,12 @@
             <div class="bio">
                 <h2>Raghav Kulkarni</h2>
                 <p>
-                    Professional photographer & cinematographer based in Pune. 
-                    Specializing in Product and Advertisement media with a conceptual and minimalistic approach.
+                    More than a photographer, I am a visual artist dedicated to translating concepts into tangible imagery.
                 </p>
+                <p>
+                    A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach within a controlled environment. I use light, composition, and technical precision to convert abstract ideas into high-impact commercial visuals.
+                </p>
+
                 <div>
                     <a href="mailto:raghavkulkarniphotography@gmail.com" class="contact-btn">Email Me</a>
                     <a href="tel:+918888248590" class="contact-btn secondary">Call</a>
@@ -209,8 +229,8 @@
             return paths;
         }
         const portfolioData = {
-            product: generatePaths('product', 26),   
-            interior: generatePaths('interior', 13), 
+            product: generatePaths('product', 22),   
+            interior: generatePaths('interior', 12), 
             corporate: generatePaths('corporate', 6) 
         };
 
@@ -228,12 +248,12 @@
                 btn.classList.add('active');
             }
             
-            // --- DYNAMIC GAP LOGIC ---
+            // DYNAMIC GAP
             const wrapper = document.getElementById('masonryWrapper');
             if (cat === 'interior' || cat === 'corporate') {
-                wrapper.classList.add('wide-gap'); // Add extra spacing (60px)
+                wrapper.classList.add('wide-gap');
             } else {
-                wrapper.classList.remove('wide-gap'); // Revert to standard (30px)
+                wrapper.classList.remove('wide-gap');
             }
 
             currentCategoryImages = portfolioData[cat];
@@ -261,7 +281,6 @@
                     img.onclick = () => openLightbox(i);
                     item.appendChild(img);
                     
-                    // Modulo logic
                     const remainder = i % 3;
                     if(remainder === 0) col1.appendChild(item);
                     else if(remainder === 1) col2.appendChild(item);

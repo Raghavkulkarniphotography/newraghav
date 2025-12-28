@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raghav Kulkarni | Kinetic Experience</title>
+    <title>Raghav Kulkarni | The Photo Book</title>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -11,210 +11,187 @@
     <style>
         :root {
             --brand-blue: #00638C;
-            --text-main: #111111;
-            --bg-color: #f4f4f4; /* Slightly grey for gallery feel */
-            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+            --text-main: #222;
+            --bg-color: #e0e5ec; /* Neutral background for the "table" */
+            --book-width: 500px; /* Adjust book size here */
+            --book-height: 700px;
+            --ease: cubic-bezier(0.645, 0.045, 0.355, 1); /* Smooth book ease */
         }
 
-        /* HIDE DEFAULT SCROLLBARS & CURSOR */
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        ::-webkit-scrollbar { display: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow: hidden; /* We handle scroll via JS */
+            /* Subtle texture for the "table" surface */
+            background-image: radial-gradient(#fff 20%, transparent 20%), radial-gradient(#fff 20%, transparent 20%);
+            background-color: #e0e5ec; background-position: 0 0, 10px 10px; background-size: 20px 20px;
             height: 100vh; width: 100vw;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
         }
 
-        /* --- 1. CUSTOM CURSOR (The "Lens") --- */
-        .cursor-dot {
-            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
-            width: 8px; height: 8px; background: var(--brand-blue); border-radius: 50%;
-            pointer-events: none; z-index: 10000;
-        }
-        .cursor-circle {
-            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
-            width: 50px; height: 50px; border: 1px solid rgba(0,0,0,0.2); border-radius: 50%;
-            pointer-events: none; z-index: 10000; transition: width 0.2s, height 0.2s, background 0.2s;
-        }
-        body.hovering .cursor-circle {
-            width: 80px; height: 80px; background: rgba(0, 99, 140, 0.1); border-color: var(--brand-blue);
-        }
-        .drag-cursor .cursor-circle { width: 30px; height: 30px; background: var(--brand-blue); }
-
-        /* --- 2. INTRO LANDING --- */
-        #intro-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: #ffffff; z-index: 9000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        /* --- THE 3D SCENE --- */
+        .scene {
+            width: var(--book-width);
+            height: var(--book-height);
+            perspective: 2000px; /* Creates the 3D depth */
+            /* Shift center slightly when open to keep it balanced */
             transition: transform 1s var(--ease);
         }
-        #intro-layer.closed { transform: translateY(-100%); }
+        body.book-open .scene { transform: translateX(250px); } /* Move right half width */
 
-        .intro-logo {
-            max-width: 280px; width: 70%; height: auto;
-            margin-bottom: 50px; opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
-        }
-        .enter-btn {
-            background: transparent; border: 1px solid var(--brand-blue); color: var(--brand-blue);
-            padding: 15px 45px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
-            font-weight: 600; opacity: 0; animation: fadeUp 1s ease forwards 0.6s; transition: all 0.3s;
-        }
-        .enter-btn:hover { background: var(--brand-blue); color: #fff; }
-
-        /* --- 3. BACKGROUND PARALLAX TEXT --- */
-        .bg-text {
-            position: fixed; top: 50%; left: 0; transform: translateY(-50%);
-            white-space: nowrap; font-family: 'Playfair Display', serif;
-            font-size: 15vw; color: rgba(0,0,0,0.03); /* Very subtle */
-            pointer-events: none; z-index: 0;
-            will-change: transform;
-        }
-
-        /* --- 4. THE HORIZONTAL FILM STRIP --- */
-        .scroll-container {
-            position: fixed; top: 0; left: 0; height: 100%;
-            display: flex; align-items: center;
-            padding-left: 20vw; /* Start with some space */
-            padding-right: 20vw;
-            will-change: transform; /* Optimizer */
-            z-index: 10;
-        }
-
-        .gallery-item {
-            position: relative;
-            flex-shrink: 0;
-            width: 40vw; /* Large images */
-            height: 60vh;
-            margin-right: 8vw; /* Spacing between photos */
-            perspective: 1000px;
-        }
-
-        .gallery-img {
+        /* --- THE BOOK CONTAINER --- */
+        .book {
             width: 100%; height: 100%;
-            object-fit: cover;
-            display: block;
-            border-radius: 4px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            transition: transform 0.1s; /* Fast transition for skew effect */
-            filter: grayscale(100%); /* B&W initially */
-            transition: filter 0.5s ease;
-        }
-        
-        /* Color on hover/center */
-        .gallery-item:hover .gallery-img, .gallery-item.centered .gallery-img {
-            filter: grayscale(0%);
+            position: relative;
+            transform-style: preserve-3d; /* Essential for 3D children */
         }
 
-        /* Number indicator */
-        .img-number {
-            position: absolute; bottom: -40px; left: 0;
-            font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #999;
-            letter-spacing: 1px;
+        /* --- GENERIC PAGE STYLES --- */
+        .page {
+            width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0;
+            transform-origin: left center; /* The "Hinge" of the book */
+            transform-style: preserve-3d;
+            transition: transform 1.2s var(--ease), box-shadow 0.6s;
+            background: #fff;
+            box-shadow: inset -3px 0px 20px rgba(0,0,0,0.1); /* Spine shadow */
         }
 
-        /* --- 5. UI ELEMENTS (Fixed) --- */
-        .fixed-ui {
-            position: fixed; width: 100%; height: 100%; pointer-events: none; z-index: 100;
+        /* Front and Back faces of a single page */
+        .front, .back {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            backface-visibility: hidden; /* Hide the side facing away */
+            background: #fff;
+            overflow: hidden;
         }
-        
-        /* Top Bar */
-        .top-bar {
-            position: absolute; top: 0; left: 0; width: 100%; padding: 40px;
-            display: flex; justify-content: space-between; align-items: center;
-            pointer-events: auto;
-        }
-        .logo-small { width: 40px; cursor: pointer; }
-        .menu-trigger { font-weight: 600; font-size: 0.9rem; cursor: pointer; color: var(--text-main); }
+        .back { transform: rotateY(180deg); } /* Back face points backwards initially */
 
-        /* Bottom Bar (Categories) */
-        .bottom-bar {
-            position: absolute; bottom: 40px; left: 40px;
-            pointer-events: auto;
-            display: flex; gap: 30px;
+        /* --- 1. THE COVER --- */
+        #coverPage {
+            z-index: 100;
+            cursor: pointer;
+            /* Subtle leather texture/color */
+            background: #f4f4f4;
         }
-        .cat-link {
-            font-size: 0.9rem; color: #aaa; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-            transition: color 0.3s; position: relative;
+        #coverPage .front {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 60px;
+            border: 10px solid #fff; outline: 1px solid #ddd; /* Frame look */
         }
-        .cat-link:hover { color: var(--brand-blue); }
-        .cat-link.active { color: var(--text-main); font-weight: 700; }
-        .cat-link.active::after {
-            content:''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 1px; background: var(--text-main);
+        #coverPage.flipped { transform: rotateY(-180deg); z-index: 1; /* Move to bottom of stack when open */ }
+
+        .cover-logo { max-width: 60%; margin-bottom: 40px; }
+        .cover-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #444; letter-spacing: 2px; }
+        .click-hint { margin-top: 30px; font-size: 0.8rem; color: var(--brand-blue); text-transform: uppercase; letter-spacing: 2px; animation: pulse 2s infinite; }
+
+        /* --- 2. INSIDE COVER (Left Page - Menu/Bio) --- */
+        /* This is the '.back' of the coverPage */
+        .inside-cover-content {
+            padding: 60px 40px; height: 100%;
+            display: flex; flex-direction: column; justify-content: space-between;
+            border-right: 2px solid #eee; /* The spine fold */
+        }
+        .nav-logo { width: 50px; margin-bottom: 20px; }
+        .menu-btn {
+            display: block; background: none; border: none; text-align: left;
+            font-family: 'Inter', sans-serif; font-size: 1.1rem; color: #999;
+            margin-bottom: 15px; cursor: pointer; transition: color 0.3s;
+        }
+        .menu-btn:hover, .menu-btn.active { color: var(--brand-blue); font-weight: 600; }
+        .bio-text { font-size: 0.85rem; color: #666; line-height: 1.6; margin-top: 30px; }
+
+        /* --- 3. PHOTO PAGES (Right Pages) --- */
+        .photo-page {
+            /* Pages stack depending on index. JS handles z-index */
+        }
+        .photo-page.flipped { transform: rotateY(-180deg); }
+
+        /* The image on the front of a photo page */
+        .photo-container {
+            width: 100%; height: 100%; padding: 40px;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .page-img {
+            max-width: 100%; max-height: 100%;
+            object-fit: contain; /* Do not crop */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Subtle shadow on paper */
         }
 
-        /* Scroll Progress Line */
-        .progress-line {
-            position: absolute; bottom: 0; left: 0; height: 4px; background: var(--brand-blue);
-            width: 0%; transition: width 0.1s;
+        /* --- CONTROLS --- */
+        .controls-container {
+            position: absolute; bottom: -80px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 20px;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s;
+        }
+        body.book-open .controls-container { opacity: 1; pointer-events: auto; }
+
+        .ctrl-btn {
+            background: #fff; border: none; padding: 15px 30px;
+            font-family: 'Inter', sans-serif; font-size: 0.9rem; letter-spacing: 2px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.2s;
+        }
+        .ctrl-btn:hover { background: var(--brand-blue); color: #fff; transform: translateY(-3px); }
+        .page-counter { font-family: 'Playfair Display'; font-size: 1.1rem; line-height: 50px; }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+        /* Mobile Responsiveness - Scaling the whole scene down */
+        @media (max-width: 1024px) { :root { --book-width: 400px; --book-height: 600px; } }
+        @media (max-width: 768px) { 
+            :root { --book-width: 350px; --book-height: 500px; } 
+            body.book-open .scene { transform: translateX(175px); }
+            .inside-cover-content { padding: 30px 20px; }
+            .menu-btn { font-size: 1rem; }
+            .bio-text { display: none; /* Hide bio on small screens to fit menu */ }
+        }
+        @media (max-width: 480px) { 
+             :root { --book-width: 300px; --book-height: 450px; }
+             body.book-open .scene { transform: translateX(150px); }
         }
 
-        /* --- ABOUT OVERLAY --- */
-        .about-overlay { 
-            position: fixed; top: 0; right: -100%; width: 500px; height: 100%; 
-            background: #fff; z-index: 9500; padding: 60px; 
-            box-shadow: -20px 0 50px rgba(0,0,0,0.05); 
-            transition: right 0.6s var(--ease); 
-            display: flex; flex-direction: column; justify-content: center; pointer-events: auto;
-        }
-        .about-overlay.open { right: 0; }
-        .close-btn { position: absolute; top: 30px; right: 30px; cursor: pointer; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; }
-
-        @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            .gallery-item { width: 80vw; margin-right: 5vw; }
-            .bg-text { display: none; }
-            .bottom-bar { display: none; } /* Hide bottom menu on mobile, put in overlay */
-            .cursor-dot, .cursor-circle { display: none; }
-            * { cursor: auto; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="cursor-dot" id="cursorDot"></div>
-    <div class="cursor-circle" id="cursorCircle"></div>
+    <div class="scene" id="bookScene">
+        <div class="book" id="theBook">
 
-    <div id="intro-layer">
-        <img src="logo.png" alt="Raghav Kulkarni" class="intro-logo hover-target">
-        <button class="enter-btn hover-target" onclick="enterSite()">ENTER EXPERIENCE</button>
-    </div>
+            <div class="page" id="coverPage" onclick="openBook()">
+                <div class="front">
+                    <img src="logo.png" alt="Logo" class="cover-logo">
+                    <div class="cover-title">RAGHAV KULKARNI</div>
+                    <div style="font-size: 0.9rem; margin-top: 10px; color: #666;">PORTFOLIO EDITION</div>
+                    <div class="click-hint">Tap to Open</div>
+                </div>
+                <div class="back">
+                    <div class="inside-cover-content">
+                        <div>
+                            <img src="cornerlogo.png" class="nav-logo">
+                            <button class="menu-btn active" onclick="loadCategory('product', this)">Product & Jewelry</button>
+                            <button class="menu-btn" onclick="loadCategory('interior', this)">Interior Media</button>
+                            <button class="menu-btn" onclick="loadCategory('corporate', this)">Corporate Work</button>
+                        </div>
+                        <div class="bio-text">
+                            <b>Visual Artist</b><br>
+                            Translating concepts into tangible imagery through light, composition, and technical precision. Based in Pune.
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="fixed-ui">
-        <div class="top-bar">
-            <img src="cornerlogo.png" class="logo-small hover-target" onclick="location.reload()">
-            <div class="menu-trigger hover-target" onclick="toggleAbout()">MENU +</div>
-        </div>
-        <div class="bottom-bar">
-            <div class="cat-link active hover-target" onclick="switchCategory('product', this)">Product</div>
-            <div class="cat-link hover-target" onclick="switchCategory('interior', this)">Interior</div>
-            <div class="cat-link hover-target" onclick="switchCategory('corporate', this)">Corporate</div>
-        </div>
-        <div class="progress-line" id="progressBar"></div>
-    </div>
+            <div id="pagesContainer"></div>
 
-    <div class="bg-text" id="bgText">RAGHAV KULKARNI — PHOTOGRAPHY</div>
-
-    <div class="scroll-container" id="scrollContainer">
-        </div>
-
-    <div class="about-overlay" id="aboutPanel">
-        <div class="close-btn hover-target" onclick="toggleAbout()">CLOSE</div>
-        <img src="profile.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:30px;">
-        <h2 style="font-family:'Playfair Display'; margin-bottom:20px;">About Me</h2>
-        <p style="color:#555; line-height:1.6; font-size:0.95rem; margin-bottom:30px;">
-            More than a photographer, I am a visual artist dedicated to translating concepts into tangible imagery.<br><br>
-            A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach.
-        </p>
-        <div>
-            <div><b>Phone:</b> <a href="tel:+918888248590" class="hover-target" style="color:var(--brand-blue); text-decoration:none;">+91 88882 48590</a></div>
-            <div style="margin-top:5px;"><b>Email:</b> <a href="mailto:raghavkulkarniphotography@gmail.com" class="hover-target" style="color:var(--brand-blue); text-decoration:none;">raghav@gmail.com</a></div>
         </div>
     </div>
+
+    <div class="controls-container">
+        <button class="ctrl-btn" onclick="prevPage()">PREV</button>
+        <div class="page-counter" id="counter"></div>
+        <button class="ctrl-btn" onclick="nextPage()">NEXT</button>
+    </div>
+
 
     <script>
         // --- DATA ---
@@ -229,147 +206,118 @@
             corporate: generatePaths('corporate', 6) 
         };
 
-        // --- PHYSICS VARIABLES ---
-        let current = 0;
-        let target = 0;
-        let ease = 0.075; // The "smoothness" factor
-        let skewDiff = 0;
-        let containerWidth = 0;
-        let maxScroll = 0;
+        // --- STATE ---
+        let currentImages = [];
+        let currentPageIndex = -1; // -1 means cover is closed
 
-        const container = document.getElementById('scrollContainer');
-        const bgText = document.getElementById('bgText');
-        const progressBar = document.getElementById('progressBar');
+        // --- 1. OPEN THE BOOK ---
+        function openBook() {
+            document.body.classList.add('book-open');
+            document.getElementById('coverPage').classList.add('flipped');
+            currentPageIndex = 0; // Start at first photo
+            
+            // Load default category if not already loaded
+            if(currentImages.length === 0) loadCategory('product');
+            
+            updateZIndexes();
+        }
 
-        // --- 1. SETUP ---
-        function initGallery(category) {
-            container.innerHTML = ''; // Clear
-            const images = portfolioData[category];
+        // --- 2. LOAD CATEGORY (Generates Pages) ---
+        function loadCategory(cat, btn) {
+            if(btn) {
+                document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
 
-            images.forEach((url, i) => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.innerHTML = `
-                    <img src="${url}" class="gallery-img">
-                    <div class="img-number">0${i+1}</div>
+            currentImages = portfolioData[cat];
+            currentPageIndex = 0;
+            
+            const container = document.getElementById('pagesContainer');
+            container.innerHTML = ''; // Clear existing pages
+
+            // Create Page Elements in Reverse Order (so index 0 is on top)
+            for (let i = currentImages.length - 1; i >= 0; i--) {
+                const page = document.createElement('div');
+                // Index 0 is the highest Z, subsequent pages are lower
+                let zIndex = 50 - i; 
+                page.className = 'page photo-page';
+                page.id = 'page-' + i;
+                page.style.zIndex = zIndex; 
+                
+                page.innerHTML = `
+                    <div class="front">
+                        <div class="photo-container">
+                            <img src="${currentImages[i]}" class="page-img" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div style="width:100%; height:100%; background:#f8f8f8;"></div>
+                    </div>
                 `;
-                container.appendChild(item);
-            });
-
-            // Recalculate dimensions
-            setTimeout(() => {
-                containerWidth = container.scrollWidth;
-                maxScroll = containerWidth - window.innerWidth;
-            }, 100);
-
-            // Reset positions
-            target = 0;
-            current = 0;
+                container.appendChild(page);
+            }
+            updateCounter();
+            updateZIndexes();
         }
 
-        // --- 2. ANIMATION LOOP (The Engine) ---
-        function animate() {
-            // Linear Interpolation (Lerp) for smoothness
-            current = lerp(current, target, ease);
-            
-            // Calculate Velocity for SKEW Effect
-            // faster scroll = higher skew
-            let velocity = target - current;
-            let skew = velocity * 0.15; // sensitivity
-
-            // Apply Transform to Container (Move it left)
-            container.style.transform = `translate3d(${-current}px, 0, 0)`;
-
-            // Apply SKEW to images (The "Jelly" effect)
-            const images = document.querySelectorAll('.gallery-img');
-            images.forEach(img => {
-                img.style.transform = `skewX(${-skew}deg) scale(${1 - Math.abs(velocity)*0.0005})`;
-            });
-
-            // Parallax Text (Moves slower than images)
-            bgText.style.transform = `translate3d(${-current * 0.2}px, -50%, 0)`;
-
-            // Progress Bar
-            let progress = (current / maxScroll) * 100;
-            progressBar.style.width = `${progress}%`;
-
-            requestAnimationFrame(animate);
+        // --- 3. FLIP NAVIGATION ---
+        function nextPage() {
+            if (currentPageIndex < currentImages.length - 1) {
+                // Flip the current page to the left
+                document.getElementById('page-' + currentPageIndex).classList.add('flipped');
+                currentPageIndex++;
+                updateZIndexes();
+                updateCounter();
+            }
         }
 
-        function lerp(start, end, t) {
-            return start * (1 - t) + end * t;
+        function prevPage() {
+            if (currentPageIndex > 0) {
+                currentPageIndex--;
+                // Flip the previous page back to the right
+                document.getElementById('page-' + currentPageIndex).classList.remove('flipped');
+                updateZIndexes();
+                updateCounter();
+            }
         }
 
-        // --- 3. SCROLL EVENT ---
-        window.addEventListener('wheel', (e) => {
-            // Add scroll amount to target
-            target += e.deltaY; // Horizontal scroll using vertical wheel
-            target += e.deltaX;
-
-            // Clamp (Don't scroll past ends)
-            target = Math.max(0, target);
-            target = Math.min(target, maxScroll);
-        });
-
-        // Touch Support (Mobile Drag)
-        let touchStart = 0;
-        let touchCurrent = 0;
-        window.addEventListener('touchstart', (e) => { touchStart = e.touches[0].clientX; touchCurrent = target; });
-        window.addEventListener('touchmove', (e) => {
-            let diff = touchStart - e.touches[0].clientX;
-            target = touchCurrent + (diff * 2);
-            target = Math.max(0, Math.min(target, maxScroll));
-        });
-
-        // --- 4. CATEGORY SWITCHING ---
-        function switchCategory(cat, btn) {
-            document.querySelectorAll('.cat-link').forEach(l => l.classList.remove('active'));
-            btn.classList.add('active');
-            
-            // Fade out effect
-            container.style.opacity = 0;
-            setTimeout(() => {
-                initGallery(cat);
-                container.style.opacity = 1;
-            }, 300);
-        }
-
-        // --- 5. CURSOR LOGIC ---
-        const cursorDot = document.getElementById('cursorDot');
-        const cursorCircle = document.getElementById('cursorCircle');
-        
-        window.addEventListener('mousemove', (e) => {
-            cursorDot.style.left = e.clientX + 'px';
-            cursorDot.style.top = e.clientY + 'px';
-            
-            // Circle lags behind slightly
-            setTimeout(() => {
-                cursorCircle.style.left = e.clientX + 'px';
-                cursorCircle.style.top = e.clientY + 'px';
-            }, 50);
-        });
-
-        // Hover detection
-        document.addEventListener('mouseover', (e) => {
-            if(e.target.classList.contains('hover-target') || e.target.tagName === 'BUTTON' || e.target.closest('.gallery-item')) {
-                document.body.classList.add('hovering');
+        // --- HELPER: MANAGE Z-INDEX FOR REALISM ---
+        function updateZIndexes() {
+            // The cover needs to drop below the flipped pages
+            const cover = document.getElementById('coverPage');
+            if(currentPageIndex > -1) {
+                 // If we are deep in the book, cover z-index must be lower than flipped pages
+                 cover.style.zIndex = 1;
             } else {
-                document.body.classList.remove('hovering');
+                 cover.style.zIndex = 100;
+            }
+
+            // Manage photo pages
+            currentImages.forEach((_, i) => {
+                const page = document.getElementById('page-' + i);
+                if (i < currentPageIndex) {
+                    // Flipped pages stack on the left (higher index is on top of stack)
+                    page.style.zIndex = 20 + i; 
+                } else {
+                    // Unflipped pages stack on the right (lower index is on top of stack)
+                    page.style.zIndex = 50 - i;
+                }
+            });
+        }
+
+        function updateCounter() {
+            if(currentPageIndex > -1) {
+                 document.getElementById('counter').innerText = (currentPageIndex + 1) + " / " + currentImages.length;
+            }
+        }
+
+        // Keyboard Arrows
+        document.addEventListener('keydown', (e) => {
+            if(document.body.classList.contains('book-open')) {
+                if(e.key === "ArrowRight") nextPage();
+                if(e.key === "ArrowLeft") prevPage();
             }
         });
-
-        // --- INIT ---
-        window.onload = function() {
-            initGallery('product');
-            animate(); // Start the physics engine
-        };
-
-        function enterSite() {
-            document.getElementById('intro-layer').classList.add('closed');
-        }
-        function toggleAbout() {
-            document.getElementById('aboutPanel').classList.toggle('open');
-        }
 
     </script>
 </body>

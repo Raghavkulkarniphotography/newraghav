@@ -12,7 +12,7 @@
         :root {
             --brand-blue: #00638C;
             --text-main: #111111;
-            --bg: #ffffff;
+            --bg-color: #ffffff;
             --ease: cubic-bezier(0.77, 0, 0.175, 1);
         }
 
@@ -20,16 +20,23 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
+            background-color: var(--bg-color);
             color: var(--text-main);
             overflow: hidden; /* No scrolling in this layout */
             height: 100vh; width: 100vw;
+            
+            /* --- THE TECHNICAL PATTERN --- */
+            /* A subtle dot grid using your Brand Blue at very low opacity */
+            background-image: radial-gradient(rgba(0, 99, 140, 0.15) 1px, transparent 1px);
+            background-size: 30px 30px; /* Spacing of the grid */
         }
 
-        /* --- 1. INTRO LAYER --- */
+        /* --- 1. INTRO LAYER (Curtain) --- */
         #intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: #ffffff; z-index: 9000;
+            /* White background to cover the pattern initially */
+            background: #ffffff; 
+            z-index: 9000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: transform 1s var(--ease);
         }
@@ -37,17 +44,25 @@
 
         .intro-logo {
             max-width: 280px; width: 70%; height: auto;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
         }
 
         .enter-btn {
-            background: transparent; border: 1px solid #000; padding: 15px 45px;
+            background: transparent; 
+            border: 1px solid var(--brand-blue); /* Brand Blue Border */
+            color: var(--brand-blue); /* Brand Blue Text */
+            padding: 15px 45px;
             font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
             cursor: pointer; transition: all 0.3s ease;
             opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
+            font-weight: 500;
         }
-        .enter-btn:hover { background: var(--brand-blue); border-color: var(--brand-blue); color: #fff; }
+        .enter-btn:hover { 
+            background: var(--brand-blue); 
+            color: #fff; 
+            box-shadow: 0 10px 20px rgba(0, 99, 140, 0.2); /* Blue Glow */
+        }
 
         /* --- 2. NAVBAR --- */
         nav {
@@ -59,7 +74,10 @@
         }
         nav.visible { opacity: 1; }
         .nav-logo-img { height: 40px; width: auto; cursor: pointer; }
-        .nav-about { font-weight: 500; cursor: pointer; letter-spacing: 1px; font-size: 0.9rem; }
+        .nav-about { 
+            font-weight: 500; cursor: pointer; letter-spacing: 1px; font-size: 0.9rem; 
+            color: var(--brand-blue); /* Brand Blue Link */
+        }
 
         /* --- 3. MENU SECTION (Name + Options) --- */
         .menu-section {
@@ -67,22 +85,31 @@
             display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             position: absolute; top: 0; left: 0;
-            background: #fff;
+            /* Transparent bg to show the body pattern */
+            background: transparent; 
             transition: transform 0.8s var(--ease);
             z-index: 50;
         }
         
         .menu-section.slide-out { transform: translateY(-100%); }
 
-        .main-title { font-family: 'Playfair Display', serif; font-size: 4rem; margin-bottom: 10px; opacity: 0; }
+        .main-title { font-family: 'Playfair Display', serif; font-size: 4rem; margin-bottom: 10px; opacity: 0; color: var(--text-main); }
         .subtitle { font-size: 1rem; color: #666; letter-spacing: 1px; margin-bottom: 50px; opacity: 0; }
         .options-container { display: flex; gap: 20px; opacity: 0; }
         
         .opt-card {
-            padding: 15px 40px; border: 1px solid #e0e0e0; border-radius: 50px;
+            padding: 18px 45px; 
+            background: #fff; /* White card to pop off pattern */
+            border: 1px solid #e0e0e0; border-radius: 50px;
             font-size: 0.9rem; color: #444; cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
         }
-        .opt-card:hover { border-color: var(--brand-blue); color: var(--brand-blue); transform: translateY(-3px); }
+        .opt-card:hover { 
+            border-color: var(--brand-blue); 
+            color: var(--brand-blue); 
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 99, 140, 0.15); /* Blue Shadow */
+        }
 
         /* Animation Trigger */
         .animate-in .main-title { animation: fadeUp 1s ease forwards 0.2s; }
@@ -95,12 +122,13 @@
             display: flex; justify-content: center; align-items: center;
             z-index: 40; /* Behind menu initially */
             opacity: 0; transition: opacity 0.5s ease;
+            background: var(--bg-color); /* Cover pattern for clean view */
         }
         .slider-section.visible { opacity: 1; }
 
         .slide-image {
             max-width: 85vw; max-height: 80vh; object-fit: contain;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
             opacity: 0; transform: scale(0.95);
             transition: all 0.6s var(--ease);
         }
@@ -111,7 +139,7 @@
             position: fixed; bottom: 40px; right: 40px;
             display: flex; gap: 20px; align-items: center; z-index: 100;
             opacity: 0; transition: opacity 0.5s ease;
-            pointer-events: none; /* Inactive until gallery opens */
+            pointer-events: none;
         }
         .controls.visible { opacity: 1; pointer-events: auto; }
 
@@ -121,21 +149,37 @@
             display: flex; justify-content: center; align-items: center; cursor: pointer;
             transition: all 0.2s; background: #fff;
         }
-        .arrow-btn:hover { border-color: var(--text-main); background: var(--text-main); color: #fff; }
+        .arrow-btn:hover { border-color: var(--brand-blue); background: var(--brand-blue); color: #fff; }
 
-        /* BACK BUTTON (To return to Menu) */
+        /* BACK BUTTON */
         .back-to-menu {
             position: fixed; bottom: 40px; left: 40px;
             font-size: 0.8rem; letter-spacing: 1px; color: #999; cursor: pointer;
-            z-index: 100; display: none;
+            z-index: 100; display: none; transition: color 0.3s;
         }
+        .back-to-menu:hover { color: var(--brand-blue); }
 
         /* --- ABOUT & UTILS --- */
-        .about-overlay { position: fixed; top: 0; right: -100%; width: 500px; height: 100%; background: #fff; z-index: 9500; padding: 60px; box-shadow: -10px 0 30px rgba(0,0,0,0.05); transition: right 0.5s ease; display: flex; flex-direction: column; justify-content: center; }
+        .about-overlay { 
+            position: fixed; top: 0; right: -100%; width: 500px; height: 100%; 
+            background: #fff; z-index: 9500; padding: 60px; 
+            box-shadow: -10px 0 30px rgba(0,0,0,0.05); 
+            transition: right 0.5s ease; 
+            display: flex; flex-direction: column; justify-content: center; 
+            /* Subtle pattern inside About too */
+            background-image: radial-gradient(#f0f0f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
         .about-overlay.open { right: 0; }
-        .close-text-btn { position: absolute; top: 30px; right: 30px; cursor: pointer; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; }
+        .close-text-btn { position: absolute; top: 30px; right: 30px; cursor: pointer; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; color: var(--text-main); }
 
-        #loader { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid var(--brand-blue); border-radius: 50%; animation: spin 1s linear infinite; display: none; z-index: 200; }
+        #loader { 
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            width: 40px; height: 40px; 
+            border: 3px solid rgba(0, 99, 140, 0.1); 
+            border-top: 3px solid var(--brand-blue); /* Blue spinner */
+            border-radius: 50%; animation: spin 1s linear infinite; display: none; z-index: 200; 
+        }
         
         @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
         @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
@@ -146,7 +190,7 @@
             .slide-image { max-width: 90vw; max-height: 60vh; }
             .controls { bottom: 30px; right: 50%; transform: translateX(50%); width: 100%; justify-content: center; }
             .about-overlay { width: 100%; }
-            .back-to-menu { bottom: 90px; } /* Adjust so it doesn't overlap controls on mobile */
+            .back-to-menu { bottom: 90px; } 
         }
     </style>
 </head>
@@ -155,8 +199,7 @@
     <div id="intro-layer">
         <img src="logo.png" alt="Raghav Kulkarni" class="intro-logo">
         <button class="enter-btn" onclick="enterSite()">Enter Portfolio</button>
-        <div onclick="toggleAbout()" style="margin-top:20px; color:#999; font-size:0.8rem; cursor:pointer;">About Me</div>
-    </div>
+        </div>
 
     <nav id="main-nav">
         <img src="cornerlogo.png" alt="R" class="nav-logo-img" onclick="location.reload()" onerror="this.style.display='none'">
@@ -197,8 +240,8 @@
             A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach within a controlled environment. I use light, composition, and technical precision to convert abstract ideas into high-impact commercial visuals.
         </p>
         <div>
-            <div><b>Phone:</b> <a href="tel:+918888248590" style="color:inherit; text-decoration:none;">+91 88882 48590</a></div>
-            <div style="margin-top:5px;"><b>Email:</b> <a href="mailto:raghavkulkarniphotography@gmail.com" style="color:inherit; text-decoration:none;">raghavkulkarniphotography@gmail.com</a></div>
+            <div><b>Phone:</b> <a href="tel:+918888248590" style="color:var(--brand-blue); text-decoration:none;">+91 88882 48590</a></div>
+            <div style="margin-top:5px;"><b>Email:</b> <a href="mailto:raghavkulkarniphotography@gmail.com" style="color:var(--brand-blue); text-decoration:none;">raghavkulkarniphotography@gmail.com</a></div>
         </div>
     </div>
 
@@ -226,23 +269,20 @@
             document.getElementById('menuSection').classList.add('animate-in');
         }
 
-        // 2. START GALLERY (Transitions from Menu to Slider)
+        // 2. START GALLERY
         function startGallery(category) {
-            // Setup Data
             currentIndex = 0;
             currentImages = portfolioData[category];
 
-            // UI Transition
             document.getElementById('menuSection').classList.add('slide-out');
             document.getElementById('sliderStage').classList.add('visible');
             document.getElementById('galleryControls').classList.add('visible');
             document.getElementById('backBtn').style.display = 'block';
 
-            // Load First Image
             updateDisplay();
         }
 
-        // 3. CLOSE GALLERY (Return to Menu)
+        // 3. CLOSE GALLERY
         function closeGallery() {
             document.getElementById('menuSection').classList.remove('slide-out');
             document.getElementById('sliderStage').classList.remove('visible');
@@ -256,22 +296,21 @@
             const counter = document.getElementById('counter');
             const loader = document.getElementById('loader');
             
-            // Fade out current
+            // Fade Out
             imgEl.classList.remove('active');
             loader.style.display = 'block';
 
-            // Wait a split second for fade out
             setTimeout(() => {
                 imgEl.src = currentImages[currentIndex];
                 
-                // Preload Next Image
+                // Preload Next
                 if(currentIndex < currentImages.length - 1) {
                     new Image().src = currentImages[currentIndex + 1];
                 }
 
                 imgEl.onload = function() {
                     loader.style.display = 'none';
-                    imgEl.classList.add('active'); // Fade in
+                    imgEl.classList.add('active'); // Fade In
                 };
             }, 300);
 

@@ -3,194 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raghav Kulkarni | The Folio</title>
+    <title>Raghav Kulkarni | Visual Artist</title>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --brand-blue: #00638C;
-            --book-w: 440px;
-            --book-h: 620px;
-            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+            --text-main: #111;
+            --bg-color: #ffffff;
+            --ease: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* HIDE DEFAULT CURSOR */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            height: 100vh; width: 100vw; overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
-            background: #1a1a1a;
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
         }
 
-        /* --- 1. THE ENVIRONMENT --- */
-        .environment {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            transition: all 1.2s var(--ease);
-            /* Wood Table Look */
-            background: #2c241b;
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 10px);
-            box-shadow: inset 0 0 200px #000;
+        /* --- 1. CUSTOM CURSOR --- */
+        .cursor {
+            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+            background: var(--brand-blue); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: width 0.3s, height 0.3s;
         }
-        
-        body.reading-mode .environment {
-            /* Studio Grey Look */
-            background: #e6e6e6;
-            transform: scale(1.1);
-        }
+        body.hovering .cursor { width: 80px; height: 80px; opacity: 0.5; }
 
-        /* --- 2. 3D SCENE --- */
-        .scene {
-            width: var(--book-w); height: var(--book-h);
-            perspective: 2500px; z-index: 10;
-            transition: transform 1.2s var(--ease);
+        /* --- 2. HOVER REVEAL (Floating Image) --- */
+        .hover-reveal {
+            position: fixed; top: 0; left: 0; width: 350px; height: 450px;
+            pointer-events: none; z-index: 1;
+            opacity: 0; transform: translate(-50%, -50%) scale(0.8);
+            transition: opacity 0.3s, transform 0.6s var(--ease);
+            overflow: hidden; border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
         }
-        
-        /* Resting Angle */
-        .scene.resting { transform: rotateX(35deg) rotateZ(-5deg) scale(0.85); cursor: pointer; }
-        .scene.resting:hover { transform: rotateX(30deg) rotateZ(-3deg) scale(0.9) translateY(-20px); }
-        
-        /* Active Angle (Reading) */
-        .scene.active { transform: rotateX(0deg) rotateZ(0deg) translateX(220px); /* Shift right to center spread */ }
+        .hover-reveal img { width: 100%; height: 100%; object-fit: cover; }
+        .hover-reveal.active { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
-        .book {
-            width: 100%; height: 100%; position: relative;
-            transform-style: preserve-3d;
-        }
-
-        /* --- 3. PAGES --- */
-        .page {
-            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
-            transform-origin: left center; transform-style: preserve-3d;
-            transition: transform 0.8s var(--ease);
-            background: #fff; border-radius: 2px 5px 5px 2px;
-            box-shadow: inset 5px 0 15px rgba(0,0,0,0.05), 5px 5px 15px rgba(0,0,0,0.1);
-        }
-        .page.flipped { transform: rotateY(-180deg); }
-        
-        .front, .back {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            backface-visibility: hidden; overflow: hidden;
-        }
-        .back { transform: rotateY(180deg); background: #fdfdfd; }
-
-        /* COVER DESIGN */
-        #cover {
-            background: #111; color: #fff;
+        /* --- 3. LANDING MENU --- */
+        .menu-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            border-left: 8px solid #333; /* Spine */
-            /* Leather Texture */
-            background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3h1v1H1V3zm2-2h1v1H3V1z' fill='%23333' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+            background: #fff; z-index: 10;
+            transition: transform 1s var(--ease);
         }
-        .logo-box { padding: 20px; border: 1px solid rgba(255,255,255,0.3); margin-bottom: 30px; }
+        .menu-screen.slide-up { transform: translateY(-100%); }
 
-        /* LEFT PAGE (Static Info) */
-        .static-left-content {
-            padding: 50px 40px; height: 100%;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .info-block h3 { font-family: 'Playfair Display'; font-size: 1.5rem; margin-bottom: 10px; color: var(--brand-blue); }
-        .info-block p { font-size: 0.9rem; color: #666; line-height: 1.6; }
-        .info-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #aaa; margin-bottom: 5px; margin-top: 20px;}
-
-        /* RIGHT PAGE (Photos) */
-        .photo-wrapper { width: 100%; height: 100%; padding: 30px; display: flex; justify-content: center; align-items: center; }
-        .photo-img { 
-            max-width: 100%; max-height: 100%; object-fit: contain; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15); 
+        .brand-name {
+            font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; 
+            margin-bottom: 50px; letter-spacing: 1px; text-transform: uppercase;
         }
 
-        /* --- 4. INDEX TABS (The "Organizer" Look) --- */
-        .tabs-container {
-            position: absolute; right: -40px; top: 50px;
-            display: flex; flex-direction: column; gap: 10px;
-            z-index: 5; /* Behind pages initially */
-            transform-style: preserve-3d;
-            opacity: 0; transition: opacity 0.5s;
+        .menu-list { list-style: none; text-align: center; }
+        .menu-item {
+            font-family: 'Syne', sans-serif; font-weight: 700;
+            font-size: 5vw; line-height: 1.1;
+            cursor: pointer; color: #ddd;
+            transition: color 0.3s, transform 0.3s;
+            position: relative; z-index: 5;
         }
-        body.reading-mode .tabs-container { opacity: 1; }
+        .menu-item:hover { color: #111; transform: scale(1.02); }
+        
+        @media (max-width: 768px) { .menu-item { font-size: 3rem; } }
 
-        .tab {
-            width: 50px; height: 40px; background: #fff;
-            border-radius: 0 5px 5px 0;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        /* --- 4. GALLERY FEED --- */
+        .gallery-feed {
+            min-height: 100vh; padding: 120px 5% 50px;
+            opacity: 0; transition: opacity 0.5s ease 0.5s;
+        }
+        .gallery-feed.visible { opacity: 1; }
+
+        /* FILLED BUTTON (Updated) */
+        .back-nav {
+            position: fixed; top: 30px; left: 40px; z-index: 50;
+            background: var(--brand-blue); color: #fff;
+            padding: 12px 30px; border-radius: 50px; /* Pill Shape */
+            font-weight: 600; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase;
+            cursor: pointer; display: none;
+            box-shadow: 0 5px 20px rgba(0, 99, 140, 0.3);
+            transition: transform 0.3s;
+        }
+        .back-nav:hover { transform: translateY(-3px); }
+
+        /* MASONRY GRID */
+        .masonry-grid { column-count: 3; column-gap: 30px; }
+        .grid-item {
+            break-inside: avoid; margin-bottom: 30px;
+            opacity: 0; transform: translateY(50px);
+            transition: all 0.8s var(--ease);
+        }
+        .grid-item.visible { opacity: 1; transform: translateY(0); }
+        .grid-item img {
+            width: 100%; height: auto; display: block; border-radius: 6px;
+            cursor: pointer; transition: filter 0.3s;
+        }
+        .grid-item:hover img { filter: brightness(0.8); }
+
+        /* --- 5. SWIPEABLE LIGHTBOX (Updated) --- */
+        .lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98); z-index: 100;
+            display: none; justify-content: center; align-items: center;
+        }
+        
+        /* Image Container to hold arrows and image */
+        .lb-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        
+        .lightbox img { 
+            max-width: 90%; max-height: 85%; object-fit: contain; 
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            user-select: none;
+        }
+
+        /* Controls */
+        .lb-close { position: absolute; top: 30px; right: 40px; color: #fff; font-weight: 600; cursor: pointer; z-index: 102; font-family: 'Syne'; letter-spacing: 1px;}
+        
+        .lb-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); color: #fff;
             display: flex; justify-content: center; align-items: center;
-            font-size: 0.7rem; font-weight: 600; color: #999;
-            cursor: pointer; transition: width 0.3s, background 0.3s;
+            cursor: pointer; transition: background 0.3s; z-index: 102;
+            font-size: 1.5rem;
         }
-        .tab:hover { width: 60px; color: var(--brand-blue); }
-        .tab.active { background: var(--brand-blue); color: #fff; width: 65px; }
+        .lb-arrow:hover { background: var(--brand-blue); }
+        .lb-prev { left: 30px; }
+        .lb-next { right: 30px; }
 
-        /* --- CONTROLS --- */
-        .controls {
+        .lb-counter {
             position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 20px; z-index: 200; opacity: 0; pointer-events: none; transition: 1s;
+            color: #666; font-family: 'Syne'; font-size: 0.9rem;
         }
-        body.reading-mode .controls { opacity: 1; pointer-events: auto; }
-        .btn-round { width: 50px; height: 50px; border-radius: 50%; border: none; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; color: var(--brand-blue); }
 
-        /* --- UTILS --- */
-        @media (max-width: 900px) {
-            :root { --book-w: 320px; --book-h: 480px; }
-            .scene.active { transform: translateX(0); }
-            .page.flipped { opacity: 0; pointer-events: none; } /* Mobile optimization */
-            .tabs-container { display: none; } /* Hide tabs on mobile */
+        @media (max-width: 768px) { 
+            .masonry-grid { column-count: 1; } 
+            .lb-arrow { display: none; } /* Hide arrows on mobile, use swipe */
         }
+
+        .loader { position: fixed; bottom: 30px; right: 30px; width: 25px; height: 25px; border: 3px solid #eee; border-top: 3px solid var(--brand-blue); border-radius: 50%; animation: spin 1s infinite linear; display: none; z-index: 200; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="environment"></div>
+    <div class="cursor" id="cursor"></div>
 
-    <div class="scene resting" id="bookScene" onclick="openBook()">
-        <div class="book">
-            
-            <div class="tabs-container">
-                <div class="tab" onclick="jumpToCategory('product', this)">PROD</div>
-                <div class="tab" onclick="jumpToCategory('interior', this)">INTR</div>
-                <div class="tab" onclick="jumpToCategory('corporate', this)">CORP</div>
-            </div>
-
-            <div class="page" id="page-cover" style="z-index: 100;">
-                <div class="front" id="cover">
-                    <div class="logo-box">
-                        <img src="logo.png" style="width: 150px; filter: invert(1);">
-                    </div>
-                    <h1 style="font-family:'Playfair Display'; font-size:1.5rem; letter-spacing:2px;">RAGHAV KULKARNI</h1>
-                    <p style="font-size:0.8rem; color:#888; margin-top:10px;">VOL. 2025</p>
-                    <div style="margin-top:40px; font-size:0.7rem; letter-spacing:2px; color:#666;">TAP TO VIEW</div>
-                </div>
-                
-                <div class="back">
-                    <div class="static-left-content">
-                        <div id="dynamic-info">
-                            <div class="info-label">Current Section</div>
-                            <h3 id="info-title">Introduction</h3>
-                            <div class="info-label">Description</div>
-                            <p id="info-desc">
-                                Welcome to my portfolio. This collection highlights my work in commercial, interior, and product photography.
-                            </p>
-                        </div>
-
-                        <div>
-                            <div style="width: 50px; height: 1px; background: #ddd; margin: 20px 0;"></div>
-                            <div style="font-size:0.8rem; font-weight:600;">Raghav Kulkarni</div>
-                            <div style="font-size:0.75rem; color:#888;">Visual Artist</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="pagesStack"></div>
-
-        </div>
+    <div class="hover-reveal" id="revealBox">
+        <img src="" id="revealImg">
     </div>
 
-    <div class="controls">
-        <button class="btn-round" onclick="prevPage()">&#8592;</button>
-        <button class="btn-round" onclick="nextPage()">&#8594;</button>
+    <div class="menu-screen" id="menuScreen">
+        <div class="brand-name">RAGHAV KULKARNI</div>
+        
+        <ul class="menu-list">
+            <li class="menu-item" 
+                onmouseenter="showPreview('product1.webp')" 
+                onmouseleave="hidePreview()"
+                onclick="openGallery('product')">
+                Product & Jewelry
+            </li>
+            <li class="menu-item" 
+                onmouseenter="showPreview('interior1.webp')" 
+                onmouseleave="hidePreview()"
+                onclick="openGallery('interior')">
+                Interior Media
+            </li>
+            <li class="menu-item" 
+                onmouseenter="showPreview('corporate1.webp')" 
+                onmouseleave="hidePreview()"
+                onclick="openGallery('corporate')">
+                Corporate Work
+            </li>
+        </ul>
+    </div>
+
+    <div class="back-nav" id="backBtn" onclick="goHome()">BACK TO MENU</div>
+    
+    <div class="gallery-feed" id="galleryFeed">
+        <div class="masonry-grid" id="grid"></div>
+    </div>
+
+    <div class="loader" id="loader"></div>
+
+    <div class="lightbox" id="lightbox">
+        <div class="lb-close" onclick="closeLightbox()">CLOSE</div>
+        
+        <div class="lb-container" id="lbTouchArea">
+            <div class="lb-arrow lb-prev" onclick="changeSlide(-1)">&#8249;</div>
+            <img src="" id="lbImg">
+            <div class="lb-arrow lb-next" onclick="changeSlide(1)">&#8250;</div>
+        </div>
+
+        <div class="lb-counter" id="lbCounter">1 / 10</div>
     </div>
 
     <script>
@@ -200,23 +213,6 @@
             for (var i = 1; i <= count; i++) { paths.push(prefix + i + ".webp"); }
             return paths;
         }
-        
-        // Metadata for the "Smart" Left Page
-        const categoryInfo = {
-            product: {
-                title: "Product & Jewelry",
-                desc: "Precision lighting and macro details. Showcasing textures, reflections, and the intricate craftsmanship of high-end jewelry."
-            },
-            interior: {
-                title: "Interior Media",
-                desc: "Capturing the soul of a space. Balancing ambient and artificial light to highlight architectural lines and design aesthetics."
-            },
-            corporate: {
-                title: "Corporate Work",
-                desc: "Professional branding and event coverage. Creating a visual narrative that aligns with corporate identity and values."
-            }
-        };
-
         const portfolioData = {
             product: generatePaths('product', 22),   
             interior: generatePaths('interior', 12), 
@@ -224,95 +220,148 @@
         };
 
         // --- STATE ---
-        let isBookOpen = false;
-        let currentCat = null;
-        let currentPageIndex = -1; // -1 = Cover
-        let totalPages = 0;
+        let currentGalleryImages = [];
+        let currentLightboxIndex = 0;
 
-        // --- 1. OPEN BOOK ---
-        function openBook() {
-            if(isBookOpen) return;
-            isBookOpen = true;
+        // --- 1. CURSOR & HOVER REVEAL ---
+        const cursor = document.getElementById('cursor');
+        const revealBox = document.getElementById('revealBox');
+        const revealImg = document.getElementById('revealImg');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            revealBox.style.left = e.clientX + 'px';
+            revealBox.style.top = e.clientY + 'px';
+        });
 
-            document.body.classList.add('reading-mode');
-            const scene = document.getElementById('bookScene');
-            scene.classList.remove('resting');
-            scene.classList.add('active');
-
-            // Delay cover flip for effect
-            setTimeout(() => {
-                document.getElementById('page-cover').classList.add('flipped');
-                // Load default category
-                jumpToCategory('product', document.querySelector('.tab')); 
-            }, 800);
+        function showPreview(imgSrc) {
+            revealImg.src = imgSrc;
+            revealBox.classList.add('active');
+            cursor.style.width = '80px'; cursor.style.height = '80px'; cursor.style.opacity = '0.2';
         }
 
-        // --- 2. LOAD CATEGORY ---
-        function jumpToCategory(cat, tabBtn) {
-            if(!isBookOpen) return; // Prevent clicking tabs when closed
+        function hidePreview() {
+            revealBox.classList.remove('active');
+            cursor.style.width = '20px'; cursor.style.height = '20px'; cursor.style.opacity = '1';
+        }
 
-            // Update Tabs UI
-            if(tabBtn) {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                tabBtn.classList.add('active');
-            }
+        // --- 2. OPEN GALLERY ---
+        function openGallery(category) {
+            document.getElementById('menuScreen').classList.add('slide-up');
+            document.getElementById('backBtn').style.display = 'block';
 
-            // Update Left Page Text (The "Smart" Feature)
-            const info = categoryInfo[cat];
-            document.getElementById('info-title').innerText = info.title;
-            document.getElementById('info-desc').innerText = info.desc;
-
-            // Generate Pages
-            const images = portfolioData[cat];
-            const container = document.getElementById('pagesStack');
-            container.innerHTML = '';
+            const grid = document.getElementById('grid');
+            const feed = document.getElementById('galleryFeed');
+            const loader = document.getElementById('loader');
             
-            totalPages = images.length;
-            currentPageIndex = 0; // Reset photo index
+            grid.innerHTML = '';
+            feed.classList.add('visible');
+            loader.style.display = 'block';
 
-            // Create pages (Reverse order for Z-stacking)
-            for(let i = images.length - 1; i >= 0; i--) {
-                const page = document.createElement('div');
-                page.className = 'page';
-                page.id = 'photo-' + i;
-                page.style.zIndex = 50 - i; 
+            // Store current images for Lightbox
+            currentGalleryImages = portfolioData[category];
+            let loadedCount = 0;
+
+            currentGalleryImages.forEach((url, i) => {
+                const div = document.createElement('div');
+                div.className = 'grid-item';
                 
-                page.innerHTML = `
-                    <div class="front">
-                        <div class="photo-wrapper">
-                            <img src="${images[i]}" class="photo-img">
-                        </div>
-                    </div>
-                    <div class="back" style="background:#f8f8f8;"></div>
-                `;
-                container.appendChild(page);
-            }
+                const img = new Image();
+                img.src = url;
+                img.loading = "lazy";
+                
+                img.onload = () => {
+                    loadedCount++;
+                    div.classList.add('visible');
+                    if(loadedCount > 2) loader.style.display = 'none';
+                };
+                
+                // Pass the index (i) to openLightbox
+                img.onclick = () => openLightbox(i);
+
+                div.appendChild(img);
+                grid.appendChild(div);
+            });
         }
 
-        // --- 3. NAVIGATION ---
-        function nextPage() {
-            if(currentPageIndex < totalPages - 1) {
-                const p = document.getElementById('photo-' + currentPageIndex);
-                if(p) {
-                    p.classList.add('flipped');
-                    currentPageIndex++;
-                }
-            }
+        function goHome() {
+            document.getElementById('menuScreen').classList.remove('slide-up');
+            document.getElementById('galleryFeed').classList.remove('visible');
+            document.getElementById('backBtn').style.display = 'none';
+            window.scrollTo(0,0);
         }
 
-        function prevPage() {
-            if(currentPageIndex > 0) {
-                currentPageIndex--;
-                const p = document.getElementById('photo-' + currentPageIndex);
-                if(p) {
-                    p.classList.remove('flipped');
-                }
-            }
+        // --- 3. SWIPEABLE LIGHTBOX LOGIC ---
+        function openLightbox(index) {
+            currentLightboxIndex = index;
+            updateLightbox();
+            document.getElementById('lightbox').style.display = 'flex';
         }
 
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        function changeSlide(direction) {
+            // Direction: -1 (prev) or 1 (next)
+            currentLightboxIndex += direction;
+            
+            // Loop logic
+            if (currentLightboxIndex < 0) currentLightboxIndex = currentGalleryImages.length - 1;
+            if (currentLightboxIndex >= currentGalleryImages.length) currentLightboxIndex = 0;
+            
+            updateLightbox();
+        }
+
+        function updateLightbox() {
+            const lbImg = document.getElementById('lbImg');
+            const counter = document.getElementById('lbCounter');
+            
+            // Fade effect could be added here
+            lbImg.src = currentGalleryImages[currentLightboxIndex];
+            counter.innerText = (currentLightboxIndex + 1) + " / " + currentGalleryImages.length;
+        }
+
+        // KEYBOARD NAVIGATION
         document.addEventListener('keydown', (e) => {
-            if(e.key === "ArrowRight") nextPage();
-            if(e.key === "ArrowLeft") prevPage();
+            if(document.getElementById('lightbox').style.display === 'flex') {
+                if(e.key === 'ArrowRight') changeSlide(1);
+                if(e.key === 'ArrowLeft') changeSlide(-1);
+                if(e.key === 'Escape') closeLightbox();
+            }
+        });
+
+        // --- 4. TOUCH SWIPE LOGIC ---
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const lbTouchArea = document.getElementById('lbTouchArea');
+
+        lbTouchArea.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        lbTouchArea.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            // Threshold for swipe
+            if (touchStartX - touchEndX > 50) {
+                // Swiped Left -> Next
+                changeSlide(1);
+            }
+            if (touchEndX - touchStartX > 50) {
+                // Swiped Right -> Prev
+                changeSlide(-1);
+            }
+        }
+
+        // --- 5. HOVER EFFECTS ---
+        document.querySelectorAll('a, button, .menu-item, .grid-item, .back-nav').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
 
     </script>

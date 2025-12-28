@@ -27,32 +27,63 @@
             overscroll-behavior-y: none; 
         }
 
-        /* --- 1. HEADER (Desktop Standard) --- */
+        /* --- 1. HEADER (Logo & Info Only) --- */
         nav {
-            position: sticky; top: 0; left: 0; width: 100%;
+            position: fixed; top: 0; left: 0; width: 100%;
             background: rgba(255,255,255,0.95); 
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.05);
+            height: 70px; /* Fixed height to ensure stability */
         }
 
-        .logo img { height: 40px; width: auto; cursor: pointer; display: block; }
+        .logo img { height: 35px; width: auto; cursor: pointer; display: block; }
 
         .about-btn {
-            font-size: 0.9rem; font-weight: 700; color: var(--brand-blue);
-            cursor: pointer; margin-left: 10px; text-transform: uppercase; letter-spacing: 1px;
+            font-size: 0.85rem; font-weight: 700; color: var(--brand-blue);
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
         }
 
-        /* --- 2. MENU CONTAINER (Desktop) --- */
+        /* --- 2. FLOATING MENU (Separated from Header) --- */
         .menu-container {
-            display: flex; gap: 8px;
-            background: #f0f2f5; padding: 5px; border-radius: var(--radius-pill);
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999; /* Always on top */
+            
+            display: flex; gap: 5px;
+            background: #f0f2f5; 
+            padding: 5px; 
+            border-radius: var(--radius-pill);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        /* DESKTOP POSITION (Top Center) */
+        @media (min-width: 901px) {
+            .menu-container {
+                top: 15px; /* Aligned with header */
+            }
+            .cat-btn { padding: 8px 25px; font-size: 0.9rem; }
+        }
+
+        /* MOBILE POSITION (Bottom Center) */
+        @media (max-width: 900px) {
+            .menu-container {
+                bottom: 30px; /* Floating at bottom */
+                top: auto;    /* Ignore top */
+                background: rgba(255,255,255,0.95);
+                backdrop-filter: blur(10px);
+                width: 90%; max-width: 350px;
+                justify-content: center;
+            }
+            .cat-btn { padding: 12px 0; font-size: 0.8rem; flex: 1; text-align: center; }
         }
 
         .cat-btn {
-            border: none; background: transparent; padding: 10px 25px;
-            font-family: 'Manrope', sans-serif; font-size: 0.9rem; font-weight: 600; color: #777;
+            border: none; background: transparent; 
+            font-family: 'Manrope', sans-serif; font-weight: 600; color: #777;
             cursor: pointer; transition: all 0.3s ease; border-radius: var(--radius-pill);
             white-space: nowrap; 
         }
@@ -60,7 +91,8 @@
         .cat-btn.active { color: #fff; background: var(--brand-blue); box-shadow: 0 4px 12px rgba(0, 99, 140, 0.3); }
 
         /* --- 3. GRID SYSTEM --- */
-        .gallery-container { padding: 30px 5% 80px; min-height: 90vh; }
+        /* Added top padding so content doesn't hide behind fixed header */
+        .gallery-container { padding: 100px 5% 100px; min-height: 100vh; }
 
         .masonry-wrapper { display: flex; gap: 30px; align-items: flex-start; transition: gap 0.4s ease; }
         .masonry-wrapper.wide-gap { gap: 60px; }
@@ -132,53 +164,15 @@
         .contact-btn.secondary { background: #f0f2f5; color: #555; box-shadow: none; }
 
 
-        /* --- 6. MOBILE SPECIAL STYLING (Small Bottom Buttons) --- */
+        /* --- 6. MOBILE OVERRIDES --- */
         @media (max-width: 900px) {
+            nav { padding: 15px 20px; }
+            .gallery-container { padding: 80px 15px 120px; } /* Adjust padding for top/bottom bars */
             
-            nav { padding: 15px 20px; justify-content: space-between; }
-            .logo img { height: 35px; }
-
-            /* FLOATING BOTTOM DOCK */
-            .menu-container { 
-                position: fixed; 
-                bottom: 30px; 
-                left: 50%; 
-                transform: translateX(-50%); 
-                
-                background: rgba(255,255,255,0.95); 
-                backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-                
-                /* Compact sizing */
-                padding: 5px; 
-                border-radius: 50px;
-                box-shadow: 0 5px 20px rgba(0,0,0,0.15); 
-                border: 1px solid rgba(0,0,0,0.05);
-                
-                z-index: 9999; 
-                width: auto;
-                min-width: 280px; /* Ensure minimum width */
-                justify-content: center;
-                gap: 5px;
-            }
-
-            /* SMALL BUTTON STYLE */
-            .cat-btn { 
-                padding: 10px 18px; 
-                font-size: 0.75rem; /* Smaller Font */
-                font-weight: 700;
-                text-transform: uppercase; /* Cleaner look for small buttons */
-                letter-spacing: 0.5px;
-                flex: 1; 
-                text-align: center;
-            }
-
-            /* Adjust Content */
-            .gallery-container { padding: 20px 15px 100px; }
             .masonry-wrapper { flex-direction: column; gap: 20px !important; }
             .masonry-col { gap: 20px !important; }
             .masonry-wrapper.wide-gap { gap: 20px !important; }
 
-            /* About & Lightbox Mobile */
             .about-panel.open { height: 100vh; border-radius: 0; }
             .about-inner { flex-direction: column; text-align: center; padding: 80px 20px 120px; gap: 40px; }
             .bio { text-align: center; }
@@ -188,6 +182,12 @@
     </style>
 </head>
 <body>
+
+    <div class="menu-container">
+        <button class="cat-btn active" onclick="loadGrid('product', this)">Product</button>
+        <button class="cat-btn" onclick="loadGrid('interior', this)">Interior</button>
+        <button class="cat-btn" onclick="loadGrid('corporate', this)">Corporate</button>
+    </div>
 
     <div class="about-panel" id="aboutPanel">
         <div class="lb-ctrl lb-close" onclick="toggleAbout()">✕</div>
@@ -209,14 +209,7 @@
         <div class="logo">
             <img src="logo.png" alt="Raghav Kulkarni" onclick="window.scrollTo(0,0)">
         </div>
-        
-        <div class="menu-container">
-            <button class="cat-btn active" onclick="loadGrid('product', this)">Product</button>
-            <button class="cat-btn" onclick="loadGrid('interior', this)">Interior</button>
-            <button class="cat-btn" onclick="loadGrid('corporate', this)">Corporate</button>
-        </div>
-
-        <div class="about-btn" onclick="toggleAbout()">Info</div>
+        <div class="about-btn" onclick="toggleAbout()">INFO</div>
     </nav>
 
     <main class="gallery-container">

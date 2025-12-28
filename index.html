@@ -13,7 +13,6 @@
             --brand-blue: #00638C;
             --text-main: #111111;
             --bg: #ffffff;
-            --radius: 20px;
             --ease: cubic-bezier(0.77, 0, 0.175, 1);
         }
 
@@ -23,11 +22,11 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+            overflow: hidden; /* No scrolling in this layout */
+            height: 100vh; width: 100vw;
         }
 
-        /* --- 1. THE INTRO CURTAIN (Logo Only) --- */
+        /* --- 1. INTRO LAYER --- */
         #intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: #ffffff; z-index: 9000;
@@ -50,110 +49,104 @@
         }
         .enter-btn:hover { background: var(--brand-blue); border-color: var(--brand-blue); color: #fff; }
 
-        /* --- 2. NAVBAR (Sticky) --- */
+        /* --- 2. NAVBAR --- */
         nav {
             position: fixed; top: 0; left: 0; width: 100%; 
-            padding: 20px 5%;
+            padding: 30px 40px;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
             z-index: 100;
-            opacity: 0; transition: opacity 0.5s ease 0.5s; /* Hidden until intro lifts */
+            opacity: 0; transition: opacity 0.5s ease 0.5s;
         }
         nav.visible { opacity: 1; }
+        .nav-logo-img { height: 40px; width: auto; cursor: pointer; }
+        .nav-about { font-weight: 500; cursor: pointer; letter-spacing: 1px; font-size: 0.9rem; }
 
-        .nav-logo-img { height: 45px; width: auto; cursor: pointer; transition: opacity 0.3s; }
-        .nav-logo-img:hover { opacity: 0.8; }
-        .nav-about { color: var(--brand-blue); font-weight: 500; cursor: pointer; font-size: 0.9rem; letter-spacing: 0.5px; }
-
-        /* --- 3. THE MENU SECTION (Name + Options) --- */
+        /* --- 3. MENU SECTION (Name + Options) --- */
         .menu-section {
-            height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center; padding: 0 20px;
-        }
-
-        .main-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 4rem; margin-bottom: 10px;
-            opacity: 0; /* Hidden initially */
-        }
-        .subtitle {
-            font-size: 1rem; color: #666; letter-spacing: 1px; margin-bottom: 50px;
-            opacity: 0;
-        }
-
-        /* The Options */
-        .options-container {
-            display: flex; gap: 20px;
-            opacity: 0;
+            height: 100vh; width: 100vw;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            position: absolute; top: 0; left: 0;
+            background: #fff;
+            transition: transform 0.8s var(--ease);
+            z-index: 50;
         }
         
-        .opt-card {
-            padding: 20px 40px;
-            border: 1px solid #e0e0e0; border-radius: 50px;
-            font-size: 1rem; color: #444; cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .opt-card:hover {
-            border-color: var(--brand-blue); color: var(--brand-blue);
-            transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        .opt-card.active {
-            background: var(--brand-blue); border-color: var(--brand-blue); color: #fff;
-        }
+        .menu-section.slide-out { transform: translateY(-100%); }
 
-        /* Animation Classes for Stage 2 */
+        .main-title { font-family: 'Playfair Display', serif; font-size: 4rem; margin-bottom: 10px; opacity: 0; }
+        .subtitle { font-size: 1rem; color: #666; letter-spacing: 1px; margin-bottom: 50px; opacity: 0; }
+        .options-container { display: flex; gap: 20px; opacity: 0; }
+        
+        .opt-card {
+            padding: 15px 40px; border: 1px solid #e0e0e0; border-radius: 50px;
+            font-size: 0.9rem; color: #444; cursor: pointer; transition: all 0.3s ease;
+        }
+        .opt-card:hover { border-color: var(--brand-blue); color: var(--brand-blue); transform: translateY(-3px); }
+
+        /* Animation Trigger */
         .animate-in .main-title { animation: fadeUp 1s ease forwards 0.2s; }
         .animate-in .subtitle { animation: fadeUp 1s ease forwards 0.4s; }
         .animate-in .options-container { animation: fadeUp 1s ease forwards 0.6s; }
 
-        /* --- 4. THE GALLERY --- */
-        #gallery-section {
-            min-height: 20vh;
-            padding: 0 5% 100px;
+        /* --- 4. THE SLIDER STAGE --- */
+        .slider-section {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 40; /* Behind menu initially */
+            opacity: 0; transition: opacity 0.5s ease;
         }
+        .slider-section.visible { opacity: 1; }
 
-        .pinterest-grid { column-count: 3; column-gap: 30px; }
-        
-        .pin-item { 
-            break-inside: avoid; margin-bottom: 30px; cursor: zoom-in; 
-            opacity: 0; transform: translateY(50px); /* Start lower for effect */
-            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        .slide-image {
+            max-width: 85vw; max-height: 80vh; object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            opacity: 0; transform: scale(0.95);
+            transition: all 0.6s var(--ease);
         }
-        
-        .pin-item.visible { opacity: 1; transform: translateY(0); }
-        
-        .pin-item img {
-            width: 100%; display: block; border-radius: var(--radius);
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        .pin-item:hover img { transform: scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .slide-image.active { opacity: 1; transform: scale(1); }
 
-        /* --- LIGHTBOX (Snap Scroll) --- */
-        #lightbox-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 9999; overflow-y: scroll; scroll-snap-type: y mandatory; }
-        .lightbox-slide { width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; scroll-snap-align: start; position: relative; }
-        .lightbox-slide img { max-width: 90%; max-height: 90vh; object-fit: contain; }
-        
-        /* CLOSE BUTTON (FIXED) */
-        .close-fixed { position: fixed; top: 30px; right: 40px; color: #fff; font-weight: 500; cursor: pointer; letter-spacing: 2px; z-index: 10001; }
+        /* Controls */
+        .controls {
+            position: fixed; bottom: 40px; right: 40px;
+            display: flex; gap: 20px; align-items: center; z-index: 100;
+            opacity: 0; transition: opacity 0.5s ease;
+            pointer-events: none; /* Inactive until gallery opens */
+        }
+        .controls.visible { opacity: 1; pointer-events: auto; }
+
+        .counter { font-family: 'Playfair Display', serif; font-size: 1.2rem; min-width: 60px; text-align: center; }
+        .arrow-btn {
+            width: 50px; height: 50px; border: 1px solid #ddd; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+            transition: all 0.2s; background: #fff;
+        }
+        .arrow-btn:hover { border-color: var(--text-main); background: var(--text-main); color: #fff; }
+
+        /* BACK BUTTON (To return to Menu) */
+        .back-to-menu {
+            position: fixed; bottom: 40px; left: 40px;
+            font-size: 0.8rem; letter-spacing: 1px; color: #999; cursor: pointer;
+            z-index: 100; display: none;
+        }
 
         /* --- ABOUT & UTILS --- */
-        .about-overlay { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: #fff; z-index: 9500; padding: 40px; transition: right 0.5s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .about-overlay { position: fixed; top: 0; right: -100%; width: 500px; height: 100%; background: #fff; z-index: 9500; padding: 60px; box-shadow: -10px 0 30px rgba(0,0,0,0.05); transition: right 0.5s ease; display: flex; flex-direction: column; justify-content: center; }
         .about-overlay.open { right: 0; }
-        
-        /* CLOSE BUTTON (ABSOLUTE for About) */
-        .close-abs { position: absolute; top: 30px; right: 40px; color: #000; cursor: pointer; letter-spacing: 2px; font-weight: 500;}
+        .close-text-btn { position: absolute; top: 30px; right: 30px; cursor: pointer; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; }
 
-        .contact-link { color: var(--brand-blue); text-decoration: none; font-weight: 600; }
-        #loader { display: none; width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid var(--brand-blue); border-radius: 50%; margin: 50px auto; animation: spin 1s linear infinite; }
+        #loader { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid var(--brand-blue); border-radius: 50%; animation: spin 1s linear infinite; display: none; z-index: 200; }
         
-        @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
         @media (max-width: 768px) {
-            .pinterest-grid { column-count: 1; }
             .options-container { flex-direction: column; width: 100%; max-width: 300px; }
             .main-title { font-size: 2.5rem; }
+            .slide-image { max-width: 90vw; max-height: 60vh; }
+            .controls { bottom: 30px; right: 50%; transform: translateX(50%); width: 100%; justify-content: center; }
+            .about-overlay { width: 100%; }
+            .back-to-menu { bottom: 90px; } /* Adjust so it doesn't overlap controls on mobile */
         }
     </style>
 </head>
@@ -167,7 +160,7 @@
 
     <nav id="main-nav">
         <img src="cornerlogo.png" alt="R" class="nav-logo-img" onclick="location.reload()" onerror="this.style.display='none'">
-        <div class="nav-about" onclick="toggleAbout()">About Me</div>
+        <div class="nav-about" onclick="toggleAbout()">ABOUT</div>
     </nav>
 
     <section class="menu-section" id="menuSection">
@@ -175,34 +168,37 @@
         <p class="subtitle">Professional Photographer & Cinematographer</p>
         
         <div class="options-container">
-            <div class="opt-card" onclick="chooseOption('product', this)">Product & Jewelry</div>
-            <div class="opt-card" onclick="chooseOption('interior', this)">Interior Media</div>
-            <div class="opt-card" onclick="chooseOption('corporate', this)">Corporate Work</div>
+            <div class="opt-card" onclick="startGallery('product')">Product & Jewelry</div>
+            <div class="opt-card" onclick="startGallery('interior')">Interior Media</div>
+            <div class="opt-card" onclick="startGallery('corporate')">Corporate Work</div>
         </div>
     </section>
 
-    <div id="gallery-section">
-        <div id="loader"></div>
-        <div class="pinterest-grid" id="gridContainer"></div>
+    <div id="loader"></div>
+
+    <div class="slider-section" id="sliderStage">
+        <img src="" class="slide-image" id="mainImage" alt="Portfolio Work">
     </div>
 
-    <div id="lightbox-view">
-        <div class="close-fixed" onclick="closeLightbox()">CLOSE</div>
-        <div id="lightbox-content"></div>
+    <div class="controls" id="galleryControls">
+        <div class="arrow-btn" onclick="prevSlide()">&#8592;</div>
+        <div class="counter" id="counter">1 / 22</div>
+        <div class="arrow-btn" onclick="nextSlide()">&#8594;</div>
     </div>
+
+    <div class="back-to-menu" id="backBtn" onclick="closeGallery()">&#8592; BACK TO MENU</div>
 
     <div class="about-overlay" id="aboutPanel">
-        <div class="close-abs" onclick="toggleAbout()">CLOSE</div>
-        <img src="profile.jpg" style="width:120px; height:120px; border-radius:50%; object-fit:cover; margin-bottom:20px;">
-        <h2 style="font-family:'Playfair Display'; font-size:2rem; margin-bottom:10px;">About Me</h2>
-        <p style="max-width:600px; color:#555; line-height:1.8; margin-bottom: 30px;">
+        <div class="close-text-btn" onclick="toggleAbout()">CLOSE</div>
+        <img src="profile.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:30px;">
+        <h2 style="font-family:'Playfair Display'; margin-bottom:20px;">About Me</h2>
+        <p style="color:#555; line-height:1.6; font-size:0.95rem; margin-bottom:30px;">
             More than a photographer, I am a visual artist dedicated to translating concepts into tangible imagery.<br><br>
             A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach within a controlled environment. I use light, composition, and technical precision to convert abstract ideas into high-impact commercial visuals.
         </p>
-        <div style="font-size: 0.95rem; line-height: 2;">
-            <div>Based in Pune, India</div>
-            <div>Phone: <a href="tel:+918888248590" class="contact-link">+91 88882 48590</a></div>
-            <div>Email: <a href="mailto:raghavkulkarniphotography@gmail.com" class="contact-link">raghavkulkarniphotography@gmail.com</a></div>
+        <div>
+            <div><b>Phone:</b> <a href="tel:+918888248590" style="color:inherit; text-decoration:none;">+91 88882 48590</a></div>
+            <div style="margin-top:5px;"><b>Email:</b> <a href="mailto:raghavkulkarniphotography@gmail.com" style="color:inherit; text-decoration:none;">raghavkulkarniphotography@gmail.com</a></div>
         </div>
     </div>
 
@@ -219,7 +215,9 @@
             corporate: generatePaths('corporate', 6) 
         };
 
-        let currentCatData = [];
+        // STATE
+        let currentIndex = 0;
+        let currentImages = [];
 
         // 1. ENTER SITE
         function enterSite() {
@@ -228,100 +226,86 @@
             document.getElementById('menuSection').classList.add('animate-in');
         }
 
-        // 2. CHOOSE OPTION
-        function chooseOption(category, btn) {
-            document.querySelectorAll('.opt-card').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        // 2. START GALLERY (Transitions from Menu to Slider)
+        function startGallery(category) {
+            // Setup Data
+            currentIndex = 0;
+            currentImages = portfolioData[category];
 
-            const gallery = document.getElementById('gallery-section');
-            gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // UI Transition
+            document.getElementById('menuSection').classList.add('slide-out');
+            document.getElementById('sliderStage').classList.add('visible');
+            document.getElementById('galleryControls').classList.add('visible');
+            document.getElementById('backBtn').style.display = 'block';
 
-            loadImages(category);
+            // Load First Image
+            updateDisplay();
         }
 
-        // 3. LOAD IMAGES (One by One Animation)
-        function loadImages(category) {
-            const $grid = $('#gridContainer');
-            const $loader = $('#loader');
-            $grid.empty();
-            $loader.show();
-
-            currentCatData = portfolioData[category];
-            let loadedCount = 0;
-
-            currentCatData.forEach((url, index) => {
-                const img = new Image();
-                img.src = url;
-                img.loading = "lazy";
-                
-                const div = document.createElement('div');
-                div.className = 'pin-item';
-                div.appendChild(img);
-                div.onclick = () => openLightbox(index);
-
-                $grid.append(div);
-
-                img.onload = () => {
-                    loadedCount++;
-                    // WATERFALL ANIMATION:
-                    // Each image waits 100ms longer than the previous one
-                    setTimeout(() => { 
-                        div.classList.add('visible'); 
-                    }, index * 100); 
-
-                    if(loadedCount >= 3) $loader.hide();
-                };
-                
-                // Fallback for cached images
-                if(img.complete) {
-                    loadedCount++;
-                    setTimeout(() => { 
-                        div.classList.add('visible'); 
-                    }, index * 100);
-                    if(loadedCount >= 3) $loader.hide();
-                }
-            });
-            setTimeout(() => $loader.hide(), 2000);
+        // 3. CLOSE GALLERY (Return to Menu)
+        function closeGallery() {
+            document.getElementById('menuSection').classList.remove('slide-out');
+            document.getElementById('sliderStage').classList.remove('visible');
+            document.getElementById('galleryControls').classList.remove('visible');
+            document.getElementById('backBtn').style.display = 'none';
         }
 
-        // 4. LIGHTBOX
-        function openLightbox(startIndex) {
-            const lbView = document.getElementById('lightbox-view');
-            const lbContent = document.getElementById('lightbox-content');
-            lbContent.innerHTML = '';
+        // 4. UPDATE SLIDER
+        function updateDisplay() {
+            const imgEl = document.getElementById('mainImage');
+            const counter = document.getElementById('counter');
+            const loader = document.getElementById('loader');
             
-            currentCatData.forEach(url => {
-                const slide = document.createElement('div');
-                slide.className = 'lightbox-slide';
-                const img = document.createElement('img');
-                img.src = url; 
-                slide.appendChild(img);
-                lbContent.appendChild(slide);
-            });
+            // Fade out current
+            imgEl.classList.remove('active');
+            loader.style.display = 'block';
 
-            lbView.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-
+            // Wait a split second for fade out
             setTimeout(() => {
-                const slides = document.querySelectorAll('.lightbox-slide');
-                if(slides[startIndex]) slides[startIndex].scrollIntoView();
-            }, 10);
+                imgEl.src = currentImages[currentIndex];
+                
+                // Preload Next Image
+                if(currentIndex < currentImages.length - 1) {
+                    new Image().src = currentImages[currentIndex + 1];
+                }
+
+                imgEl.onload = function() {
+                    loader.style.display = 'none';
+                    imgEl.classList.add('active'); // Fade in
+                };
+            }, 300);
+
+            counter.innerText = (currentIndex + 1) + " / " + currentImages.length;
         }
 
-        function closeLightbox() {
-            document.getElementById('lightbox-view').style.display = 'none';
-            document.body.style.overflow = 'auto';
+        function nextSlide() {
+            if (currentIndex < currentImages.length - 1) {
+                currentIndex++;
+                updateDisplay();
+            } else {
+                currentIndex = 0; // Loop
+                updateDisplay();
+            }
+        }
+
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateDisplay();
+            }
         }
 
         function toggleAbout() {
             document.getElementById('aboutPanel').classList.toggle('open');
         }
-        
-        window.onload = function() {
-            // Optional: Preload first few product images for speed
-            new Image().src = "product1.webp";
-            new Image().src = "product2.webp";
-        }
+
+        // Keyboard
+        document.addEventListener('keydown', function(e) {
+            if(e.key === "ArrowRight") nextSlide();
+            if(e.key === "ArrowLeft") prevSlide();
+            if(e.key === "Escape") closeGallery();
+        });
+
     </script>
 </body>
 </html>

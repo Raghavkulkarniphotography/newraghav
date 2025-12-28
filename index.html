@@ -27,10 +27,10 @@
             overscroll-behavior-y: none; 
         }
 
-        /* --- 1. HEADER --- */
+        /* --- 1. HEADER (DESKTOP DEFAULT) --- */
         nav {
             position: sticky; top: 0; left: 0; width: 100%;
-            background: rgba(255,255,255,0.95); /* Higher opacity for mobile readability */
+            background: rgba(255,255,255,0.95); 
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -39,7 +39,7 @@
 
         .logo img { height: 40px; width: auto; cursor: pointer; display: block; }
 
-        /* The Menu Container (Desktop Style) */
+        /* DESKTOP MENU STYLE */
         .menu-container {
             display: flex; gap: 8px;
             background: #f0f2f5; padding: 5px; border-radius: var(--radius-pill);
@@ -49,7 +49,7 @@
             border: none; background: transparent; padding: 10px 25px;
             font-family: 'Manrope', sans-serif; font-size: 0.9rem; font-weight: 600; color: #777;
             cursor: pointer; transition: all 0.3s ease; border-radius: var(--radius-pill);
-            white-space: nowrap; /* Prevents text breaking */
+            white-space: nowrap; 
         }
         .cat-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.5); }
         .cat-btn.active { color: #fff; background: var(--brand-blue); box-shadow: 0 4px 12px rgba(0, 99, 140, 0.3); }
@@ -59,19 +59,13 @@
             cursor: pointer; margin-left: 10px; text-transform: uppercase; letter-spacing: 1px;
         }
 
-        /* --- 2. THE DYNAMIC GRID --- */
+        /* --- 2. GRID SYSTEM --- */
         .gallery-container { padding: 30px 5% 80px; min-height: 90vh; }
 
-        .masonry-wrapper {
-            display: flex; gap: 30px; align-items: flex-start;
-            transition: gap 0.4s ease;
-        }
+        .masonry-wrapper { display: flex; gap: 30px; align-items: flex-start; transition: gap 0.4s ease; }
         .masonry-wrapper.wide-gap { gap: 60px; }
         
-        .masonry-col {
-            flex: 1; display: flex; flex-direction: column;
-            gap: 30px; transition: gap 0.4s ease;
-        }
+        .masonry-col { flex: 1; display: flex; flex-direction: column; gap: 30px; transition: gap 0.4s ease; }
         .masonry-wrapper.wide-gap .masonry-col { gap: 60px; }
 
         .item {
@@ -128,7 +122,6 @@
             object-fit: cover; box-shadow: 0 20px 50px rgba(0,0,0,0.15); 
             border: 8px solid #fff; flex-shrink: 0;
         }
-        
         .bio { max-width: 500px; text-align: left; }
         .bio h2 { margin-bottom: 20px; font-weight: 700; font-size: 2.2rem; color: var(--text-main); }
         .bio p { color: #555; font-size: 1rem; line-height: 1.7; margin-bottom: 15px; }
@@ -140,51 +133,51 @@
         .contact-btn.secondary { background: #f0f2f5; color: #555; box-shadow: none; }
 
 
-        /* --- 5. MOBILE FIXES (THE SOLUTION) --- */
+        /* --- 5. MOBILE OVERRIDES (THE FIX) --- */
         @media (max-width: 900px) {
             
-            /* Clean up Header */
+            /* Clean Header: Pushes Logo Left, Info Right */
             nav { padding: 15px 20px; justify-content: space-between; }
             .logo img { height: 35px; }
-            .about-btn { font-size: 0.8rem; }
 
-            /* MOVE MENU TO BOTTOM */
+            /* FORCE MENU TO BOTTOM (Fixed Position Breakout) */
             .menu-container { 
-                position: fixed; 
-                bottom: 25px; 
+                position: fixed; /* Breaks out of header flow */
+                bottom: 30px; 
                 left: 50%; 
                 transform: translateX(-50%); 
                 
                 background: rgba(255,255,255,0.98); 
-                backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-                padding: 6px; 
-                
-                box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
-                z-index: 1000; /* Sit on top of everything */
-                width: auto; 
-                min-width: 280px;
-                justify-content: center;
+                backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+                padding: 8px; 
+                box-shadow: 0 15px 40px rgba(0,0,0,0.15); 
                 border: 1px solid rgba(0,0,0,0.05);
+                
+                z-index: 9999; /* Sit on top of everything */
+                width: 85%; /* Consistent width */
+                max-width: 350px;
+                justify-content: space-between;
             }
 
             .cat-btn { 
-                padding: 12px 18px; 
+                padding: 12px 0; 
                 font-size: 0.85rem; 
                 flex: 1; text-align: center;
             }
 
-            /* Stack Grid for Mobile */
-            .gallery-container { padding: 20px 15px 100px; } /* Extra bottom padding for menu */
+            /* Adjust Grid for Mobile */
+            .gallery-container { padding: 20px 15px 100px; } /* Bottom padding for menu */
             .masonry-wrapper { flex-direction: column; gap: 20px !important; }
+            .masonry-col { gap: 20px !important; }
             .masonry-wrapper.wide-gap { gap: 20px !important; }
 
-            /* About Section Mobile */
+            /* Adjust About Panel */
             .about-panel.open { height: 100vh; border-radius: 0; }
             .about-inner { flex-direction: column; text-align: center; padding: 80px 20px 120px; gap: 40px; }
             .bio { text-align: center; }
             .profile-pic { width: 200px; height: 200px; }
 
-            /* Lightbox Mobile */
+            /* Hide Desktop Lightbox Arrows */
             .lb-prev, .lb-next { display: none; }
         }
     </style>
@@ -271,7 +264,7 @@
             const isMobile = window.innerWidth <= 900;
             const wrapper = document.getElementById('masonryWrapper');
             
-            // Desktop Gap Logic
+            // Gap Logic (Desktop Only)
             if (!isMobile && (cat === 'interior' || cat === 'corporate')) {
                 wrapper.classList.add('wide-gap');
             } else {
@@ -297,12 +290,10 @@
                 item.appendChild(img);
                 
                 if (isMobile) {
-                    // 2 Columns on Mobile
                     if (i % 2 === 0) col1.appendChild(item);
                     else col2.appendChild(item);
                     col3.style.display = 'none';
                 } else {
-                    // 3 Columns on Desktop
                     col3.style.display = 'flex';
                     const remainder = i % 3;
                     if(remainder === 0) col1.appendChild(item);

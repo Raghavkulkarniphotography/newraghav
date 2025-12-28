@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raghav Kulkarni | Cinematic Portfolio</title>
+    <title>Raghav Kulkarni | Visual Artist</title>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -12,6 +12,7 @@
         :root {
             --brand-blue: #00638C;
             --text-main: #111111;
+            --text-light: #888888;
             --bg-color: #ffffff;
             --ease: cubic-bezier(0.77, 0, 0.175, 1);
         }
@@ -22,21 +23,19 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            overflow: hidden; /* No scrolling in this layout */
+            overflow: hidden; /* No scrolling */
             height: 100vh; width: 100vw;
             
-            /* --- THE TECHNICAL PATTERN --- */
-            /* A subtle dot grid using your Brand Blue at very low opacity */
-            background-image: radial-gradient(rgba(0, 99, 140, 0.15) 1px, transparent 1px);
-            background-size: 30px 30px; /* Spacing of the grid */
+            /* --- UPDATED PATTERN: 25% Opacity --- */
+            /* Using rgba(0, 99, 140, 0.25) makes the dots 25% visible */
+            background-image: radial-gradient(rgba(0, 99, 140, 0.25) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
-        /* --- 1. INTRO LAYER (Curtain) --- */
+        /* --- 1. INTRO LANDING (Curtain) --- */
         #intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            /* White background to cover the pattern initially */
-            background: #ffffff; 
-            z-index: 9000;
+            background: #ffffff; z-index: 9000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: transform 1s var(--ease);
         }
@@ -50,8 +49,8 @@
 
         .enter-btn {
             background: transparent; 
-            border: 1px solid var(--brand-blue); /* Brand Blue Border */
-            color: var(--brand-blue); /* Brand Blue Text */
+            border: 1px solid var(--brand-blue);
+            color: var(--brand-blue);
             padding: 15px 45px;
             font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
             cursor: pointer; transition: all 0.3s ease;
@@ -59,139 +58,133 @@
             font-weight: 500;
         }
         .enter-btn:hover { 
-            background: var(--brand-blue); 
-            color: #fff; 
-            box-shadow: 0 10px 20px rgba(0, 99, 140, 0.2); /* Blue Glow */
+            background: var(--brand-blue); color: #fff; 
+            box-shadow: 0 10px 20px rgba(0, 99, 140, 0.2); 
         }
 
-        /* --- 2. NAVBAR --- */
-        nav {
-            position: fixed; top: 0; left: 0; width: 100%; 
-            padding: 30px 40px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 100;
-            opacity: 0; transition: opacity 0.5s ease 0.5s;
+        /* --- 2. MAIN LAYOUT (Split 25/75) --- */
+        .main-wrapper {
+            display: flex; width: 100%; height: 100%;
+            opacity: 0; transition: opacity 1s ease 0.5s;
         }
-        nav.visible { opacity: 1; }
-        .nav-logo-img { height: 40px; width: auto; cursor: pointer; }
-        .nav-about { 
-            font-weight: 500; cursor: pointer; letter-spacing: 1px; font-size: 0.9rem; 
-            color: var(--brand-blue); /* Brand Blue Link */
-        }
+        .main-wrapper.visible { opacity: 1; }
 
-        /* --- 3. MENU SECTION (Name + Options) --- */
-        .menu-section {
-            height: 100vh; width: 100vw;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            position: absolute; top: 0; left: 0;
-            /* Transparent bg to show the body pattern */
-            background: transparent; 
-            transition: transform 0.8s var(--ease);
+        /* SIDEBAR (25%) */
+        .sidebar {
+            width: 25%; height: 100%;
+            padding: 60px 40px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            border-right: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255,255,255,0.85); /* Slightly clearer background for readability */
+            backdrop-filter: blur(10px);
             z-index: 50;
         }
-        
-        .menu-section.slide-out { transform: translateY(-100%); }
 
-        .main-title { font-family: 'Playfair Display', serif; font-size: 4rem; margin-bottom: 10px; opacity: 0; color: var(--text-main); }
-        .subtitle { font-size: 1rem; color: #666; letter-spacing: 1px; margin-bottom: 50px; opacity: 0; }
-        .options-container { display: flex; gap: 20px; opacity: 0; }
+        .brand-header { margin-bottom: 40px; }
+        .sidebar-logo { width: 60px; height: auto; margin-bottom: 25px; cursor: pointer; }
         
-        .opt-card {
-            padding: 18px 45px; 
-            background: #fff; /* White card to pop off pattern */
-            border: 1px solid #e0e0e0; border-radius: 50px;
-            font-size: 0.9rem; color: #444; cursor: pointer; transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        /* YOUR NAME DISPLAY */
+        .artist-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem; line-height: 1.1; margin-bottom: 5px;
+            color: var(--text-main);
         }
-        .opt-card:hover { 
-            border-color: var(--brand-blue); 
-            color: var(--brand-blue); 
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 99, 140, 0.15); /* Blue Shadow */
+        .artist-role {
+            font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px;
         }
 
-        /* Animation Trigger */
-        .animate-in .main-title { animation: fadeUp 1s ease forwards 0.2s; }
-        .animate-in .subtitle { animation: fadeUp 1s ease forwards 0.4s; }
-        .animate-in .options-container { animation: fadeUp 1s ease forwards 0.6s; }
+        .menu-nav { display: flex; flex-direction: column; gap: 15px; }
+        
+        .menu-btn {
+            background: none; border: none; text-align: left; padding: 0;
+            font-family: 'Inter', sans-serif; font-size: 1rem; color: #999;
+            cursor: pointer; transition: all 0.3s; position: relative;
+        }
+        .menu-btn:hover { color: var(--brand-blue); padding-left: 5px; }
+        
+        .menu-btn.active { 
+            color: var(--text-main); font-weight: 600; 
+            padding-left: 15px; 
+        }
+        .menu-btn.active::before {
+            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+            width: 6px; height: 6px; background: var(--brand-blue); border-radius: 50%;
+        }
 
-        /* --- 4. THE SLIDER STAGE --- */
-        .slider-section {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        .sidebar-footer { font-size: 0.8rem; }
+        .about-link { cursor: pointer; color: var(--brand-blue); font-weight: 500; }
+
+        /* GALLERY STAGE (75%) */
+        .stage-area {
+            width: 75%; height: 100%;
+            position: relative;
             display: flex; justify-content: center; align-items: center;
-            z-index: 40; /* Behind menu initially */
-            opacity: 0; transition: opacity 0.5s ease;
-            background: var(--bg-color); /* Cover pattern for clean view */
         }
-        .slider-section.visible { opacity: 1; }
 
         .slide-image {
-            max-width: 85vw; max-height: 80vh; object-fit: contain;
+            max-width: 85%; max-height: 85%;
+            object-fit: contain;
             box-shadow: 0 20px 60px rgba(0,0,0,0.1);
             opacity: 0; transform: scale(0.95);
             transition: all 0.6s var(--ease);
         }
         .slide-image.active { opacity: 1; transform: scale(1); }
 
-        /* Controls */
+        /* CONTROLS (Floating on Right) */
         .controls {
-            position: fixed; bottom: 40px; right: 40px;
-            display: flex; gap: 20px; align-items: center; z-index: 100;
-            opacity: 0; transition: opacity 0.5s ease;
-            pointer-events: none;
+            position: absolute; bottom: 40px; right: 40px;
+            display: flex; gap: 20px; align-items: center;
         }
-        .controls.visible { opacity: 1; pointer-events: auto; }
-
         .counter { font-family: 'Playfair Display', serif; font-size: 1.2rem; min-width: 60px; text-align: center; }
         .arrow-btn {
-            width: 50px; height: 50px; border: 1px solid #ddd; border-radius: 50%;
+            width: 50px; height: 50px; border: 1px solid #eee; border-radius: 50%;
             display: flex; justify-content: center; align-items: center; cursor: pointer;
             transition: all 0.2s; background: #fff;
         }
         .arrow-btn:hover { border-color: var(--brand-blue); background: var(--brand-blue); color: #fff; }
 
-        /* BACK BUTTON */
-        .back-to-menu {
-            position: fixed; bottom: 40px; left: 40px;
-            font-size: 0.8rem; letter-spacing: 1px; color: #999; cursor: pointer;
-            z-index: 100; display: none; transition: color 0.3s;
-        }
-        .back-to-menu:hover { color: var(--brand-blue); }
-
-        /* --- ABOUT & UTILS --- */
+        /* --- ABOUT OVERLAY --- */
         .about-overlay { 
             position: fixed; top: 0; right: -100%; width: 500px; height: 100%; 
             background: #fff; z-index: 9500; padding: 60px; 
-            box-shadow: -10px 0 30px rgba(0,0,0,0.05); 
-            transition: right 0.5s ease; 
+            box-shadow: -20px 0 50px rgba(0,0,0,0.05); 
+            transition: right 0.6s var(--ease); 
             display: flex; flex-direction: column; justify-content: center; 
-            /* Subtle pattern inside About too */
-            background-image: radial-gradient(#f0f0f0 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-image: radial-gradient(#f0f0f0 1px, transparent 1px); background-size: 20px 20px;
         }
         .about-overlay.open { right: 0; }
         .close-text-btn { position: absolute; top: 30px; right: 30px; cursor: pointer; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; color: var(--text-main); }
 
         #loader { 
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            position: fixed; top: 50%; left: 62.5%; /* Center of the 75% area */
+            transform: translate(-50%, -50%); 
             width: 40px; height: 40px; 
             border: 3px solid rgba(0, 99, 140, 0.1); 
-            border-top: 3px solid var(--brand-blue); /* Blue spinner */
+            border-top: 3px solid var(--brand-blue); 
             border-radius: 50%; animation: spin 1s linear infinite; display: none; z-index: 200; 
         }
         
         @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
         @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        @media (max-width: 768px) {
-            .options-container { flex-direction: column; width: 100%; max-width: 300px; }
-            .main-title { font-size: 2.5rem; }
-            .slide-image { max-width: 90vw; max-height: 60vh; }
-            .controls { bottom: 30px; right: 50%; transform: translateX(50%); width: 100%; justify-content: center; }
+        /* Mobile Layout */
+        @media (max-width: 900px) {
+            .main-wrapper { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; padding: 20px 30px; border-bottom: 1px solid #eee; flex-direction: row; align-items: center; justify-content: space-between; }
+            .brand-header { margin: 0; display: flex; align-items: center; gap: 15px; }
+            .sidebar-logo { width: 40px; margin: 0; }
+            .artist-name { font-size: 1.2rem; }
+            .artist-role, .sidebar-footer { display: none; }
+            .menu-nav { display: none; } /* Hide menu on mobile header, use dropdown logic if needed, or simple horizontal scroll */
+            .stage-area { width: 100%; height: 80vh; }
+            .controls { bottom: 20px; right: 20px; }
+            #loader { left: 50%; }
             .about-overlay { width: 100%; }
-            .back-to-menu { bottom: 90px; } 
+            
+            /* Simple mobile menu fix */
+            .mobile-menu-trigger { display: block; font-size: 0.9rem; font-weight: 600; color: var(--brand-blue); cursor: pointer; }
         }
+        @media (min-width: 901px) { .mobile-menu-trigger { display: none; } }
     </style>
 </head>
 <body>
@@ -199,37 +192,45 @@
     <div id="intro-layer">
         <img src="logo.png" alt="Raghav Kulkarni" class="intro-logo">
         <button class="enter-btn" onclick="enterSite()">Enter Portfolio</button>
-        </div>
+    </div>
 
-    <nav id="main-nav">
-        <img src="cornerlogo.png" alt="R" class="nav-logo-img" onclick="location.reload()" onerror="this.style.display='none'">
-        <div class="nav-about" onclick="toggleAbout()">ABOUT</div>
-    </nav>
-
-    <section class="menu-section" id="menuSection">
-        <h1 class="main-title">Raghav Kulkarni.</h1>
-        <p class="subtitle">Professional Photographer & Cinematographer</p>
+    <div class="main-wrapper" id="mainWrapper">
         
-        <div class="options-container">
-            <div class="opt-card" onclick="startGallery('product')">Product & Jewelry</div>
-            <div class="opt-card" onclick="startGallery('interior')">Interior Media</div>
-            <div class="opt-card" onclick="startGallery('corporate')">Corporate Work</div>
+        <div class="sidebar">
+            <div class="brand-header">
+                <img src="cornerlogo.png" alt="R" class="sidebar-logo" onclick="location.reload()">
+                <div>
+                    <h1 class="artist-name">Raghav Kulkarni</h1>
+                    <div class="artist-role">Visual Artist</div>
+                </div>
+            </div>
+
+            <div class="mobile-menu-trigger" onclick="toggleAbout()">MENU / ABOUT</div>
+
+            <div class="menu-nav">
+                <button class="menu-btn active" onclick="changeCategory('product', this)">Product & Jewelry</button>
+                <button class="menu-btn" onclick="changeCategory('interior', this)">Interior Media</button>
+                <button class="menu-btn" onclick="changeCategory('corporate', this)">Corporate Work</button>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="about-link" onclick="toggleAbout()">About Me</div>
+                <div style="margin-top: 10px; color: #999;">&copy; 2024</div>
+            </div>
         </div>
-    </section>
 
-    <div id="loader"></div>
+        <div class="stage-area">
+            <div id="loader"></div>
+            <img src="" class="slide-image" id="mainImage" alt="Portfolio Work">
+            
+            <div class="controls">
+                <div class="arrow-btn" onclick="prevSlide()">&#8592;</div>
+                <div class="counter" id="counter">1 / 22</div>
+                <div class="arrow-btn" onclick="nextSlide()">&#8594;</div>
+            </div>
+        </div>
 
-    <div class="slider-section" id="sliderStage">
-        <img src="" class="slide-image" id="mainImage" alt="Portfolio Work">
     </div>
-
-    <div class="controls" id="galleryControls">
-        <div class="arrow-btn" onclick="prevSlide()">&#8592;</div>
-        <div class="counter" id="counter">1 / 22</div>
-        <div class="arrow-btn" onclick="nextSlide()">&#8594;</div>
-    </div>
-
-    <div class="back-to-menu" id="backBtn" onclick="closeGallery()">&#8592; BACK TO MENU</div>
 
     <div class="about-overlay" id="aboutPanel">
         <div class="close-text-btn" onclick="toggleAbout()">CLOSE</div>
@@ -246,7 +247,7 @@
     </div>
 
     <script>
-        // DATA
+        // --- DATA ---
         function generatePaths(prefix, count) {
             var paths = [];
             for (var i = 1; i <= count; i++) { paths.push(prefix + i + ".webp"); }
@@ -258,71 +259,73 @@
             corporate: generatePaths('corporate', 6) 
         };
 
-        // STATE
+        // --- STATE ---
+        let currentCat = 'product';
         let currentIndex = 0;
-        let currentImages = [];
+        let images = [];
 
-        // 1. ENTER SITE
+        // --- INIT ---
+        window.onload = function() {
+            // Load initial category silently
+            loadCategoryData('product');
+        };
+
+        // --- FUNCTIONS ---
+        
         function enterSite() {
             document.getElementById('intro-layer').classList.add('closed');
-            document.getElementById('main-nav').classList.add('visible');
-            document.getElementById('menuSection').classList.add('animate-in');
+            document.getElementById('mainWrapper').classList.add('visible');
+            updateDisplay(); // Show first image
         }
 
-        // 2. START GALLERY
-        function startGallery(category) {
+        function loadCategoryData(cat) {
+            currentCat = cat;
             currentIndex = 0;
-            currentImages = portfolioData[category];
+            images = portfolioData[cat];
+        }
 
-            document.getElementById('menuSection').classList.add('slide-out');
-            document.getElementById('sliderStage').classList.add('visible');
-            document.getElementById('galleryControls').classList.add('visible');
-            document.getElementById('backBtn').style.display = 'block';
-
+        function changeCategory(cat, btn) {
+            // Update UI
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Update Data & Display
+            loadCategoryData(cat);
             updateDisplay();
         }
 
-        // 3. CLOSE GALLERY
-        function closeGallery() {
-            document.getElementById('menuSection').classList.remove('slide-out');
-            document.getElementById('sliderStage').classList.remove('visible');
-            document.getElementById('galleryControls').classList.remove('visible');
-            document.getElementById('backBtn').style.display = 'none';
-        }
-
-        // 4. UPDATE SLIDER
         function updateDisplay() {
             const imgEl = document.getElementById('mainImage');
             const counter = document.getElementById('counter');
             const loader = document.getElementById('loader');
             
-            // Fade Out
+            // Fade out
             imgEl.classList.remove('active');
             loader.style.display = 'block';
 
             setTimeout(() => {
-                imgEl.src = currentImages[currentIndex];
+                imgEl.src = images[currentIndex];
                 
                 // Preload Next
-                if(currentIndex < currentImages.length - 1) {
-                    new Image().src = currentImages[currentIndex + 1];
+                if(currentIndex < images.length - 1) {
+                    new Image().src = images[currentIndex + 1];
                 }
 
                 imgEl.onload = function() {
                     loader.style.display = 'none';
-                    imgEl.classList.add('active'); // Fade In
+                    imgEl.classList.add('active');
                 };
             }, 300);
 
-            counter.innerText = (currentIndex + 1) + " / " + currentImages.length;
+            counter.innerText = (currentIndex + 1) + " / " + images.length;
         }
 
         function nextSlide() {
-            if (currentIndex < currentImages.length - 1) {
+            if (currentIndex < images.length - 1) {
                 currentIndex++;
                 updateDisplay();
             } else {
-                currentIndex = 0; // Loop
+                currentIndex = 0; 
                 updateDisplay();
             }
         }
@@ -338,11 +341,10 @@
             document.getElementById('aboutPanel').classList.toggle('open');
         }
 
-        // Keyboard
+        // Keyboard Support
         document.addEventListener('keydown', function(e) {
             if(e.key === "ArrowRight") nextSlide();
             if(e.key === "ArrowLeft") prevSlide();
-            if(e.key === "Escape") closeGallery();
         });
 
     </script>

@@ -16,7 +16,7 @@
             --ease: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* HIDE DEFAULT CURSOR to use our custom one */
+        /* HIDE DEFAULT CURSOR */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
@@ -30,28 +30,42 @@
             background-size: 30px 30px;
         }
 
-        /* --- 1. CUSTOM CURSOR (The "Scope") --- */
-        .cursor-dot, .cursor-circle {
-            position: fixed; top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%; pointer-events: none; z-index: 10000;
-        }
+        /* --- 1. CUSTOM SCOPE CURSOR --- */
         .cursor-dot {
-            width: 6px; height: 6px; background: var(--brand-blue);
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            width: 6px; height: 6px; background: var(--brand-blue); border-radius: 50%;
+            pointer-events: none; z-index: 10000;
         }
         .cursor-circle {
-            width: 40px; height: 40px;
-            border: 1px solid rgba(0, 99, 140, 0.5);
-            transition: width 0.3s, height 0.3s, background 0.3s;
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            width: 40px; height: 40px; border: 1px solid rgba(0, 99, 140, 0.5); border-radius: 50%;
+            pointer-events: none; z-index: 10000; transition: width 0.2s, height 0.2s, border-color 0.2s;
         }
-        /* Hover Effect for Cursor */
+        /* Hover State */
         body.hovering .cursor-circle {
-            width: 80px; height: 80px;
-            background: rgba(0, 99, 140, 0.05);
-            border-color: var(--brand-blue);
+            width: 60px; height: 60px; border-color: var(--brand-blue); border-width: 2px;
+            background: rgba(0,99,140,0.05);
         }
 
-        /* --- 2. INTRO LANDING --- */
+        /* --- 2. SHUTTER OVERLAY (The Camera Snap) --- */
+        .shutter-blinds {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #111; z-index: 8000;
+            transform: scaleY(0); transform-origin: top;
+            pointer-events: none;
+        }
+        /* The snap animation */
+        .shutter-blinds.snap {
+            animation: shutterSnap 0.6s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+        @keyframes shutterSnap {
+            0% { transform: scaleY(0); transform-origin: top; }
+            45% { transform: scaleY(1); transform-origin: top; } /* Closed */
+            55% { transform: scaleY(1); transform-origin: bottom; } /* Closed */
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+
+        /* --- 3. INTRO LAYER --- */
         #intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: #ffffff; z-index: 9000;
@@ -64,15 +78,14 @@
             max-width: 280px; width: 70%; height: auto;
             margin-bottom: 50px; opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
         }
-
         .enter-btn {
             background: transparent; border: 1px solid var(--brand-blue); color: var(--brand-blue);
             padding: 15px 45px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
-            transition: all 0.3s ease; opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
-            font-weight: 600;
+            font-weight: 600; opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
+            transition: all 0.2s ease;
         }
 
-        /* --- 3. MAIN WRAPPER (25/75 Split) --- */
+        /* --- 4. MAIN LAYOUT (25/75 Split) --- */
         .main-wrapper { display: flex; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease 0.5s; }
         .main-wrapper.visible { opacity: 1; }
 
@@ -83,48 +96,49 @@
             border-right: 1px solid rgba(0,0,0,0.05);
             background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); z-index: 50;
         }
+        .brand-header { }
         .sidebar-logo { width: 50px; margin-bottom: 25px; }
         .artist-name { font-family: 'Playfair Display', serif; font-size: 2rem; line-height: 1.1; margin-bottom: 5px; }
         .artist-role { font-size: 0.85rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
 
-        .menu-nav { display: flex; flex-direction: column; gap: 15px; }
+        /* MAGNETIC MENU */
+        .menu-nav { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
         .menu-btn {
-            background: none; border: none; text-align: left; padding: 0;
+            background: none; border: none; text-align: left; padding: 10px 20px;
             font-family: 'Inter', sans-serif; font-size: 1rem; color: #999;
-            transition: all 0.3s; position: relative;
+            position: relative; transition: color 0.3s;
+            /* Magnetic properties handled by JS */
+            display: inline-block;
         }
-        .menu-btn:hover { color: var(--brand-blue); padding-left: 10px; }
-        .menu-btn.active { color: var(--text-main); font-weight: 600; padding-left: 15px; }
+        .menu-btn:hover { color: var(--brand-blue); }
+        .menu-btn.active { color: var(--text-main); font-weight: 600; }
         .menu-btn.active::before {
             content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
             width: 6px; height: 6px; background: var(--brand-blue); border-radius: 50%;
         }
 
-        /* STAGE AREA (75%) with 3D PERSPECTIVE */
+        /* STAGE AREA (75%) - DRAGGABLE */
         .stage-area {
             width: 75%; height: 100%;
             display: flex; justify-content: center; align-items: center;
-            perspective: 1500px; /* Creates the 3D space */
-            overflow: hidden;
+            perspective: 1500px; overflow: hidden;
+            cursor: grab; /* Indicates dragging */
         }
+        .stage-area:active { cursor: grabbing; }
 
-        /* The wrapper that actually tilts */
         .tilt-box {
             width: 80%; height: 80%;
             display: flex; justify-content: center; align-items: center;
-            transform-style: preserve-3d; /* Keeps image in 3D */
-            transition: transform 0.1s ease-out; /* Smooth movement */
+            transform-style: preserve-3d; transition: transform 0.1s ease-out;
+            pointer-events: none; /* Let clicks pass through to stage for drag */
         }
 
         .slide-image {
             max-width: 90%; max-height: 90%;
             object-fit: contain;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.15);
-            border-radius: 4px;
-            opacity: 0; 
-            /* Push image slightly forward in Z-space so it floats */
-            transform: translateZ(50px) scale(0.9);
-            transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.15); border-radius: 4px;
+            opacity: 0; transform: translateZ(50px) scale(0.9);
+            transition: opacity 0.1s, transform 0.6s var(--ease); /* Fast opacity for shutter sync */
         }
         .slide-image.active { opacity: 1; transform: translateZ(50px) scale(1); }
 
@@ -134,10 +148,16 @@
         .arrow-btn {
             width: 50px; height: 50px; border: 1px solid #eee; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            transition: all 0.2s; background: #fff;
+            transition: transform 0.2s, background 0.2s; background: #fff;
         }
-        /* Hover class for JS to detect */
-        .hover-target { } 
+        .arrow-btn:hover { border-color: var(--brand-blue); background: var(--brand-blue); color: #fff; transform: scale(1.1); }
+        
+        /* Drag hint */
+        .drag-hint {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: #ccc;
+            opacity: 0.6; pointer-events: none;
+        }
 
         /* --- ABOUT OVERLAY --- */
         .about-overlay { 
@@ -150,14 +170,7 @@
         .about-overlay.open { right: 0; }
         .close-text-btn { position: absolute; top: 30px; right: 30px; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; }
 
-        #loader { 
-            position: fixed; top: 50%; left: 62.5%; transform: translate(-50%, -50%); 
-            width: 40px; height: 40px; border: 3px solid rgba(0,99,140,0.1); border-top: 3px solid var(--brand-blue); 
-            border-radius: 50%; animation: spin 1s linear infinite; display: none; z-index: 200; 
-        }
-        
         @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Mobile Reset */
         @media (max-width: 900px) {
@@ -168,13 +181,17 @@
             .menu-nav { display: none; }
             .mobile-menu-trigger { display: block; font-weight: 600; color: var(--brand-blue); }
             * { cursor: auto; } .cursor-dot, .cursor-circle { display: none; }
+            .drag-hint { display: none; }
         }
+        @media (min-width: 901px) { .mobile-menu-trigger { display: none; } }
     </style>
 </head>
 <body>
 
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-circle" id="cursorCircle"></div>
+
+    <div class="shutter-blinds" id="shutter"></div>
 
     <div id="intro-layer">
         <img src="logo.png" alt="Raghav Kulkarni" class="intro-logo hover-target">
@@ -193,9 +210,9 @@
             </div>
 
             <div class="menu-nav">
-                <button class="menu-btn active hover-target" onclick="changeCategory('product', this)">Product & Jewelry</button>
-                <button class="menu-btn hover-target" onclick="changeCategory('interior', this)">Interior Media</button>
-                <button class="menu-btn hover-target" onclick="changeCategory('corporate', this)">Corporate Work</button>
+                <button class="menu-btn active hover-target magnetic" onclick="changeCategory('product', this)">Product & Jewelry</button>
+                <button class="menu-btn hover-target magnetic" onclick="changeCategory('interior', this)">Interior Media</button>
+                <button class="menu-btn hover-target magnetic" onclick="changeCategory('corporate', this)">Corporate Work</button>
             </div>
 
             <div class="sidebar-footer">
@@ -205,16 +222,16 @@
         </div>
 
         <div class="stage-area" id="stageArea">
-            <div id="loader"></div>
+            <div class="drag-hint">DRAG TO NAVIGATE</div>
             
             <div class="tilt-box" id="tiltBox">
                 <img src="" class="slide-image" id="mainImage" alt="Portfolio Work">
             </div>
 
             <div class="controls">
-                <div class="arrow-btn hover-target" onclick="prevSlide()">&#8592;</div>
+                <div class="arrow-btn hover-target magnetic" onclick="prevSlide()">&#8592;</div>
                 <div class="counter" id="counter">1 / 22</div>
-                <div class="arrow-btn hover-target" onclick="nextSlide()">&#8594;</div>
+                <div class="arrow-btn hover-target magnetic" onclick="nextSlide()">&#8594;</div>
             </div>
         </div>
     </div>
@@ -225,7 +242,7 @@
         <h2 style="font-family:'Playfair Display'; margin-bottom:20px;">About Me</h2>
         <p style="color:#555; line-height:1.6; font-size:0.95rem; margin-bottom:30px;">
             More than a photographer, I am a visual artist dedicated to translating concepts into tangible imagery.<br><br>
-            A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach within a controlled environment.
+            A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach.
         </p>
         <div>
             <div><b>Phone:</b> <a href="tel:+918888248590" class="hover-target" style="color:var(--brand-blue); text-decoration:none;">+91 88882 48590</a></div>
@@ -250,45 +267,68 @@
         let currentCat = 'product';
         let currentIndex = 0;
         let images = [];
+        let isDragging = false;
+        let startX = 0;
 
         // --- 1. MOUSE PHYSICS & 3D TILT ---
         const cursorDot = document.getElementById('cursorDot');
         const cursorCircle = document.getElementById('cursorCircle');
         const tiltBox = document.getElementById('tiltBox');
-        const stageArea = document.getElementById('stageArea');
-
-        // Mouse Move Listener
+        
         document.addEventListener('mousemove', (e) => {
-            // A. Move Custom Cursor
+            // A. Cursor
             cursorDot.style.left = e.clientX + 'px';
             cursorDot.style.top = e.clientY + 'px';
-            
-            // Lag effect for circle (Cinematic feel)
             setTimeout(() => {
                 cursorCircle.style.left = e.clientX + 'px';
                 cursorCircle.style.top = e.clientY + 'px';
             }, 50);
 
-            // B. 3D Tilt Logic
-            // Calculate center of the screen
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            // Range: -15deg to +15deg
-            const rotateX = (y - 0.5) * -15; 
-            const rotateY = (x - 0.5) * 15;
+            // B. Magnetic Buttons
+            document.querySelectorAll('.magnetic').forEach(btn => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - (rect.left + rect.width / 2);
+                const y = e.clientY - (rect.top + rect.height / 2);
+                
+                // If close enough (100px), pull button
+                if (Math.abs(x) < 100 && Math.abs(y) < 100) {
+                    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                } else {
+                    btn.style.transform = `translate(0px, 0px)`;
+                }
+            });
 
-            // Apply transform to the Tilt Box
-            tiltBox.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            // C. 3D Tilt (Only if not dragging)
+            if(!isDragging) {
+                const xPct = e.clientX / window.innerWidth;
+                const yPct = e.clientY / window.innerHeight;
+                tiltBox.style.transform = `rotateX(${(yPct - 0.5) * -15}deg) rotateY(${(xPct - 0.5) * 15}deg)`;
+            }
         });
 
-        // Hover Effects
-        document.querySelectorAll('.hover-target, button, a').forEach(el => {
+        // Hover Detection
+        document.querySelectorAll('.hover-target').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
 
-        // --- 2. CORE FUNCTIONS ---
+        // --- 2. DRAG NAVIGATION (Swipe) ---
+        const stage = document.getElementById('stageArea');
+        
+        stage.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+        });
+
+        document.addEventListener('mouseup', (e) => {
+            if(!isDragging) return;
+            isDragging = false;
+            const diff = e.clientX - startX;
+            if(diff > 50) prevSlide(); // Drag Right -> Prev
+            if(diff < -50) nextSlide(); // Drag Left -> Next
+        });
+
+        // --- 3. CORE LOGIC ---
         window.onload = function() { loadCategoryData('product'); };
 
         function enterSite() {
@@ -310,31 +350,31 @@
             updateDisplay();
         }
 
+        // --- 4. SHUTTER TRANSITION ---
         function updateDisplay() {
             const imgEl = document.getElementById('mainImage');
             const counter = document.getElementById('counter');
-            const loader = document.getElementById('loader');
+            const shutter = document.getElementById('shutter');
             
-            imgEl.classList.remove('active');
-            loader.style.display = 'block';
+            // A. Trigger Shutter
+            shutter.classList.remove('snap');
+            void shutter.offsetWidth; // Force reflow to restart animation
+            shutter.classList.add('snap');
 
+            // B. Swap Image while Shutter is closed (at 300ms)
             setTimeout(() => {
                 imgEl.src = images[currentIndex];
+                imgEl.classList.add('active'); // Ensure opacity is 1
+                
                 // Preload Next
                 if(currentIndex < images.length - 1) new Image().src = images[currentIndex + 1];
-
-                imgEl.onload = function() {
-                    loader.style.display = 'none';
-                    imgEl.classList.add('active');
-                };
             }, 300);
 
             counter.innerText = (currentIndex + 1) + " / " + images.length;
         }
 
         function nextSlide() {
-            if (currentIndex < images.length - 1) currentIndex++;
-            else currentIndex = 0;
+            if (currentIndex < images.length - 1) currentIndex++; else currentIndex = 0;
             updateDisplay();
         }
 
@@ -345,12 +385,10 @@
 
         function toggleAbout() { document.getElementById('aboutPanel').classList.toggle('open'); }
         
-        // Keyboard
         document.addEventListener('keydown', (e) => {
             if(e.key === "ArrowRight") nextSlide();
             if(e.key === "ArrowLeft") prevSlide();
         });
-
     </script>
 </body>
 </html>

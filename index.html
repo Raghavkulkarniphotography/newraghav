@@ -12,27 +12,46 @@
         :root {
             --brand-blue: #00638C;
             --text-main: #111111;
-            --text-light: #888888;
             --bg-color: #ffffff;
-            --ease: cubic-bezier(0.77, 0, 0.175, 1);
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* HIDE DEFAULT CURSOR to use our custom one */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            overflow: hidden; /* No scrolling */
+            overflow: hidden;
             height: 100vh; width: 100vw;
-            
-            /* --- UPDATED PATTERN: 25% Opacity --- */
-            /* Using rgba(0, 99, 140, 0.25) makes the dots 25% visible */
+            /* 25% Opacity Tech Grid Pattern */
             background-image: radial-gradient(rgba(0, 99, 140, 0.25) 1px, transparent 1px);
             background-size: 30px 30px;
         }
 
-        /* --- 1. INTRO LANDING (Curtain) --- */
+        /* --- 1. CUSTOM CURSOR (The "Scope") --- */
+        .cursor-dot, .cursor-circle {
+            position: fixed; top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%; pointer-events: none; z-index: 10000;
+        }
+        .cursor-dot {
+            width: 6px; height: 6px; background: var(--brand-blue);
+        }
+        .cursor-circle {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(0, 99, 140, 0.5);
+            transition: width 0.3s, height 0.3s, background 0.3s;
+        }
+        /* Hover Effect for Cursor */
+        body.hovering .cursor-circle {
+            width: 80px; height: 80px;
+            background: rgba(0, 99, 140, 0.05);
+            border-color: var(--brand-blue);
+        }
+
+        /* --- 2. INTRO LANDING --- */
         #intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: #ffffff; z-index: 9000;
@@ -43,105 +62,82 @@
 
         .intro-logo {
             max-width: 280px; width: 70%; height: auto;
-            margin-bottom: 50px;
-            opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
+            margin-bottom: 50px; opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
         }
 
         .enter-btn {
-            background: transparent; 
-            border: 1px solid var(--brand-blue);
-            color: var(--brand-blue);
-            padding: 15px 45px;
-            font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
-            cursor: pointer; transition: all 0.3s ease;
-            opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
-            font-weight: 500;
-        }
-        .enter-btn:hover { 
-            background: var(--brand-blue); color: #fff; 
-            box-shadow: 0 10px 20px rgba(0, 99, 140, 0.2); 
+            background: transparent; border: 1px solid var(--brand-blue); color: var(--brand-blue);
+            padding: 15px 45px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+            transition: all 0.3s ease; opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
+            font-weight: 600;
         }
 
-        /* --- 2. MAIN LAYOUT (Split 25/75) --- */
-        .main-wrapper {
-            display: flex; width: 100%; height: 100%;
-            opacity: 0; transition: opacity 1s ease 0.5s;
-        }
+        /* --- 3. MAIN WRAPPER (25/75 Split) --- */
+        .main-wrapper { display: flex; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease 0.5s; }
         .main-wrapper.visible { opacity: 1; }
 
         /* SIDEBAR (25%) */
         .sidebar {
-            width: 25%; height: 100%;
-            padding: 60px 40px;
+            width: 25%; height: 100%; padding: 60px 40px;
             display: flex; flex-direction: column; justify-content: space-between;
             border-right: 1px solid rgba(0,0,0,0.05);
-            background: rgba(255,255,255,0.85); /* Slightly clearer background for readability */
-            backdrop-filter: blur(10px);
-            z-index: 50;
+            background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); z-index: 50;
         }
-
-        .brand-header { margin-bottom: 40px; }
-        .sidebar-logo { width: 60px; height: auto; margin-bottom: 25px; cursor: pointer; }
-        
-        /* YOUR NAME DISPLAY */
-        .artist-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem; line-height: 1.1; margin-bottom: 5px;
-            color: var(--text-main);
-        }
-        .artist-role {
-            font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px;
-        }
+        .sidebar-logo { width: 50px; margin-bottom: 25px; }
+        .artist-name { font-family: 'Playfair Display', serif; font-size: 2rem; line-height: 1.1; margin-bottom: 5px; }
+        .artist-role { font-size: 0.85rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
 
         .menu-nav { display: flex; flex-direction: column; gap: 15px; }
-        
         .menu-btn {
             background: none; border: none; text-align: left; padding: 0;
             font-family: 'Inter', sans-serif; font-size: 1rem; color: #999;
-            cursor: pointer; transition: all 0.3s; position: relative;
+            transition: all 0.3s; position: relative;
         }
-        .menu-btn:hover { color: var(--brand-blue); padding-left: 5px; }
-        
-        .menu-btn.active { 
-            color: var(--text-main); font-weight: 600; 
-            padding-left: 15px; 
-        }
+        .menu-btn:hover { color: var(--brand-blue); padding-left: 10px; }
+        .menu-btn.active { color: var(--text-main); font-weight: 600; padding-left: 15px; }
         .menu-btn.active::before {
             content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
             width: 6px; height: 6px; background: var(--brand-blue); border-radius: 50%;
         }
 
-        .sidebar-footer { font-size: 0.8rem; }
-        .about-link { cursor: pointer; color: var(--brand-blue); font-weight: 500; }
-
-        /* GALLERY STAGE (75%) */
+        /* STAGE AREA (75%) with 3D PERSPECTIVE */
         .stage-area {
             width: 75%; height: 100%;
-            position: relative;
             display: flex; justify-content: center; align-items: center;
+            perspective: 1500px; /* Creates the 3D space */
+            overflow: hidden;
+        }
+
+        /* The wrapper that actually tilts */
+        .tilt-box {
+            width: 80%; height: 80%;
+            display: flex; justify-content: center; align-items: center;
+            transform-style: preserve-3d; /* Keeps image in 3D */
+            transition: transform 0.1s ease-out; /* Smooth movement */
         }
 
         .slide-image {
-            max-width: 85%; max-height: 85%;
+            max-width: 90%; max-height: 90%;
             object-fit: contain;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            opacity: 0; transform: scale(0.95);
-            transition: all 0.6s var(--ease);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            opacity: 0; 
+            /* Push image slightly forward in Z-space so it floats */
+            transform: translateZ(50px) scale(0.9);
+            transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
         }
-        .slide-image.active { opacity: 1; transform: scale(1); }
+        .slide-image.active { opacity: 1; transform: translateZ(50px) scale(1); }
 
-        /* CONTROLS (Floating on Right) */
-        .controls {
-            position: absolute; bottom: 40px; right: 40px;
-            display: flex; gap: 20px; align-items: center;
-        }
+        /* Controls */
+        .controls { position: absolute; bottom: 40px; right: 40px; display: flex; gap: 20px; align-items: center; }
         .counter { font-family: 'Playfair Display', serif; font-size: 1.2rem; min-width: 60px; text-align: center; }
         .arrow-btn {
             width: 50px; height: 50px; border: 1px solid #eee; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center; cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
             transition: all 0.2s; background: #fff;
         }
-        .arrow-btn:hover { border-color: var(--brand-blue); background: var(--brand-blue); color: #fff; }
+        /* Hover class for JS to detect */
+        .hover-target { } 
 
         /* --- ABOUT OVERLAY --- */
         .about-overlay { 
@@ -150,99 +146,90 @@
             box-shadow: -20px 0 50px rgba(0,0,0,0.05); 
             transition: right 0.6s var(--ease); 
             display: flex; flex-direction: column; justify-content: center; 
-            background-image: radial-gradient(#f0f0f0 1px, transparent 1px); background-size: 20px 20px;
         }
         .about-overlay.open { right: 0; }
-        .close-text-btn { position: absolute; top: 30px; right: 30px; cursor: pointer; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; color: var(--text-main); }
+        .close-text-btn { position: absolute; top: 30px; right: 30px; font-weight: 600; letter-spacing: 1px; font-size: 0.8rem; }
 
         #loader { 
-            position: fixed; top: 50%; left: 62.5%; /* Center of the 75% area */
-            transform: translate(-50%, -50%); 
-            width: 40px; height: 40px; 
-            border: 3px solid rgba(0, 99, 140, 0.1); 
-            border-top: 3px solid var(--brand-blue); 
+            position: fixed; top: 50%; left: 62.5%; transform: translate(-50%, -50%); 
+            width: 40px; height: 40px; border: 3px solid rgba(0,99,140,0.1); border-top: 3px solid var(--brand-blue); 
             border-radius: 50%; animation: spin 1s linear infinite; display: none; z-index: 200; 
         }
         
         @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Mobile Layout */
+        /* Mobile Reset */
         @media (max-width: 900px) {
             .main-wrapper { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; padding: 20px 30px; border-bottom: 1px solid #eee; flex-direction: row; align-items: center; justify-content: space-between; }
-            .brand-header { margin: 0; display: flex; align-items: center; gap: 15px; }
-            .sidebar-logo { width: 40px; margin: 0; }
-            .artist-name { font-size: 1.2rem; }
-            .artist-role, .sidebar-footer { display: none; }
-            .menu-nav { display: none; } /* Hide menu on mobile header, use dropdown logic if needed, or simple horizontal scroll */
-            .stage-area { width: 100%; height: 80vh; }
-            .controls { bottom: 20px; right: 20px; }
-            #loader { left: 50%; }
-            .about-overlay { width: 100%; }
-            
-            /* Simple mobile menu fix */
-            .mobile-menu-trigger { display: block; font-size: 0.9rem; font-weight: 600; color: var(--brand-blue); cursor: pointer; }
+            .sidebar { width: 100%; height: auto; padding: 20px 30px; flex-direction: row; border-bottom: 1px solid #eee; }
+            .stage-area { width: 100%; height: 80vh; perspective: none; }
+            .tilt-box { transform: none !important; }
+            .menu-nav { display: none; }
+            .mobile-menu-trigger { display: block; font-weight: 600; color: var(--brand-blue); }
+            * { cursor: auto; } .cursor-dot, .cursor-circle { display: none; }
         }
-        @media (min-width: 901px) { .mobile-menu-trigger { display: none; } }
     </style>
 </head>
 <body>
 
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-circle" id="cursorCircle"></div>
+
     <div id="intro-layer">
-        <img src="logo.png" alt="Raghav Kulkarni" class="intro-logo">
-        <button class="enter-btn" onclick="enterSite()">Enter Portfolio</button>
+        <img src="logo.png" alt="Raghav Kulkarni" class="intro-logo hover-target">
+        <button class="enter-btn hover-target" onclick="enterSite()">ENTER PORTFOLIO</button>
     </div>
 
     <div class="main-wrapper" id="mainWrapper">
         
         <div class="sidebar">
             <div class="brand-header">
-                <img src="cornerlogo.png" alt="R" class="sidebar-logo" onclick="location.reload()">
+                <img src="cornerlogo.png" alt="R" class="sidebar-logo hover-target" onclick="location.reload()">
                 <div>
                     <h1 class="artist-name">Raghav Kulkarni</h1>
                     <div class="artist-role">Visual Artist</div>
                 </div>
             </div>
 
-            <div class="mobile-menu-trigger" onclick="toggleAbout()">MENU / ABOUT</div>
-
             <div class="menu-nav">
-                <button class="menu-btn active" onclick="changeCategory('product', this)">Product & Jewelry</button>
-                <button class="menu-btn" onclick="changeCategory('interior', this)">Interior Media</button>
-                <button class="menu-btn" onclick="changeCategory('corporate', this)">Corporate Work</button>
+                <button class="menu-btn active hover-target" onclick="changeCategory('product', this)">Product & Jewelry</button>
+                <button class="menu-btn hover-target" onclick="changeCategory('interior', this)">Interior Media</button>
+                <button class="menu-btn hover-target" onclick="changeCategory('corporate', this)">Corporate Work</button>
             </div>
 
             <div class="sidebar-footer">
-                <div class="about-link" onclick="toggleAbout()">About Me</div>
-                <div style="margin-top: 10px; color: #999;">&copy; 2024</div>
+                <div class="about-link hover-target" onclick="toggleAbout()" style="font-weight:600; color:var(--brand-blue); cursor:pointer;">About Me</div>
+                <div style="margin-top: 10px; color: #999; font-size:0.8rem;">&copy; 2025</div>
             </div>
         </div>
 
-        <div class="stage-area">
+        <div class="stage-area" id="stageArea">
             <div id="loader"></div>
-            <img src="" class="slide-image" id="mainImage" alt="Portfolio Work">
             
+            <div class="tilt-box" id="tiltBox">
+                <img src="" class="slide-image" id="mainImage" alt="Portfolio Work">
+            </div>
+
             <div class="controls">
-                <div class="arrow-btn" onclick="prevSlide()">&#8592;</div>
+                <div class="arrow-btn hover-target" onclick="prevSlide()">&#8592;</div>
                 <div class="counter" id="counter">1 / 22</div>
-                <div class="arrow-btn" onclick="nextSlide()">&#8594;</div>
+                <div class="arrow-btn hover-target" onclick="nextSlide()">&#8594;</div>
             </div>
         </div>
-
     </div>
 
     <div class="about-overlay" id="aboutPanel">
-        <div class="close-text-btn" onclick="toggleAbout()">CLOSE</div>
+        <div class="close-text-btn hover-target" onclick="toggleAbout()">CLOSE</div>
         <img src="profile.jpg" style="width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:30px;">
         <h2 style="font-family:'Playfair Display'; margin-bottom:20px;">About Me</h2>
         <p style="color:#555; line-height:1.6; font-size:0.95rem; margin-bottom:30px;">
             More than a photographer, I am a visual artist dedicated to translating concepts into tangible imagery.<br><br>
-            A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach within a controlled environment. I use light, composition, and technical precision to convert abstract ideas into high-impact commercial visuals.
+            A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach within a controlled environment.
         </p>
         <div>
-            <div><b>Phone:</b> <a href="tel:+918888248590" style="color:var(--brand-blue); text-decoration:none;">+91 88882 48590</a></div>
-            <div style="margin-top:5px;"><b>Email:</b> <a href="mailto:raghavkulkarniphotography@gmail.com" style="color:var(--brand-blue); text-decoration:none;">raghavkulkarniphotography@gmail.com</a></div>
+            <div><b>Phone:</b> <a href="tel:+918888248590" class="hover-target" style="color:var(--brand-blue); text-decoration:none;">+91 88882 48590</a></div>
+            <div style="margin-top:5px;"><b>Email:</b> <a href="mailto:raghavkulkarniphotography@gmail.com" class="hover-target" style="color:var(--brand-blue); text-decoration:none;">raghavkulkarniphotography@gmail.com</a></div>
         </div>
     </div>
 
@@ -264,18 +251,50 @@
         let currentIndex = 0;
         let images = [];
 
-        // --- INIT ---
-        window.onload = function() {
-            // Load initial category silently
-            loadCategoryData('product');
-        };
+        // --- 1. MOUSE PHYSICS & 3D TILT ---
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorCircle = document.getElementById('cursorCircle');
+        const tiltBox = document.getElementById('tiltBox');
+        const stageArea = document.getElementById('stageArea');
 
-        // --- FUNCTIONS ---
-        
+        // Mouse Move Listener
+        document.addEventListener('mousemove', (e) => {
+            // A. Move Custom Cursor
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            
+            // Lag effect for circle (Cinematic feel)
+            setTimeout(() => {
+                cursorCircle.style.left = e.clientX + 'px';
+                cursorCircle.style.top = e.clientY + 'px';
+            }, 50);
+
+            // B. 3D Tilt Logic
+            // Calculate center of the screen
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            // Range: -15deg to +15deg
+            const rotateX = (y - 0.5) * -15; 
+            const rotateY = (x - 0.5) * 15;
+
+            // Apply transform to the Tilt Box
+            tiltBox.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        // Hover Effects
+        document.querySelectorAll('.hover-target, button, a').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+        // --- 2. CORE FUNCTIONS ---
+        window.onload = function() { loadCategoryData('product'); };
+
         function enterSite() {
             document.getElementById('intro-layer').classList.add('closed');
             document.getElementById('mainWrapper').classList.add('visible');
-            updateDisplay(); // Show first image
+            updateDisplay();
         }
 
         function loadCategoryData(cat) {
@@ -285,11 +304,8 @@
         }
 
         function changeCategory(cat, btn) {
-            // Update UI
             document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
-            // Update Data & Display
             loadCategoryData(cat);
             updateDisplay();
         }
@@ -299,17 +315,13 @@
             const counter = document.getElementById('counter');
             const loader = document.getElementById('loader');
             
-            // Fade out
             imgEl.classList.remove('active');
             loader.style.display = 'block';
 
             setTimeout(() => {
                 imgEl.src = images[currentIndex];
-                
                 // Preload Next
-                if(currentIndex < images.length - 1) {
-                    new Image().src = images[currentIndex + 1];
-                }
+                if(currentIndex < images.length - 1) new Image().src = images[currentIndex + 1];
 
                 imgEl.onload = function() {
                     loader.style.display = 'none';
@@ -321,28 +333,20 @@
         }
 
         function nextSlide() {
-            if (currentIndex < images.length - 1) {
-                currentIndex++;
-                updateDisplay();
-            } else {
-                currentIndex = 0; 
-                updateDisplay();
-            }
+            if (currentIndex < images.length - 1) currentIndex++;
+            else currentIndex = 0;
+            updateDisplay();
         }
 
         function prevSlide() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateDisplay();
-            }
+            if (currentIndex > 0) currentIndex--;
+            updateDisplay();
         }
 
-        function toggleAbout() {
-            document.getElementById('aboutPanel').classList.toggle('open');
-        }
-
-        // Keyboard Support
-        document.addEventListener('keydown', function(e) {
+        function toggleAbout() { document.getElementById('aboutPanel').classList.toggle('open'); }
+        
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
             if(e.key === "ArrowRight") nextSlide();
             if(e.key === "ArrowLeft") prevSlide();
         });

@@ -27,85 +27,66 @@
             overscroll-behavior-y: none; 
         }
 
-        /* --- 1. HEADER (Logo & Info Only) --- */
+        /* --- 1. HEADER (Desktop) --- */
         nav {
-            position: fixed; top: 0; left: 0; width: 100%;
-            background: rgba(255,255,255,0.95); 
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            position: sticky; top: 0; left: 0; width: 100%;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             padding: 15px 5%;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.05);
-            height: 70px; /* Fixed height to ensure stability */
         }
 
-        .logo img { height: 35px; width: auto; cursor: pointer; display: block; }
+        .logo img { height: 45px; width: auto; cursor: pointer; display: block; }
 
-        .about-btn {
-            font-size: 0.85rem; font-weight: 700; color: var(--brand-blue);
-            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        /* --- 2. FLOATING MENU (Separated from Header) --- */
         .menu-container {
-            position: fixed;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999; /* Always on top */
-            
-            display: flex; gap: 5px;
-            background: #f0f2f5; 
-            padding: 5px; 
-            border-radius: var(--radius-pill);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            border: 1px solid rgba(255,255,255,0.5);
-        }
-
-        /* DESKTOP POSITION (Top Center) */
-        @media (min-width: 901px) {
-            .menu-container {
-                top: 15px; /* Aligned with header */
-            }
-            .cat-btn { padding: 8px 25px; font-size: 0.9rem; }
-        }
-
-        /* MOBILE POSITION (Bottom Center) */
-        @media (max-width: 900px) {
-            .menu-container {
-                bottom: 30px; /* Floating at bottom */
-                top: auto;    /* Ignore top */
-                background: rgba(255,255,255,0.95);
-                backdrop-filter: blur(10px);
-                width: 90%; max-width: 350px;
-                justify-content: center;
-            }
-            .cat-btn { padding: 12px 0; font-size: 0.8rem; flex: 1; text-align: center; }
+            display: flex; gap: 8px;
+            background: #f0f2f5; padding: 5px; border-radius: var(--radius-pill);
         }
 
         .cat-btn {
-            border: none; background: transparent; 
-            font-family: 'Manrope', sans-serif; font-weight: 600; color: #777;
+            border: none; background: transparent; padding: 10px 25px;
+            font-family: 'Manrope', sans-serif; font-size: 0.9rem; font-weight: 600; color: #777;
             cursor: pointer; transition: all 0.3s ease; border-radius: var(--radius-pill);
-            white-space: nowrap; 
         }
         .cat-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.5); }
         .cat-btn.active { color: #fff; background: var(--brand-blue); box-shadow: 0 4px 12px rgba(0, 99, 140, 0.3); }
 
-        /* --- 3. GRID SYSTEM --- */
-        /* Added top padding so content doesn't hide behind fixed header */
-        .gallery-container { padding: 100px 5% 100px; min-height: 100vh; }
+        .about-btn {
+            font-size: 0.9rem; font-weight: 700; color: var(--brand-blue);
+            cursor: pointer; margin-left: 20px; text-transform: uppercase; letter-spacing: 1px;
+        }
 
-        .masonry-wrapper { display: flex; gap: 30px; align-items: flex-start; transition: gap 0.4s ease; }
+        /* --- 2. THE DYNAMIC GRID --- */
+        .gallery-container { padding: 30px 5% 80px; min-height: 90vh; }
+
+        .masonry-wrapper {
+            display: flex;
+            gap: 30px; /* Desktop Gap */
+            align-items: flex-start;
+        }
+
+        /* WIDER MARGIN for Interior/Corporate (Desktop Only) */
         .masonry-wrapper.wide-gap { gap: 60px; }
         
-        .masonry-col { flex: 1; display: flex; flex-direction: column; gap: 30px; transition: gap 0.4s ease; }
+        .masonry-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px; /* Desktop Vertical Gap */
+        }
         .masonry-wrapper.wide-gap .masonry-col { gap: 60px; }
 
         .item {
-            position: relative; border-radius: var(--radius-main);
-            overflow: hidden; background: #fff;
+            position: relative;
+            border-radius: var(--radius-main);
+            overflow: hidden;
+            background: #fff;
             box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-            transition: transform 0.3s ease; transform: translateZ(0);
+            transition: transform 0.3s ease;
+            transform: translateZ(0); will-change: transform; 
+            cursor: pointer;
         }
+
         .item:hover { transform: translateY(-5px); }
 
         .item img {
@@ -114,14 +95,23 @@
         }
         .item img.loaded { opacity: 1; }
 
-        /* --- 4. LIGHTBOX --- */
+        /* Video specific styles for grid */
+        .item video {
+            width: 100%; height: auto; display: block;
+            object-fit: cover;
+        }
+
+        /* --- 3. LIGHTBOX --- */
         .lightbox {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.98); z-index: 2000;
             display: none; justify-content: center; align-items: center;
         }
         .lb-content { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        
         .lb-content img { max-width: 95%; max-height: 85vh; object-fit: contain; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+        .lb-content video { max-width: 90%; max-height: 85vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); outline: none; }
+
         .lb-ctrl {
             position: absolute; width: 50px; height: 50px; background: #fff;
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
@@ -132,27 +122,29 @@
         .lb-prev { top: 50%; left: 30px; transform: translateY(-50%); }
         .lb-next { top: 50%; right: 30px; transform: translateY(-50%); }
 
-        /* --- 5. ABOUT PANEL --- */
+        /* --- 4. ABOUT PANEL --- */
         .about-panel {
             position: fixed; top: 0; left: 0; width: 100%; height: 0;
             background: #fff; z-index: 150; overflow: hidden;
             transition: height 0.5s cubic-bezier(0.7, 0, 0.3, 1);
             border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            overflow-y: auto;
+            overflow-y: auto; 
         }
         .about-panel.open { height: 600px; }
         
         .about-inner {
-            max-width: 1000px; margin: 0 auto; padding: 80px 20px;
+            max-width: 900px; margin: 0 auto; padding: 80px 20px;
             display: flex; flex-direction: row; gap: 60px; 
             align-items: center; justify-content: center;
         }
+        
         .profile-pic { 
-            width: 300px; height: 300px; border-radius: 40px; 
+            width: 220px; height: 220px; border-radius: 30px; 
             object-fit: cover; box-shadow: 0 20px 50px rgba(0,0,0,0.15); 
-            border: 8px solid #fff; flex-shrink: 0;
+            border: 6px solid #fff; flex-shrink: 0;
         }
+        
         .bio { max-width: 500px; text-align: left; }
         .bio h2 { margin-bottom: 20px; font-weight: 700; font-size: 2.2rem; color: var(--text-main); }
         .bio p { color: #555; font-size: 1rem; line-height: 1.7; margin-bottom: 15px; }
@@ -163,31 +155,39 @@
         }
         .contact-btn.secondary { background: #f0f2f5; color: #555; box-shadow: none; }
 
-
-        /* --- 6. MOBILE OVERRIDES --- */
-        @media (max-width: 900px) {
-            nav { padding: 15px 20px; }
-            .gallery-container { padding: 80px 15px 120px; } /* Adjust padding for top/bottom bars */
+        /* --- MOBILE CONFIGURATION --- */
+        @media (max-width: 768px) {
             
-            .masonry-wrapper { flex-direction: column; gap: 20px !important; }
-            .masonry-col { gap: 20px !important; }
-            .masonry-wrapper.wide-gap { gap: 20px !important; }
+            nav { padding: 15px 20px; }
+            .about-btn { font-size: 0.8rem; }
+
+            .menu-container { 
+                position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
+                background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+                padding: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+                z-index: 90; width: 90%; justify-content: center; 
+                border: 1px solid rgba(0,0,0,0.05);
+            }
+            .cat-btn { padding: 10px 10px; font-size: 0.75rem; } /* Adjusted padding to fit 4 buttons */
+            
+            .gallery-container { padding: 10px 10px 100px; }
+            .masonry-wrapper { gap: 10px !important; }
+            .masonry-col { gap: 10px !important; }
+            .masonry-wrapper.wide-gap { gap: 10px !important; }
+            .masonry-wrapper.wide-gap .masonry-col { gap: 10px !important; }
 
             .about-panel.open { height: 100vh; border-radius: 0; }
-            .about-inner { flex-direction: column; text-align: center; padding: 80px 20px 120px; gap: 40px; }
+            .about-inner { flex-direction: column; text-align: center; padding: 80px 20px 100px; gap: 30px; }
             .bio { text-align: center; }
-            .profile-pic { width: 200px; height: 200px; }
+            .profile-pic { width: 180px; height: 180px; }
+
             .lb-prev, .lb-next { display: none; }
+            .lb-content img { max-width: 100%; }
+            .lb-content video { max-width: 100%; }
         }
     </style>
 </head>
 <body>
-
-    <div class="menu-container">
-        <button class="cat-btn active" onclick="loadGrid('product', this)">Product</button>
-        <button class="cat-btn" onclick="loadGrid('interior', this)">Interior</button>
-        <button class="cat-btn" onclick="loadGrid('corporate', this)">Corporate</button>
-    </div>
 
     <div class="about-panel" id="aboutPanel">
         <div class="lb-ctrl lb-close" onclick="toggleAbout()">✕</div>
@@ -209,7 +209,13 @@
         <div class="logo">
             <img src="logo.png" alt="Raghav Kulkarni" onclick="window.scrollTo(0,0)">
         </div>
-        <div class="about-btn" onclick="toggleAbout()">INFO</div>
+        <div class="menu-container">
+            <button class="cat-btn active" onclick="loadGrid('product', this)">Product</button>
+            <button class="cat-btn" onclick="loadGrid('interior', this)">Interior</button>
+            <button class="cat-btn" onclick="loadGrid('corporate', this)">Corporate</button>
+            <button class="cat-btn" onclick="loadGrid('commercial', this)">Commercial</button>
+        </div>
+        <div class="about-btn" onclick="toggleAbout()">Info</div>
     </nav>
 
     <main class="gallery-container">
@@ -225,21 +231,26 @@
         <div class="lb-ctrl lb-prev" onclick="changeSlide(-1)">&#8249;</div>
         <div class="lb-ctrl lb-next" onclick="changeSlide(1)">&#8250;</div>
         <div class="lb-content" id="lbTouchArea">
-            <img src="" id="lbImg">
+            <img src="" id="lbImg" style="display:none;">
+            <video src="" id="lbVid" controls style="display:none;"></video>
         </div>
     </div>
 
     <script>
         // --- DATA ---
-        function generatePaths(prefix, count) {
+        // Added 'ext' parameter to handle different file types (webp/mp4)
+        function generatePaths(prefix, count, ext) {
             var paths = [];
-            for (var i = 1; i <= count; i++) { paths.push(prefix + i + ".webp"); }
+            for (var i = 1; i <= count; i++) { paths.push(prefix + i + ext); }
             return paths;
         }
+
         const portfolioData = {
-            product: generatePaths('product', 22),   
-            interior: generatePaths('interior', 12), 
-            corporate: generatePaths('corporate', 6) 
+            product: generatePaths('product', 22, '.webp'),   
+            interior: generatePaths('interior', 12, '.webp'), 
+            corporate: generatePaths('corporate', 6, '.webp'),
+            // NOTE: Ensure your video files are named commercial1.mp4, commercial2.mp4, etc.
+            commercial: generatePaths('commercial', 3, '.mp4') 
         };
 
         let currentCategoryImages = [];
@@ -248,7 +259,10 @@
 
         window.onload = function() {
             loadGrid('product', document.querySelector('.cat-btn'));
-            window.addEventListener('resize', () => { loadGrid(activeCategory, null); });
+            
+            window.addEventListener('resize', () => {
+                 loadGrid(activeCategory, null); 
+            });
         };
 
         // --- GRID LOGIC ---
@@ -259,10 +273,11 @@
                 btn.classList.add('active');
             }
             
-            const isMobile = window.innerWidth <= 900;
-            const wrapper = document.getElementById('masonryWrapper');
+            const isMobile = window.innerWidth <= 768;
             
-            if (!isMobile && (cat === 'interior' || cat === 'corporate')) {
+            const wrapper = document.getElementById('masonryWrapper');
+            // Gap logic: Corporate/Interior/Commercial usually look better with wider gaps
+            if (!isMobile && (cat === 'interior' || cat === 'corporate' || cat === 'commercial')) {
                 wrapper.classList.add('wide-gap');
             } else {
                 wrapper.classList.remove('wide-gap');
@@ -280,11 +295,25 @@
                 const item = document.createElement('div');
                 item.className = 'item';
                 
-                const img = new Image();
-                img.src = url; img.loading = "lazy";
-                img.onload = () => img.classList.add('loaded');
-                img.onclick = () => openLightbox(i);
-                item.appendChild(img);
+                // CHECK: Is this a video section?
+                if (cat === 'commercial') {
+                    // Create Video Element for Grid (Autoplay, Muted, Loop)
+                    const vid = document.createElement('video');
+                    vid.src = url;
+                    vid.muted = true;
+                    vid.autoplay = true;
+                    vid.loop = true;
+                    vid.playsInline = true; // Important for iOS
+                    vid.onclick = () => openLightbox(i);
+                    item.appendChild(vid);
+                } else {
+                    // Create Image Element
+                    const img = new Image();
+                    img.src = url; img.loading = "lazy";
+                    img.onload = () => img.classList.add('loaded');
+                    img.onclick = () => openLightbox(i);
+                    item.appendChild(img);
+                }
                 
                 if (isMobile) {
                     if (i % 2 === 0) col1.appendChild(item);
@@ -311,6 +340,11 @@
         function closeLightbox() {
             document.getElementById('lightbox').style.display = 'none';
             document.body.style.overflow = 'auto'; 
+            
+            // Stop video when closing lightbox
+            const vidPlayer = document.getElementById('lbVid');
+            vidPlayer.pause();
+            vidPlayer.src = ""; // Unload to save memory
         }
 
         function changeSlide(direction) {
@@ -321,7 +355,23 @@
         }
 
         function updateLightbox() {
-            document.getElementById('lbImg').src = currentCategoryImages[currentImageIndex];
+            const lbImg = document.getElementById('lbImg');
+            const lbVid = document.getElementById('lbVid');
+            const currentUrl = currentCategoryImages[currentImageIndex];
+
+            if (activeCategory === 'commercial') {
+                // Show Video Player
+                lbImg.style.display = 'none';
+                lbVid.style.display = 'block';
+                lbVid.src = currentUrl;
+                lbVid.play(); // Auto play in lightbox
+            } else {
+                // Show Image
+                lbVid.style.display = 'none';
+                lbVid.pause();
+                lbImg.style.display = 'block';
+                lbImg.src = currentUrl;
+            }
         }
 
         // --- TOUCH SWIPE ---

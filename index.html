@@ -45,13 +45,12 @@
         .bento-container { padding: 0 5% 100px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1400px; margin: 0 auto; }
         .card { background: var(--card-bg); border: 1px solid var(--border); overflow: hidden; position: relative; }
 
-        /* ABOUT CARD - FILTER REMOVED */
+        /* ABOUT CARD */
         .about-card { grid-column: span 4; display: grid; grid-template-columns: 0.8fr 1.2fr; min-height: 450px; margin-bottom: 20px; }
         .about-photo { width: 100%; height: 100%; overflow: hidden; }
         .about-photo img { 
             width: 100%; height: 100%; object-fit: cover; 
             object-position: top center !important; 
-            /* Grayscale filter and hover state removed */
             transition: 1s ease; image-rendering: smooth; 
         }
         
@@ -80,7 +79,7 @@
         .art-item { break-inside: avoid; margin-bottom: 25px; cursor: pointer; }
         .art-item img { width: 100%; height: auto; border: 1px solid var(--border); transition: 0.4s; image-rendering: smooth; }
 
-        /* VIDEO STACK - CLEAN PLAYERS */
+        /* VIDEO STACK - NO THUMBNAILS */
         .video-stack { display: flex; flex-direction: column; gap: 60px; align-items: center; }
         .video-wrap { width: 100%; max-width: 1000px; border: 1px solid var(--border); background: #000; }
         .video-wrap video { width: 100%; height: auto; display: block; }
@@ -166,7 +165,7 @@
                 data[cat].forEach(src => {
                     const vWrap = document.createElement('div');
                     vWrap.className = 'video-wrap';
-                    // Video loads clean with no poster/thumbnail inside the gallery
+                    // Poster removed here so gallery videos are clean
                     vWrap.innerHTML = `<video src="${src}" controls preload="none" playsinline></video>`;
                     stack.appendChild(vWrap);
                 });

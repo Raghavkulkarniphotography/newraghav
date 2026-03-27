@@ -2,437 +2,240 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raghav Kulkarni | Portfolio</title>
     
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Inter:wght@200;400;500&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --brand-blue: #00638C;
-            --text-main: #222;
-            --bg-color: #fafafa;
-            --radius-main: 16px;
-            --radius-pill: 50px;
+            --bg: #0a0a0a; 
+            --card-bg: #111111;
+            --text: #ffffff;
+            --dim: #999;
+            --border: rgba(255,255,255,0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Manrope', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
+        
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Inter', sans-serif; 
             overflow-x: hidden;
-            overscroll-behavior-y: none; 
+            background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
         }
 
-        /* --- 1. HERO LANDING (New) --- */
+        /* --- HERO --- */
         .hero {
-            width: 100%;
-            height: 100vh; /* Full screen height */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: #fff;
-            position: relative;
-            z-index: 10;
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-
-        .hero-logo {
-            width: 250px; /* Big logo size */
-            height: auto;
-            margin-bottom: 20px;
-            opacity: 0;
-            animation: fadeIn 1.5s ease forwards;
-        }
-
+        .hero-logo img { width: 280px; height: auto; }
         .scroll-hint {
-            position: absolute; bottom: 40px;
-            font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
-            color: #aaa; animation: bounce 2s infinite; opacity: 0;
-            animation-delay: 1s; animation-fill-mode: forwards;
+            margin-top: 30px; font-family: 'Montserrat', sans-serif; font-size: 0.6rem;
+            letter-spacing: 5px; text-transform: uppercase; color: var(--dim); animation: bounce 2s infinite;
         }
 
-        @keyframes fadeIn { to { opacity: 1; } }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-            to { opacity: 1; }
+        /* --- BACK BUTTON --- */
+        #backBtn {
+            position: fixed; top: 40px; left: 5%; z-index: 2000; display: none;
+            background: rgba(10,10,10,0.9); border: 1px solid var(--border);
+            color: var(--text); padding: 12px 30px; font-family: 'Montserrat', sans-serif; 
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+            cursor: pointer; transition: 0.3s; backdrop-filter: blur(10px);
+        }
+        #backBtn:hover { background: #fff; color: #000; }
+
+        /* --- BENTO CONTAINER --- */
+        .bento-container {
+            padding: 0 5% 100px; 
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        /* --- 2. HEADER (Sticky) --- */
-        nav {
-            position: sticky; top: 0; left: 0; width: 100%;
-            background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            padding: 15px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.05);
-            gap: 20px; 
-        }
-
-        .logo { flex-shrink: 0; }
-        /* Smaller logo in navbar */
-        .logo img { height: 40px; width: auto; cursor: pointer; display: block; }
-
-        .menu-container {
-            display: flex; gap: 8px;
-            background: #f0f2f5; padding: 5px; border-radius: var(--radius-pill);
-            white-space: nowrap; 
-        }
-
-        .cat-btn {
-            border: none; background: transparent; padding: 10px 25px;
-            font-family: 'Manrope', sans-serif; font-size: 0.9rem; font-weight: 600; color: #777;
-            cursor: pointer; transition: all 0.3s ease; border-radius: var(--radius-pill);
-        }
-        .cat-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.5); }
-        .cat-btn.active { color: #fff; background: var(--brand-blue); box-shadow: 0 4px 12px rgba(0, 99, 140, 0.3); }
-
-        .about-btn {
-            font-size: 0.9rem; font-weight: 700; color: var(--brand-blue);
-            cursor: pointer; margin-left: 20px; text-transform: uppercase; letter-spacing: 1px;
-            flex-shrink: 0; 
-        }
-
-        /* --- 3. THE DYNAMIC GRID --- */
-        .gallery-container { padding: 30px 5% 80px; min-height: 100vh; }
-
-        .masonry-wrapper {
-            display: flex;
-            gap: 30px; 
-            align-items: flex-start;
-        }
-
-        .masonry-wrapper.wide-gap { gap: 60px; }
-        
-        .masonry-col {
-            flex: 1; display: flex; flex-direction: column; gap: 30px; 
-        }
-        .masonry-wrapper.wide-gap .masonry-col { gap: 60px; }
-
-        .item {
-            position: relative;
-            border-radius: var(--radius-main);
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
             overflow: hidden;
-            background: #fff;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-            transition: transform 0.3s ease;
-            transform: translateZ(0); will-change: transform; 
+            position: relative;
+            transition: 0.4s ease;
+        }
+
+        /* ABOUT CARD */
+        .about-card {
+            grid-column: span 4;
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            min-height: 400px;
+            margin-bottom: 20px;
+        }
+        .about-photo img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(100%); transition: 1s ease;
+            image-rendering: smooth; /* FIXES OVER-SHARPENING */
+        }
+        .about-card:hover .about-photo img { filter: grayscale(0%); }
+        .about-text { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .about-text h2 { 
+            font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 600; 
+            text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; 
+        }
+        .about-text p { font-size: 0.95rem; line-height: 1.8; font-weight: 300; color: #ccc; margin-bottom: 15px; }
+
+        /* FRESH VERTICAL WORK CARDS */
+        .category-card {
+            grid-column: span 1;
+            height: 65vh;
             cursor: pointer;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding-bottom: 40px;
         }
-
-        .item:hover { transform: translateY(-5px); }
-
-        .item img {
-            width: 100%; height: auto; display: block; 
-            opacity: 0; transition: opacity 0.5s ease;
-        }
-        .item img.loaded { opacity: 1; }
-
-        .item video {
-            width: 100%; height: auto; display: block;
-            object-fit: cover;
-        }
-
-        /* --- 4. LIGHTBOX --- */
-        .lightbox {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.98); z-index: 2000;
-            display: none; justify-content: center; align-items: center;
-        }
-        .lb-content { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        
-        .lb-content img { max-width: 95%; max-height: 85vh; object-fit: contain; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-        .lb-content video { max-width: 90%; max-height: 85vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); outline: none; }
-
-        .lb-ctrl {
-            position: absolute; width: 50px; height: 50px; background: #fff;
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1); cursor: pointer; color: #333;
-            font-size: 1.5rem; transition: transform 0.2s, color 0.2s; z-index: 2001;
-        }
-        .lb-close { top: 30px; right: 30px; }
-        .lb-prev { top: 50%; left: 30px; transform: translateY(-50%); }
-        .lb-next { top: 50%; right: 30px; transform: translateY(-50%); }
-
-        /* --- 5. ABOUT PANEL --- */
-        .about-panel {
-            position: fixed; top: 0; left: 0; width: 100%; height: 0;
-            background: #fff; z-index: 150; overflow: hidden;
-            transition: height 0.5s cubic-bezier(0.7, 0, 0.3, 1);
-            border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            overflow-y: auto; 
-        }
-        .about-panel.open { height: 600px; }
-        
-        .about-inner {
-            max-width: 900px; margin: 0 auto; padding: 80px 20px;
-            display: flex; flex-direction: row; gap: 60px; 
-            align-items: center; justify-content: center;
+        .category-card img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; 
+            object-position: top center;
+            opacity: 1; 
+            image-rendering: smooth; /* FIXES OVER-SHARPENING */
+            transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
         }
         
-        .profile-pic { 
-            width: 220px; height: 220px; border-radius: 30px; 
-            object-fit: cover; box-shadow: 0 20px 50px rgba(0,0,0,0.15); 
-            border: 6px solid #fff; flex-shrink: 0;
+        /* Subtle overlay for text legibility */
+        .category-card::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 40%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+            z-index: 1;
+        }
+        .category-card h3 {
+            position: relative; z-index: 2; text-align: center;
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+            font-size: 0.95rem; text-transform: uppercase; letter-spacing: 5px;
+            transition: 0.5s; width: 100%; text-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
         
-        .bio { max-width: 500px; text-align: left; }
-        .bio h2 { margin-bottom: 20px; font-weight: 700; font-size: 2.2rem; color: var(--text-main); }
-        .bio p { color: #555; font-size: 1rem; line-height: 1.7; margin-bottom: 15px; }
-        
-        .contact-btn {
-            display: inline-block; text-decoration: none; padding: 12px 30px; background: var(--brand-blue); color: #fff;
-            border-radius: var(--radius-pill); font-weight: 600; box-shadow: 0 10px 20px rgba(0, 99, 140, 0.3); transition: transform 0.2s; margin-right: 10px; margin-top: 10px;
-        }
-        .contact-btn.secondary { background: #f0f2f5; color: #555; box-shadow: none; }
+        /* TINY ZOOM EFFECT */
+        .category-card:hover img { transform: scale(1.05); }
 
-        /* --- RESPONSIVE CONFIGURATION --- */
-        @media (max-width: 1100px) {
-            
-            /* Smaller logo on mobile hero */
-            .hero-logo { width: 180px; }
+        /* --- GALLERY VIEW --- */
+        .gallery-container { padding: 140px 5% 100px; display: none; }
+        .gallery-container.active { display: block; animation: fadeIn 0.8s forwards; }
+        .pinterest-grid { column-count: 3; column-gap: 25px; }
+        .art-item { break-inside: avoid; margin-bottom: 25px; cursor: pointer; }
+        .art-item img { width: 100%; height: auto; border: 1px solid var(--border); transition: 0.4s; image-rendering: smooth; }
+        .art-item:hover img { border-color: #fff; }
 
-            nav { padding: 15px 20px; }
-            .about-btn { font-size: 0.8rem; }
+        .video-stack { display: flex; flex-direction: column; gap: 80px; align-items: center; }
+        .video-wrap { width: 100%; max-width: 1100px; border: 1px solid var(--border); }
+        .video-wrap video { width: 100%; height: auto; display: block; }
 
-            .menu-container { 
-                position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
-                background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
-                padding: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
-                z-index: 90; width: 90%; justify-content: center; 
-                border: 1px solid rgba(0,0,0,0.05);
-            }
-            .cat-btn { padding: 10px 10px; font-size: 0.75rem; } 
-            
-            .gallery-container { padding: 10px 10px 100px; }
-            .masonry-wrapper { gap: 10px !important; }
-            .masonry-col { gap: 10px !important; }
-            .masonry-wrapper.wide-gap { gap: 10px !important; }
-            .masonry-wrapper.wide-gap .masonry-col { gap: 10px !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} }
 
-            .about-panel.open { height: 100vh; border-radius: 0; }
-            .about-inner { flex-direction: column; text-align: center; padding: 80px 20px 100px; gap: 30px; }
-            .bio { text-align: center; }
-            .profile-pic { width: 180px; height: 180px; }
-
-            .lb-prev, .lb-next { display: none; }
-            .lb-content img { max-width: 100%; }
-            .lb-content video { max-width: 100%; }
+        /* --- MOBILE --- */
+        @media (max-width: 900px) {
+            .hero-logo img { width: 200px; }
+            .bento-container { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .about-card { grid-column: span 2; grid-template-columns: 1fr; }
+            .about-photo img { height: 250px; }
+            .about-text { padding: 30px 15px; text-align: center; }
+            .category-card { grid-column: span 1; height: 45vh; }
+            .category-card h3 { font-size: 0.75rem; letter-spacing: 3px; }
+            .pinterest-grid { column-count: 1; }
         }
     </style>
 </head>
 <body>
 
-    <header class="hero" id="home">
-        <img src="logo.png" alt="Raghav Kulkarni" class="hero-logo">
-        <div class="scroll-hint">Scroll to Enter</div>
-    </header>
+    <button id="backBtn" onclick="goHome()">← Back</button>
 
-    <div class="about-panel" id="aboutPanel">
-        <div class="lb-ctrl lb-close" onclick="toggleAbout()">✕</div>
-        <div class="about-inner">
-            <img src="profile.jpg" class="profile-pic">
-            <div class="bio">
-                <h2>Raghav Kulkarni</h2>
-                <p>More than a photographer, I am a visual artist dedicated to translating concepts into tangible imagery.</p>
-                <p>A graduate of MIT WPU (BA Photography), I apply a conceptual and minimalistic approach within a controlled environment. I use light, composition, and technical precision to convert abstract ideas into high-impact commercial visuals.</p>
-                <div>
-                    <a href="mailto:raghavkulkarniphotography@gmail.com" class="contact-btn">Email Me</a>
-                    <a href="tel:+918888248590" class="contact-btn secondary">Call</a>
-                </div>
+    <section class="hero" id="hero">
+        <div class="hero-logo"><img src="logo.png" alt="Raghav Kulkarni"></div>
+        <div class="scroll-hint">Scroll to Explore</div>
+    </section>
+
+    <main class="bento-container" id="bentoWrapper">
+        
+        <section class="card about-card">
+            <div class="about-photo">
+                <img src="profile.jpg" alt="Raghav Kulkarni">
             </div>
-        </div>
-    </div>
+            <div class="about-text">
+                <h2>Raghav Kulkarni</h2>
+                <p>Professional photographer and cinematographer specializing in commercial product, advertisement media, and high-end interiors.</p>
+                <p>Focused on delivering technical excellence and conceptual clarity for brands looking to elevate their visual narrative.</p>
+            </div>
+        </section>
 
-    <nav>
-        <div class="logo">
-            <img src="logo.png" alt="Raghav Kulkarni" onclick="window.scrollTo(0,0)">
+        <div class="card category-card" onclick="loadCategory('product')">
+            <img src="thumb-product.webp" alt="Product Portfolio">
+            <h3>Product</h3>
         </div>
-        <div class="menu-container">
-            <button class="cat-btn active" onclick="loadGrid('product', this)">Product</button>
-            <button class="cat-btn" onclick="loadGrid('interior', this)">Interior</button>
-            <button class="cat-btn" onclick="loadGrid('corporate', this)">Corporate</button>
-            <button class="cat-btn" onclick="loadGrid('commercial', this)">Commercial</button>
-        </div>
-        <div class="about-btn" onclick="toggleAbout()">Info</div>
-    </nav>
 
-    <main class="gallery-container">
-        <div class="masonry-wrapper" id="masonryWrapper">
-            <div class="masonry-col" id="col-1"></div>
-            <div class="masonry-col" id="col-2"></div>
-            <div class="masonry-col" id="col-3"></div>
+        <div class="card category-card" onclick="loadCategory('interior')">
+            <img src="thumb-interior.webp" alt="Interior Portfolio">
+            <h3>Interior</h3>
         </div>
+
+        <div class="card category-card" onclick="loadCategory('corporate')">
+            <img src="thumb-corporate.webp" alt="Corporate Portfolio">
+            <h3>Corporate</h3>
+        </div>
+
+        <div class="card category-card" onclick="loadCategory('commercial')">
+            <img src="thumb-commercial.webp" alt="Commercial Portfolio">
+            <h3>Commercial</h3>
+        </div>
+
     </main>
 
-    <div class="lightbox" id="lightbox">
-        <div class="lb-ctrl lb-close" onclick="closeLightbox()">✕</div>
-        <div class="lb-ctrl lb-prev" onclick="changeSlide(-1)">&#8249;</div>
-        <div class="lb-ctrl lb-next" onclick="changeSlide(1)">&#8250;</div>
-        <div class="lb-content" id="lbTouchArea">
-            <img src="" id="lbImg" style="display:none;">
-            <video src="" id="lbVid" controls style="display:none;"></video>
-        </div>
+    <div id="gallery" class="gallery-container">
+        <div id="contentWrapper"></div>
     </div>
 
     <script>
-        // --- DATA ---
-        function generatePaths(prefix, count, ext) {
-            var paths = [];
-            for (var i = 1; i <= count; i++) { paths.push(prefix + i + ext); }
-            return paths;
-        }
-
-        const portfolioData = {
-            product: generatePaths('product', 22, '.webp'),   
-            interior: generatePaths('interior', 12, '.webp'), 
-            corporate: generatePaths('corporate', 6, '.webp'),
-            commercial: generatePaths('commercial', 5, '.mp4') 
+        const data = {
+            product: Array.from({length: 22}, (_, i) => `product${i+1}.webp`),
+            interior: Array.from({length: 12}, (_, i) => `interior${i+1}.webp`),
+            corporate: Array.from({length: 6}, (_, i) => `corporate${i+1}.webp`),
+            commercial: Array.from({length: 5}, (_, i) => `commercial${i+1}.mp4`)
         };
 
-        let currentCategoryImages = [];
-        let currentImageIndex = 0;
-        let activeCategory = 'product';
+        function loadCategory(cat) {
+            document.getElementById('bentoWrapper').style.display = 'none';
+            document.getElementById('hero').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'block';
+            const gallery = document.getElementById('gallery');
+            const wrapper = document.getElementById('contentWrapper');
+            gallery.classList.add('active');
+            wrapper.innerHTML = '';
 
-        window.onload = function() {
-            loadGrid('product', document.querySelector('.cat-btn'));
-            
-            window.addEventListener('resize', () => {
-                 loadGrid(activeCategory, null); 
-            });
-        };
-
-        // --- GRID LOGIC ---
-        function loadGrid(cat, btn) {
-            activeCategory = cat;
-            if(btn) {
-                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
-            
-            const isMobile = window.innerWidth <= 1100;
-            
-            const wrapper = document.getElementById('masonryWrapper');
-            if (!isMobile && (cat === 'interior' || cat === 'corporate' || cat === 'commercial')) {
-                wrapper.classList.add('wide-gap');
+            if (cat === 'commercial') {
+                const stack = document.createElement('div');
+                stack.className = 'video-stack';
+                data[cat].forEach(src => {
+                    stack.innerHTML += `<div class="video-wrap"><video src="${src}" controls playsinline></video></div>`;
+                });
+                wrapper.appendChild(stack);
             } else {
-                wrapper.classList.remove('wide-gap');
+                const grid = document.createElement('div');
+                grid.className = 'pinterest-grid';
+                data[cat].forEach(src => {
+                    grid.innerHTML += `<div class="art-item"><img src="${src}" onclick="window.open(this.src)" loading="lazy"></div>`;
+                });
+                wrapper.appendChild(grid);
             }
-
-            currentCategoryImages = portfolioData[cat];
-            
-            const col1 = document.getElementById('col-1');
-            const col2 = document.getElementById('col-2');
-            const col3 = document.getElementById('col-3');
-            
-            col1.innerHTML = ''; col2.innerHTML = ''; col3.innerHTML = '';
-            
-            currentCategoryImages.forEach((url, i) => {
-                const item = document.createElement('div');
-                item.className = 'item';
-                
-                if (cat === 'commercial') {
-                    const vid = document.createElement('video');
-                    vid.src = url;
-                    vid.muted = true;
-                    vid.autoplay = true;
-                    vid.loop = true;
-                    vid.playsInline = true;
-                    vid.onclick = () => openLightbox(i);
-                    item.appendChild(vid);
-                } else {
-                    const img = new Image();
-                    img.src = url; img.loading = "lazy";
-                    img.onload = () => img.classList.add('loaded');
-                    img.onclick = () => openLightbox(i);
-                    item.appendChild(img);
-                }
-                
-                if (isMobile) {
-                    if (i % 2 === 0) col1.appendChild(item);
-                    else col2.appendChild(item);
-                    col3.style.display = 'none';
-                } else {
-                    col3.style.display = 'flex';
-                    const remainder = i % 3;
-                    if(remainder === 0) col1.appendChild(item);
-                    else if(remainder === 1) col2.appendChild(item);
-                    else col3.appendChild(item);
-                }
-            });
-            
-            // OPTIONAL: Scroll past hero on click (if you want category click to auto-scroll)
-            // if(btn) { document.querySelector('nav').scrollIntoView(); }
+            window.scrollTo(0,0);
         }
 
-        // --- LIGHTBOX LOGIC ---
-        function openLightbox(index) {
-            currentImageIndex = index;
-            updateLightbox();
-            document.getElementById('lightbox').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; 
+        function goHome() {
+            document.getElementById('gallery').classList.remove('active');
+            document.getElementById('bentoWrapper').style.display = 'grid';
+            document.getElementById('hero').style.display = 'flex';
+            document.getElementById('backBtn').style.display = 'none';
+            window.scrollTo(0,0);
         }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').style.display = 'none';
-            document.body.style.overflow = 'auto'; 
-            const vidPlayer = document.getElementById('lbVid');
-            vidPlayer.pause();
-            vidPlayer.src = "";
-        }
-
-        function changeSlide(direction) {
-            currentImageIndex += direction;
-            if(currentImageIndex < 0) currentImageIndex = currentCategoryImages.length - 1;
-            if(currentImageIndex >= currentCategoryImages.length) currentImageIndex = 0;
-            updateLightbox();
-        }
-
-        function updateLightbox() {
-            const lbImg = document.getElementById('lbImg');
-            const lbVid = document.getElementById('lbVid');
-            const currentUrl = currentCategoryImages[currentImageIndex];
-
-            if (activeCategory === 'commercial') {
-                lbImg.style.display = 'none';
-                lbVid.style.display = 'block';
-                lbVid.src = currentUrl;
-                lbVid.play();
-            } else {
-                lbVid.style.display = 'none';
-                lbVid.pause();
-                lbImg.style.display = 'block';
-                lbImg.src = currentUrl;
-            }
-        }
-
-        // --- TOUCH SWIPE ---
-        let touchStartX = 0; 
-        const lbArea = document.getElementById('lbTouchArea');
-        lbArea.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
-        lbArea.addEventListener('touchend', e => {
-            if (touchStartX - e.changedTouches[0].screenX > 50) changeSlide(1);
-            if (e.changedTouches[0].screenX - touchStartX > 50) changeSlide(-1);
-        });
-
-        function toggleAbout() {
-            document.getElementById('aboutPanel').classList.toggle('open');
-        }
-
-        document.addEventListener('keydown', e => {
-            if(document.getElementById('lightbox').style.display === 'flex') {
-                if(e.key === "Escape") closeLightbox();
-                if(e.key === "ArrowRight") changeSlide(1);
-                if(e.key === "ArrowLeft") changeSlide(-1);
-            }
-        });
     </script>
 </body>
 </html>

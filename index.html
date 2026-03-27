@@ -27,121 +27,69 @@
         }
 
         /* --- HERO --- */
-        .hero {
-            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .hero-logo img { width: 280px; height: auto; }
-        .scroll-hint {
-            margin-top: 30px; font-family: 'Montserrat', sans-serif; font-size: 0.6rem;
-            letter-spacing: 5px; text-transform: uppercase; color: var(--dim); animation: bounce 2s infinite;
-        }
+        .scroll-hint { margin-top: 30px; font-family: 'Montserrat', sans-serif; font-size: 0.6rem; letter-spacing: 5px; text-transform: uppercase; color: var(--dim); animation: bounce 2s infinite; }
 
         /* --- BACK BUTTON --- */
         #backBtn {
-            position: fixed; top: 40px; left: 5%; z-index: 2000; display: none;
+            position: fixed; top: 30px; left: 5%; z-index: 2000; display: none;
             background: rgba(10,10,10,0.9); border: 1px solid var(--border);
-            color: var(--text); padding: 12px 30px; font-family: 'Montserrat', sans-serif; 
+            color: var(--text); padding: 10px 20px; font-family: 'Montserrat', sans-serif; 
             font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
             cursor: pointer; transition: 0.3s; backdrop-filter: blur(10px);
         }
-        #backBtn:hover { background: #fff; color: #000; }
 
         /* --- BENTO CONTAINER --- */
-        .bento-container {
-            padding: 0 5% 100px; 
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+        .bento-container { padding: 0 5% 100px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1400px; margin: 0 auto; }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            overflow: hidden;
-            position: relative;
-            transition: 0.4s ease;
-        }
+        .card { background: var(--card-bg); border: 1px solid var(--border); overflow: hidden; position: relative; }
 
-        /* ABOUT CARD */
-        .about-card {
-            grid-column: span 4;
-            display: grid;
-            grid-template-columns: 0.8fr 1.2fr;
-            min-height: 400px;
-            margin-bottom: 20px;
-        }
-        .about-photo img {
-            width: 100%; height: 100%; object-fit: cover;
-            filter: grayscale(100%); transition: 1s ease;
-            image-rendering: smooth; /* FIXES OVER-SHARPENING */
-        }
+        /* ABOUT CARD - FIXED HEADING */
+        .about-card { grid-column: span 4; display: grid; grid-template-columns: 0.8fr 1.2fr; min-height: 400px; margin-bottom: 20px; }
+        .about-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 1s ease; image-rendering: smooth; }
         .about-card:hover .about-photo img { filter: grayscale(0%); }
-        .about-text { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .about-text { padding: 50px; display: flex; flex-direction: column; justify-content: center; }
+        
         .about-text h2 { 
-            font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 600; 
-            text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: clamp(1.5rem, 4vw, 2.5rem); /* Dynamic resizing to prevent cutting */
+            font-weight: 600; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; 
+            white-space: nowrap; /* Prevents awkward wrapping */
         }
         .about-text p { font-size: 0.95rem; line-height: 1.8; font-weight: 300; color: #ccc; margin-bottom: 15px; }
 
-        /* FRESH VERTICAL WORK CARDS */
-        .category-card {
-            grid-column: span 1;
-            height: 65vh;
-            cursor: pointer;
-            display: flex; flex-direction: column; justify-content: flex-end;
-            padding-bottom: 40px;
-        }
-        .category-card img {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; 
-            object-position: top center;
-            opacity: 1; 
-            image-rendering: smooth; /* FIXES OVER-SHARPENING */
-            transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
-        }
-        
-        /* Subtle overlay for text legibility */
-        .category-card::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 40%;
-            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
-            z-index: 1;
-        }
-        .category-card h3 {
-            position: relative; z-index: 2; text-align: center;
-            font-family: 'Montserrat', sans-serif; font-weight: 600;
-            font-size: 0.95rem; text-transform: uppercase; letter-spacing: 5px;
-            transition: 0.5s; width: 100%; text-shadow: 0 2px 10px rgba(0,0,0,0.4);
-        }
-        
-        /* TINY ZOOM EFFECT */
+        /* CATEGORY CARDS */
+        .category-card { grid-column: span 1; height: 65vh; cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 40px; }
+        .category-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; opacity: 1; image-rendering: smooth; transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
+        .category-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); z-index: 1; }
+        .category-card h3 { position: relative; z-index: 2; text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 5px; width: 100%; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
         .category-card:hover img { transform: scale(1.05); }
 
         /* --- GALLERY VIEW --- */
-        .gallery-container { padding: 140px 5% 100px; display: none; }
+        .gallery-container { padding: 120px 5% 100px; display: none; }
         .gallery-container.active { display: block; animation: fadeIn 0.8s forwards; }
         .pinterest-grid { column-count: 3; column-gap: 25px; }
         .art-item { break-inside: avoid; margin-bottom: 25px; cursor: pointer; }
         .art-item img { width: 100%; height: auto; border: 1px solid var(--border); transition: 0.4s; image-rendering: smooth; }
-        .art-item:hover img { border-color: #fff; }
 
-        .video-stack { display: flex; flex-direction: column; gap: 80px; align-items: center; }
-        .video-wrap { width: 100%; max-width: 1100px; border: 1px solid var(--border); }
-        .video-wrap video { width: 100%; height: auto; display: block; }
+        .video-stack { display: flex; flex-direction: column; gap: 60px; align-items: center; }
+        .video-wrap { width: 100%; max-width: 1000px; border: 1px solid var(--border); }
+        .video-wrap video { width: 100%; height: auto; display: block; background: #000; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} }
 
-        /* --- MOBILE --- */
+        /* --- MOBILE REFINEMENT --- */
         @media (max-width: 900px) {
             .hero-logo img { width: 200px; }
-            .bento-container { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .about-card { grid-column: span 2; grid-template-columns: 1fr; }
-            .about-photo img { height: 250px; }
+            .bento-container { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .about-card { grid-column: span 2; grid-template-columns: 1fr; min-height: auto; }
+            .about-photo img { height: 280px; }
             .about-text { padding: 30px 15px; text-align: center; }
+            .about-text h2 { font-size: 1.4rem; white-space: normal; letter-spacing: 2px; }
             .category-card { grid-column: span 1; height: 45vh; }
-            .category-card h3 { font-size: 0.75rem; letter-spacing: 3px; }
+            .category-card h3 { font-size: 0.7rem; letter-spacing: 2px; }
             .pinterest-grid { column-count: 1; }
         }
     </style>
@@ -156,38 +104,30 @@
     </section>
 
     <main class="bento-container" id="bentoWrapper">
-        
         <section class="card about-card">
-            <div class="about-photo">
-                <img src="profile.jpg" alt="Raghav Kulkarni">
-            </div>
+            <div class="about-photo"><img src="profile.jpg" alt="Raghav Kulkarni" loading="lazy"></div>
             <div class="about-text">
                 <h2>Raghav Kulkarni</h2>
-                <p>Professional photographer and cinematographer specializing in commercial product, advertisement media, and high-end interiors.</p>
-                <p>Focused on delivering technical excellence and conceptual clarity for brands looking to elevate their visual narrative.</p>
+                <p>Commercial photographer and cinematographer based in Pune. Specialized in high-end product media and architectural interiors.</p>
             </div>
         </section>
 
         <div class="card category-card" onclick="loadCategory('product')">
-            <img src="thumb-product.webp" alt="Product Portfolio">
+            <img src="thumb-product.webp" alt="Product" loading="lazy">
             <h3>Product</h3>
         </div>
-
         <div class="card category-card" onclick="loadCategory('interior')">
-            <img src="thumb-interior.webp" alt="Interior Portfolio">
+            <img src="thumb-interior.webp" alt="Interior" loading="lazy">
             <h3>Interior</h3>
         </div>
-
         <div class="card category-card" onclick="loadCategory('corporate')">
-            <img src="thumb-corporate.webp" alt="Corporate Portfolio">
+            <img src="thumb-corporate.webp" alt="Corporate" loading="lazy">
             <h3>Corporate</h3>
         </div>
-
         <div class="card category-card" onclick="loadCategory('commercial')">
-            <img src="thumb-commercial.webp" alt="Commercial Portfolio">
+            <img src="thumb-commercial.webp" alt="Commercial" loading="lazy">
             <h3>Commercial</h3>
         </div>
-
     </main>
 
     <div id="gallery" class="gallery-container">
@@ -212,17 +152,21 @@
             wrapper.innerHTML = '';
 
             if (cat === 'commercial') {
-                const stack = document.createElement('div');
-                stack.className = 'video-stack';
                 data[cat].forEach(src => {
-                    stack.innerHTML += `<div class="video-wrap"><video src="${src}" controls playsinline></video></div>`;
+                    const vWrap = document.createElement('div');
+                    vWrap.className = 'video-wrap';
+                    // Using 'preload="none"' and a poster image to save mobile data/speed
+                    vWrap.innerHTML = `<video src="${src}" controls preload="none" poster="thumb-commercial.webp" playsinline></video>`;
+                    const stack = document.querySelector('.video-stack') || document.createElement('div');
+                    stack.className = 'video-stack';
+                    stack.appendChild(vWrap);
+                    wrapper.appendChild(stack);
                 });
-                wrapper.appendChild(stack);
             } else {
                 const grid = document.createElement('div');
                 grid.className = 'pinterest-grid';
                 data[cat].forEach(src => {
-                    grid.innerHTML += `<div class="art-item"><img src="${src}" onclick="window.open(this.src)" loading="lazy"></div>`;
+                    grid.innerHTML += `<div class="art-item"><img src="${src}" loading="lazy" onclick="window.open(this.src)"></div>`;
                 });
                 wrapper.appendChild(grid);
             }

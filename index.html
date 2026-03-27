@@ -45,15 +45,16 @@
         .bento-container { padding: 0 5% 100px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1400px; margin: 0 auto; }
         .card { background: var(--card-bg); border: 1px solid var(--border); overflow: hidden; position: relative; }
 
-        /* ABOUT CARD */
+        /* ABOUT CARD - FILTER REMOVED */
         .about-card { grid-column: span 4; display: grid; grid-template-columns: 0.8fr 1.2fr; min-height: 450px; margin-bottom: 20px; }
         .about-photo { width: 100%; height: 100%; overflow: hidden; }
         .about-photo img { 
             width: 100%; height: 100%; object-fit: cover; 
             object-position: top center !important; 
-            filter: grayscale(100%); transition: 1s ease; image-rendering: smooth; 
+            /* Grayscale filter and hover state removed */
+            transition: 1s ease; image-rendering: smooth; 
         }
-        .about-card:hover .about-photo img { filter: grayscale(0%); }
+        
         .about-text { padding: 50px; display: flex; flex-direction: column; justify-content: center; }
         .about-text h2 { 
             font-family: 'Montserrat', sans-serif; font-size: clamp(1.4rem, 4vw, 2.5rem); 

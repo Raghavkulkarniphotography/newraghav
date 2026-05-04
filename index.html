@@ -79,7 +79,7 @@
         .art-item { break-inside: avoid; margin-bottom: 25px; cursor: pointer; }
         .art-item img { width: 100%; height: auto; border: 1px solid var(--border); transition: 0.4s; image-rendering: smooth; }
 
-        /* VIDEO STACK - NO THUMBNAILS */
+        /* VIDEO STACK */
         .video-stack { display: flex; flex-direction: column; gap: 60px; align-items: center; }
         .video-wrap { width: 100%; max-width: 1000px; border: 1px solid var(--border); background: #000; }
         .video-wrap video { width: 100%; height: auto; display: block; }
@@ -132,9 +132,9 @@
             <img src="thumb-corporate.webp" alt="Corporate" loading="lazy">
             <h3>Corporate</h3>
         </div>
-        <div class="card category-card" onclick="loadCategory('commercial')">
-            <img src="thumb-commercial.webp" alt="Commercial" loading="lazy">
-            <h3>Commercial</h3>
+        <div class="card category-card" onclick="loadCategory('videos')">
+            <img src="thumb-commercial.webp" alt="Videos" loading="lazy">
+            <h3>Videos</h3>
         </div>
     </main>
 
@@ -147,7 +147,7 @@
             product: Array.from({length: 22}, (_, i) => `product${i+1}.webp`),
             interior: Array.from({length: 16}, (_, i) => `interior${i+1}.webp`),
             corporate: Array.from({length: 6}, (_, i) => `corporate${i+1}.webp`),
-            commercial: Array.from({length: 5}, (_, i) => `commercial${i+1}.mp4`)
+            videos: Array.from({length: 5}, (_, i) => `video${i+1}.mp4`)
         };
 
         function loadCategory(cat) {
@@ -159,14 +159,15 @@
             gallery.classList.add('active');
             wrapper.innerHTML = '';
 
-            if (cat === 'commercial') {
+            if (cat === 'videos') {
                 const stack = document.createElement('div');
                 stack.className = 'video-stack';
                 data[cat].forEach(src => {
                     const vWrap = document.createElement('div');
                     vWrap.className = 'video-wrap';
-                    // Poster removed here so gallery videos are clean
-                    vWrap.innerHTML = `<video src="${src}" controls preload="none" playsinline></video>`;
+                    // This generates the thumbnail link (e.g., video1.jpg)
+                    const posterSrc = src.replace('.mp4', '.jpg');
+                    vWrap.innerHTML = `<video src="${src}" poster="${posterSrc}" controls preload="none" playsinline></video>`;
                     stack.appendChild(vWrap);
                 });
                 wrapper.appendChild(stack);

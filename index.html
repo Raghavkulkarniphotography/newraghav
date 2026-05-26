@@ -45,7 +45,7 @@
         .video-stack { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; }
         .video-item { width: 100%; max-width: 800px; position: relative; border: 1px solid var(--border); background: #000; overflow: hidden; }
         .video-item.is-short { max-width: 350px; aspect-ratio: 9/16; }
-        .video-item iframe { width: 100%; height: 100%; aspect-ratio: 16/9; pointer-events: none; } /* Disable iframe clicks to force div click */
+        .video-item iframe { width: 100%; height: 100%; aspect-ratio: 16/9; pointer-events: none; } 
         .video-item.is-short iframe { aspect-ratio: 9/16; }
 
         /* Click overlay to unmute */
@@ -73,7 +73,6 @@
     </section>
 
     <main class="bento-container" id="bentoWrapper">
-        <!-- About Card -->
         <section class="card about-card">
             <div class="about-photo"><img src="profile.jpg" alt="Raghav Kulkarni"></div>
             <div class="about-text">
@@ -105,7 +104,6 @@
         <div id="contentWrapper"></div>
     </div>
 
-    <!-- YouTube API -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
@@ -120,7 +118,7 @@
         let players = {};
 
         function onYouTubeIframeAPIReady() {
-            // API is loaded and ready
+            // API global callback
         }
 
         function loadCategory(cat) {
@@ -147,28 +145,34 @@
                     `;
                     stack.appendChild(item);
                     
-                    // Initialize Player
                     setTimeout(() => {
                         players[divId] = new YT.Player(divId, {
                             videoId: video.id,
                             playerVars: { 
                                 'autoplay': 1, 
                                 'mute': 1, 
-                                'loop': 1, 
-                                'playlist': video.id, 
                                 'controls': 0,
                                 'modestbranding': 1,
-                                'rel': 0
+                                'rel': 0,
+                                'origin': window.location.origin
                             },
                             events: {
-                                'onReady': (e) => e.target.playVideo()
+                                'onReady': (e) => {
+                                    e.target.playVideo();
+                                },
+                                'onStateChange': (e) => {
+                                    // Robust programmatic loop handling to prevent player validation crashes
+                                    if (e.data === YT.PlayerState.ENDED) {
+                                        e.target.seekTo(0);
+                                        e.target.playVideo();
+                                    }
+                                }
                             }
                         });
                     }, 100);
                 });
                 wrapper.appendChild(stack);
             } else {
-                // Image gallery logic
                 const grid = document.createElement('div');
                 grid.className = 'pinterest-grid';
                 const imgs = { product: 22, interior: 16, corporate: 6 };
@@ -185,14 +189,14 @@
             if (player) {
                 player.unMute();
                 player.setVolume(100);
-                player.seekTo(0); // Restart from beginning with sound
+                player.seekTo(0); 
+                player.playVideo();
                 overlay.parentElement.classList.add('playing');
             }
         }
 
         function goHome() {
-            // Destroy players to save memory/stop sound
-            Object.values(players).forEach(p => { if(p.destroy) p.destroy(); });
+            Object.values(players).forEach(p => { if(p && typeof p.destroy === 'function') p.destroy(); });
             players = {};
             
             document.getElementById('gallery').classList.remove('active');

@@ -10,9 +10,7 @@
     content="width=device-width, initial-scale=1.0"
 >
 
-<title>
-    Raghav Kulkarni — Photography & Film
-</title>
+<title>Raghav Kulkarni — Photography & Film</title>
 
 <meta
     name="description"
@@ -26,72 +24,49 @@
 
 <style>
 
-/* ============================================================
-   BASE
-============================================================ */
-
 :root {
-
     --bg: #111111;
     --text: #efefec;
     --soft: #a7a7a2;
     --dim: #70706d;
     --line: rgba(255,255,255,0.13);
-
     --sans: "Inter", sans-serif;
     --serif: "DM Serif Display", serif;
-
 }
 
 * {
-
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
 }
 
 html {
-
     scroll-behavior: smooth;
-
 }
 
 body {
-
     background: var(--bg);
     color: var(--text);
-
     font-family: var(--sans);
-
     overflow-x: hidden;
-
 }
 
 body.locked {
-
     overflow: hidden;
-
 }
 
 a {
-
     color: inherit;
     text-decoration: none;
-
 }
 
 button {
-
     font: inherit;
-
 }
 
 img {
-
     width: 100%;
     display: block;
-
 }
 
 
@@ -100,15 +75,11 @@ img {
 ============================================================ */
 
 .nav {
-
     position: fixed;
-
     top: 0;
     left: 0;
-
     width: 100%;
     height: 72px;
-
     padding: 0 4vw;
 
     display: flex;
@@ -122,63 +93,45 @@ img {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 
-    transition: border-color .3s ease;
-
     border-bottom: 1px solid transparent;
 
+    transition: border-color .3s ease;
 }
 
 .nav.scrolled {
-
     border-bottom-color: var(--line);
-
 }
 
 .brand img {
-
     width: 88px;
     height: auto;
-
 }
 
 .menu {
-
     display: flex;
     align-items: center;
-
     gap: 26px;
-
 }
 
 .menu a {
-
     font-size: 11px;
-
     color: var(--soft);
-
     transition: color .25s ease;
-
 }
 
 .menu a:hover {
-
     color: var(--text);
-
 }
 
 
 /* ============================================================
-   INTRO / HERO
+   HERO
 ============================================================ */
 
 .hero {
-
     min-height: 100vh;
 
-    padding:
-        110px
-        4vw
-        50px;
+    padding: 110px 4vw 50px;
 
     display: grid;
 
@@ -189,52 +142,38 @@ img {
     gap: 4vw;
 
     align-items: center;
-
 }
 
 .hero-intro {
-
     align-self: center;
-
 }
 
 .hero-name {
-
     font-size: clamp(32px,4vw,61px);
-
     font-weight: 300;
-
     line-height: 1;
-
     letter-spacing: -2px;
-
 }
 
 .hero-role {
-
     margin-top: 18px;
 
     font-size: 12px;
     line-height: 1.7;
 
     color: var(--soft);
-
 }
 
 .hero-role span {
-
     display: block;
-
 }
 
 .hero-location {
-
     margin-top: 34px;
 
     font-size: 10px;
 
     color: var(--dim);
-
 }
 
 
@@ -243,11 +182,9 @@ img {
 ============================================================ */
 
 .carousel {
-
     position: relative;
 
     height: min(78vh, 790px);
-
     min-height: 520px;
 
     overflow: hidden;
@@ -255,17 +192,13 @@ img {
     cursor: grab;
 
     user-select: none;
-
 }
 
 .carousel.dragging {
-
     cursor: grabbing;
-
 }
 
 .carousel-slide {
-
     position: absolute;
 
     top: 50%;
@@ -278,15 +211,12 @@ img {
     overflow: hidden;
 
     transition:
-
         left .9s cubic-bezier(.2,.7,.2,1),
         transform .9s cubic-bezier(.2,.7,.2,1),
         opacity .65s ease;
-
 }
 
 .carousel-slide img {
-
     width: 100%;
     height: 100%;
 
@@ -295,11 +225,9 @@ img {
     background: #111;
 
     pointer-events: none;
-
 }
 
 .carousel-slide.current {
-
     left: 50%;
 
     transform:
@@ -309,11 +237,9 @@ img {
     opacity: 1;
 
     z-index: 4;
-
 }
 
 .carousel-slide.previous {
-
     left: 0;
 
     transform:
@@ -323,11 +249,9 @@ img {
     opacity: .25;
 
     z-index: 2;
-
 }
 
 .carousel-slide.next {
-
     left: 100%;
 
     transform:
@@ -337,11 +261,9 @@ img {
     opacity: .25;
 
     z-index: 2;
-
 }
 
 .carousel-slide.hidden {
-
     left: 50%;
 
     transform:
@@ -351,11 +273,9 @@ img {
     opacity: 0;
 
     z-index: 1;
-
 }
 
 .carousel-footer {
-
     position: absolute;
 
     left: 14%;
@@ -371,19 +291,15 @@ img {
     font-size: 10px;
 
     color: var(--soft);
-
 }
 
 .carousel-arrows {
-
     display: flex;
 
     gap: 22px;
-
 }
 
 .carousel-arrows button {
-
     border: 0;
 
     background: transparent;
@@ -395,65 +311,46 @@ img {
     padding: 5px 0;
 
     font-size: 15px;
-
 }
 
 .carousel-arrows button:hover {
-
     color: var(--text);
-
 }
 
 
 /* ============================================================
-   WORK
+   SELECTED WORK
 ============================================================ */
 
 .work {
-
-    padding:
-        80px
-        4vw
-        130px;
-
+    padding: 80px 4vw 130px;
 }
 
 .work-heading {
-
     display: flex;
     justify-content: space-between;
     align-items: baseline;
 
     margin-bottom: 28px;
-
 }
 
 .work-heading h2 {
-
     font-size: 12px;
-
     font-weight: 400;
-
 }
 
 .work-heading span {
-
     font-size: 10px;
-
     color: var(--dim);
-
 }
 
 .masonry {
-
     columns: 3;
 
     column-gap: 12px;
-
 }
 
 .masonry-item {
-
     width: 100%;
 
     display: inline-block;
@@ -463,52 +360,39 @@ img {
     margin-bottom: 12px;
 
     overflow: hidden;
-
 }
 
 .masonry-item img {
-
     width: 100%;
     height: auto;
 
     transition:
         transform .6s cubic-bezier(.2,.7,.2,1),
         opacity .3s ease;
-
 }
 
 .masonry-item:hover img {
-
     transform: scale(1.01);
-
 }
 
 
 /* ============================================================
-   CATEGORY INDEX
+   CATEGORIES
 ============================================================ */
 
 .categories {
-
-    padding:
-        70px
-        4vw
-        130px;
-
+    padding: 70px 4vw 130px;
 }
 
 .categories-heading {
-
     font-size: 11px;
 
     color: var(--dim);
 
     margin-bottom: 35px;
-
 }
 
 .category-browser {
-
     position: relative;
 
     min-height: 450px;
@@ -522,19 +406,15 @@ img {
     gap: 7vw;
 
     align-items: center;
-
 }
 
 .category-list {
-
     position: relative;
 
     z-index: 10;
-
 }
 
 .category-link {
-
     padding: 22px 0;
 
     border-top: 1px solid var(--line);
@@ -544,17 +424,13 @@ img {
     justify-content: space-between;
 
     cursor: pointer;
-
 }
 
 .category-link:last-child {
-
     border-bottom: 1px solid var(--line);
-
 }
 
 .category-link-name {
-
     font-size: clamp(34px,5vw,75px);
 
     font-weight: 300;
@@ -562,14 +438,11 @@ img {
     letter-spacing: -3px;
 
     transition:
-
         transform .35s ease,
         color .35s ease;
-
 }
 
 .category-link-arrow {
-
     color: var(--dim);
 
     font-size: 16px;
@@ -577,35 +450,27 @@ img {
     transition:
         transform .3s ease,
         color .3s ease;
-
 }
 
 .category-link:hover .category-link-name {
-
     transform: translateX(10px);
-
 }
 
 .category-link:hover .category-link-arrow {
-
     transform: translateX(5px);
 
     color: var(--text);
-
 }
 
 .category-preview {
-
     height: 450px;
 
     position: relative;
 
     overflow: hidden;
-
 }
 
 .category-preview img {
-
     position: absolute;
 
     inset: 0;
@@ -620,54 +485,41 @@ img {
     transform: scale(.98);
 
     transition:
-
         opacity .45s ease,
         transform .55s cubic-bezier(.2,.7,.2,1);
-
 }
 
 .category-preview img.active {
-
     opacity: 1;
 
     transform: scale(1);
-
 }
 
 
 /* ============================================================
-   FILM
+   FILMS
 ============================================================ */
 
 .films {
-
-    padding:
-        80px
-        4vw
-        130px;
-
+    padding: 80px 4vw 130px;
 }
 
 .film-header {
-
     display: flex;
+
     align-items: baseline;
     justify-content: space-between;
 
     margin-bottom: 24px;
-
 }
 
 .film-header h2 {
-
     font-size: 12px;
 
     font-weight: 400;
-
 }
 
 .film-header button {
-
     border: 0;
 
     background: none;
@@ -677,17 +529,13 @@ img {
     cursor: pointer;
 
     font-size: 10px;
-
 }
 
 .film-header button:hover {
-
     color: var(--text);
-
 }
 
 .film-covers {
-
     display: grid;
 
     grid-template-columns:
@@ -696,11 +544,9 @@ img {
         .75fr;
 
     gap: 12px;
-
 }
 
 .film-cover {
-
     position: relative;
 
     overflow: hidden;
@@ -708,40 +554,30 @@ img {
     cursor: pointer;
 
     background: #181818;
-
 }
 
 .film-cover.large {
-
     aspect-ratio: 16/9;
-
 }
 
 .film-cover.vertical {
-
     aspect-ratio: 9/16;
-
 }
 
 .film-cover img {
-
     width: 100%;
     height: 100%;
 
     object-fit: cover;
 
     transition: transform .65s ease;
-
 }
 
 .film-cover:hover img {
-
     transform: scale(1.015);
-
 }
 
 .film-meta {
-
     position: absolute;
 
     left: 16px;
@@ -758,10 +594,10 @@ img {
     text-shadow:
         0 1px 15px rgba(0,0,0,.7);
 
+    z-index: 3;
 }
 
 .film-cover::after {
-
     content: "";
 
     position: absolute;
@@ -776,7 +612,6 @@ img {
         );
 
     pointer-events: none;
-
 }
 
 
@@ -785,85 +620,71 @@ img {
 ============================================================ */
 
 .clients {
-
-    padding:
-        60px
-        4vw
-        125px;
-
+    padding: 60px 4vw 125px;
 }
 
 .clients-title {
-
     font-size: 11px;
 
     color: var(--dim);
 
     margin-bottom: 35px;
-
 }
 
 .clients-grid {
-
     display: grid;
 
     grid-template-columns:
-        repeat(5,1fr);
+        repeat(2, 1fr);
 
-    gap: 40px 50px;
+    gap: 40px 80px;
+
+    max-width: 650px;
 
     align-items: center;
-
 }
 
 .client {
-
-    height: 65px;
+    min-height: 90px;
 
     display: flex;
 
     align-items: center;
-
-    justify-content: center;
-
+    justify-content: flex-start;
 }
 
 .client img {
-
     width: auto;
 
-    max-width: 130px;
-    max-height: 45px;
+    max-width: 160px;
+    max-height: 60px;
 
     object-fit: contain;
 
-    opacity: .65;
+    opacity: .68;
 
     filter:
         grayscale(1)
         brightness(2);
 
-    transition: opacity .25s ease;
-
+    transition:
+        opacity .25s ease,
+        transform .25s ease;
 }
 
 .client img:hover {
-
     opacity: 1;
 
+    transform: scale(1.03);
 }
 
 
 /* ============================================================
-   ABOUT / CONTACT
+   ABOUT
 ============================================================ */
 
 .about-contact {
-
-    padding:
-        110px
-        4vw
-        70px;
+    padding: 110px 4vw 70px;
 
     display: grid;
 
@@ -874,19 +695,15 @@ img {
     gap: 10vw;
 
     border-top: 1px solid var(--line);
-
 }
 
 .about-label {
-
     font-size: 10px;
 
     color: var(--dim);
-
 }
 
 .about-copy {
-
     font-size: clamp(25px,3vw,44px);
 
     font-weight: 300;
@@ -894,11 +711,9 @@ img {
     line-height: 1.15;
 
     letter-spacing: -1.5px;
-
 }
 
 .about-secondary {
-
     margin-top: 28px;
 
     max-width: 500px;
@@ -908,20 +723,18 @@ img {
     font-size: 12px;
 
     line-height: 1.8;
-
 }
 
+
+/* ============================================================
+   CONTACT
+============================================================ */
+
 .contact {
-
-    padding:
-        120px
-        4vw
-        50px;
-
+    padding: 120px 4vw 50px;
 }
 
 .contact-title {
-
     font-size: clamp(58px,11vw,155px);
 
     font-weight: 300;
@@ -929,11 +742,9 @@ img {
     letter-spacing: -8px;
 
     line-height: .8;
-
 }
 
 .contact-links {
-
     margin-top: 85px;
 
     display: flex;
@@ -941,25 +752,19 @@ img {
     gap: 30px;
 
     flex-wrap: wrap;
-
 }
 
 .contact-links a {
-
     font-size: 11px;
 
     color: var(--soft);
-
 }
 
 .contact-links a:hover {
-
     color: var(--text);
-
 }
 
 .footer {
-
     margin-top: 80px;
 
     display: flex;
@@ -969,7 +774,6 @@ img {
     color: var(--dim);
 
     font-size: 9px;
-
 }
 
 
@@ -978,7 +782,6 @@ img {
 ============================================================ */
 
 .overlay {
-
     position: fixed;
 
     inset: 0;
@@ -990,28 +793,23 @@ img {
     display: none;
 
     overflow-y: auto;
-
 }
 
 .overlay.active {
-
     display: block;
-
 }
 
 .overlay-nav {
-
     position: sticky;
 
     top: 0;
 
     height: 65px;
 
-    padding:
-        0
-        4vw;
+    padding: 0 4vw;
 
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
@@ -1020,19 +818,15 @@ img {
     backdrop-filter: blur(12px);
 
     z-index: 20;
-
 }
 
 .overlay-nav h3 {
-
     font-size: 13px;
 
     font-weight: 400;
-
 }
 
 .overlay-nav button {
-
     border: 0;
 
     background: none;
@@ -1042,24 +836,17 @@ img {
     cursor: pointer;
 
     font-size: 11px;
-
 }
 
 .overlay-masonry {
-
-    padding:
-        30px
-        4vw
-        100px;
+    padding: 30px 4vw 100px;
 
     columns: 3;
 
     column-gap: 12px;
-
 }
 
 .overlay-item {
-
     width: 100%;
 
     break-inside: avoid;
@@ -1069,14 +856,11 @@ img {
     margin-bottom: 12px;
 
     cursor: zoom-in;
-
 }
 
 .overlay-item img {
-
     width: 100%;
     height: auto;
-
 }
 
 
@@ -1085,11 +869,7 @@ img {
 ============================================================ */
 
 .film-overlay-grid {
-
-    padding:
-        35px
-        4vw
-        100px;
+    padding: 35px 4vw 100px;
 
     display: grid;
 
@@ -1097,11 +877,9 @@ img {
         repeat(2,1fr);
 
     gap: 35px;
-
 }
 
 .video-item iframe {
-
     display: block;
 
     width: 100%;
@@ -1109,21 +887,16 @@ img {
     border: 0;
 
     aspect-ratio: 16/9;
-
 }
 
 .video-item.vertical {
-
     max-width: 390px;
 
     justify-self: center;
-
 }
 
 .video-item.vertical iframe {
-
     aspect-ratio: 9/16;
-
 }
 
 
@@ -1132,7 +905,6 @@ img {
 ============================================================ */
 
 .lightbox {
-
     position: fixed;
 
     inset: 0;
@@ -1149,23 +921,18 @@ img {
     padding: 3vw;
 
     cursor: zoom-out;
-
 }
 
 .lightbox.active {
-
     display: flex;
-
 }
 
 .lightbox img {
-
     width: auto;
     height: auto;
 
     max-width: 94vw;
     max-height: 92vh;
-
 }
 
 
@@ -1174,7 +941,6 @@ img {
 ============================================================ */
 
 .reveal {
-
     opacity: 0;
 
     transform: translateY(20px);
@@ -1182,15 +948,12 @@ img {
     transition:
         opacity .75s ease,
         transform .75s ease;
-
 }
 
 .reveal.visible {
-
     opacity: 1;
 
     transform: none;
-
 }
 
 
@@ -1201,78 +964,56 @@ img {
 @media (max-width: 900px) {
 
     .hero {
-
         grid-template-columns: 1fr;
 
         gap: 45px;
 
         min-height: auto;
-
     }
 
     .hero-name {
-
         font-size: 42px;
-
     }
 
     .carousel {
-
         height: 70vh;
-
     }
 
     .masonry {
-
         columns: 2;
-
     }
 
     .category-browser {
-
         grid-template-columns: 1fr;
-
     }
 
     .category-preview {
-
         display: none;
-
     }
 
     .film-covers {
-
         grid-template-columns:
             1fr
             1fr;
-
     }
 
     .film-cover.large {
-
         grid-column: span 2;
-
     }
 
     .clients-grid {
-
         grid-template-columns:
-            repeat(3,1fr);
-
+            repeat(2,1fr);
     }
 
     .about-contact {
-
         grid-template-columns: 1fr;
 
         gap: 40px;
-
     }
 
     .overlay-masonry {
-
         columns: 2;
-
     }
 
 }
@@ -1285,126 +1026,89 @@ img {
 @media (max-width: 560px) {
 
     .nav {
-
         height: 64px;
-
     }
 
     .brand img {
-
         width: 76px;
-
     }
 
     .menu a {
-
         display: none;
-
     }
 
     .menu a:last-child {
-
         display: block;
-
     }
 
     .hero {
-
         padding-top: 95px;
-
     }
 
     .hero-name {
-
         font-size: 36px;
-
     }
 
     .carousel {
-
         height: 58vh;
 
         min-height: 420px;
-
     }
 
     .carousel-slide {
-
         width: 82%;
         height: 82%;
-
     }
 
     .carousel-footer {
-
         left: 9%;
         right: 9%;
-
     }
 
     .work {
-
         padding-top: 40px;
-
     }
 
     .masonry {
-
         columns: 1;
-
     }
 
     .category-link-name {
-
         font-size: 43px;
 
         letter-spacing: -2px;
-
     }
 
     .film-covers {
-
         grid-template-columns:
             1fr
             1fr;
-
     }
 
     .film-cover.large {
-
         grid-column: span 2;
-
     }
 
     .clients-grid {
+        grid-template-columns: 1fr;
 
-        grid-template-columns:
-            repeat(2,1fr);
-
+        gap: 20px;
     }
 
-    .client img {
-
-        max-width: 100px;
-
+    .client {
+        justify-content: flex-start;
     }
 
     .contact-title {
-
         letter-spacing: -4px;
-
     }
 
     .overlay-masonry {
-
         columns: 1;
-
     }
 
     .film-overlay-grid {
-
         grid-template-columns: 1fr;
-
     }
 
 }
@@ -1413,13 +1117,10 @@ img {
 
 </head>
 
-
 <body>
 
 
-<!-- ==========================================================
-     NAV
-=========================================================== -->
+<!-- NAV -->
 
 <nav
     class="nav"
@@ -1467,18 +1168,14 @@ img {
 
 
 
-<!-- ==========================================================
-     HERO
-=========================================================== -->
+<!-- HERO -->
 
 <section
     class="hero"
     id="top"
 >
 
-
     <div class="hero-intro">
-
 
         <h1 class="hero-name">
 
@@ -1506,94 +1203,41 @@ img {
 
         </div>
 
-
     </div>
 
 
-
-    <!-- CAROUSEL -->
 
     <div
         class="carousel"
         id="carousel"
     >
 
-
-        <!-- 01 -->
-
         <div class="carousel-slide">
-
-            <img
-                src="jewellery4.webp"
-                alt=""
-            >
-
+            <img src="jewellery4.webp" alt="">
         </div>
 
-
-        <!-- 02 -->
-
         <div class="carousel-slide">
-
-            <img
-                src="jewellery3.webp"
-                alt=""
-            >
-
+            <img src="jewellery3.webp" alt="">
         </div>
 
-
-        <!-- 03 -->
-
         <div class="carousel-slide">
-
-            <img
-                src="jewellery2.webp"
-                alt=""
-            >
-
+            <img src="jewellery2.webp" alt="">
         </div>
 
-
-        <!-- 04 -->
-
         <div class="carousel-slide">
-
-            <img
-                src="product2.webp"
-                alt=""
-            >
-
+            <img src="product2.webp" alt="">
         </div>
 
-
-        <!-- 05 -->
-
         <div class="carousel-slide">
-
-            <img
-                src="product3.webp"
-                alt=""
-            >
-
+            <img src="product3.webp" alt="">
         </div>
 
-
-        <!-- 06 -->
-
         <div class="carousel-slide">
-
-            <img
-                src="product12.webp"
-                alt=""
-            >
-
+            <img src="product12.webp" alt="">
         </div>
-
 
 
         <div class="carousel-footer">
-
 
             <div>
 
@@ -1612,206 +1256,121 @@ img {
 
             <div class="carousel-arrows">
 
-
-                <button
-                    onclick="previousSlide()"
-                    aria-label="Previous image"
-                >
-
+                <button onclick="previousSlide()">
                     ←
-
                 </button>
 
-
-                <button
-                    onclick="nextSlide()"
-                    aria-label="Next image"
-                >
-
+                <button onclick="nextSlide()">
                     →
-
                 </button>
-
 
             </div>
 
-
         </div>
 
-
     </div>
-
 
 </section>
 
 
 
-<!-- ==========================================================
-     WORK
-=========================================================== -->
+<!-- SELECTED WORK -->
 
 <section
     class="work"
     id="work"
 >
 
-
     <div class="work-heading reveal">
-
 
         <h2>
             Selected Work
         </h2>
 
-
         <span>
             Photography
         </span>
 
-
     </div>
-
 
 
     <div class="masonry">
 
 
         <div class="masonry-item reveal">
-
-            <img
-                src="jewellery4.webp"
-                alt=""
-            >
-
+            <img src="product2.webp" alt="">
         </div>
 
 
         <div class="masonry-item reveal">
-
-            <img
-                src="product2.webp"
-                alt=""
-            >
-
+            <img src="jewellery3.webp" alt="">
         </div>
 
 
         <div class="masonry-item reveal">
-
-            <img
-                src="jewellery3.webp"
-                alt=""
-            >
-
+            <img src="product3.webp" alt="">
         </div>
 
 
         <div class="masonry-item reveal">
-
-            <img
-                src="product3.webp"
-                alt=""
-            >
-
+            <img src="jewellery2.webp" alt="">
         </div>
 
 
         <div class="masonry-item reveal">
-
-            <img
-                src="jewellery2.webp"
-                alt=""
-            >
-
+            <img src="product12.webp" alt="">
         </div>
 
 
         <div class="masonry-item reveal">
+            <img src="product8.webp" alt="">
+        </div>
 
-            <img
-                src="product12.webp"
-                alt=""
-            >
 
+        <!-- JEWELLERY 4 MOVED TO MIDDLE -->
+
+        <div class="masonry-item reveal">
+            <img src="jewellery4.webp" alt="">
         </div>
 
 
         <div class="masonry-item reveal">
-
-            <img
-                src="product8.webp"
-                alt=""
-            >
-
+            <img src="product5.webp" alt="">
         </div>
 
 
         <div class="masonry-item reveal">
-
-            <img
-                src="product5.webp"
-                alt=""
-            >
-
+            <img src="product10.webp" alt="">
         </div>
 
 
         <div class="masonry-item reveal">
-
-            <img
-                src="product10.webp"
-                alt=""
-            >
-
+            <img src="product6.webp" alt="">
         </div>
 
 
         <div class="masonry-item reveal">
-
-            <img
-                src="product6.webp"
-                alt=""
-            >
-
+            <img src="product11.webp" alt="">
         </div>
 
 
         <div class="masonry-item reveal">
-
-            <img
-                src="product11.webp"
-                alt=""
-            >
-
-        </div>
-
-
-        <div class="masonry-item reveal">
-
-            <img
-                src="product9.webp"
-                alt=""
-            >
-
+            <img src="product9.webp" alt="">
         </div>
 
 
     </div>
 
-
 </section>
 
 
 
-<!-- ==========================================================
-     CATEGORIES
-=========================================================== -->
+<!-- CATEGORIES -->
 
 <section
     class="categories"
     id="categories"
 >
-
 
     <div class="categories-heading reveal">
 
@@ -1820,14 +1379,11 @@ img {
     </div>
 
 
-
     <div class="category-browser">
 
 
         <div class="category-list reveal">
 
-
-            <!-- PRODUCT -->
 
             <div
                 class="category-link"
@@ -1835,26 +1391,16 @@ img {
                 onclick="openGallery('product')"
             >
 
-
                 <div class="category-link-name">
-
                     Product
-
                 </div>
-
 
                 <div class="category-link-arrow">
-
                     →
-
                 </div>
-
 
             </div>
 
-
-
-            <!-- JEWELLERY -->
 
             <div
                 class="category-link"
@@ -1862,26 +1408,16 @@ img {
                 onclick="openGallery('jewellery')"
             >
 
-
                 <div class="category-link-name">
-
                     Jewellery
-
                 </div>
-
 
                 <div class="category-link-arrow">
-
                     →
-
                 </div>
-
 
             </div>
 
-
-
-            <!-- INTERIORS -->
 
             <div
                 class="category-link"
@@ -1889,26 +1425,16 @@ img {
                 onclick="openGallery('interior')"
             >
 
-
                 <div class="category-link-name">
-
                     Interiors
-
                 </div>
-
 
                 <div class="category-link-arrow">
-
                     →
-
                 </div>
-
 
             </div>
 
-
-
-            <!-- FILM -->
 
             <div
                 class="category-link"
@@ -1916,20 +1442,13 @@ img {
                 onclick="openFilms()"
             >
 
-
                 <div class="category-link-name">
-
                     Film
-
                 </div>
-
 
                 <div class="category-link-arrow">
-
                     →
-
                 </div>
-
 
             </div>
 
@@ -1938,10 +1457,7 @@ img {
 
 
 
-        <!-- HOVER IMAGES -->
-
         <div class="category-preview">
-
 
             <img
                 id="previewProduct"
@@ -1950,13 +1466,11 @@ img {
                 alt=""
             >
 
-
             <img
                 id="previewJewellery"
                 src="jewellery4.webp"
                 alt=""
             >
-
 
             <img
                 id="previewInterior"
@@ -1964,64 +1478,42 @@ img {
                 alt=""
             >
 
-
             <img
                 id="previewFilm"
                 src="thumb-commercial.webp"
                 alt=""
             >
 
-
         </div>
 
 
     </div>
 
-
 </section>
 
 
 
-<!-- ==========================================================
-     FILMS
-=========================================================== -->
+<!-- FILMS -->
 
 <section
     class="films"
     id="films"
 >
 
-
     <div class="film-header reveal">
 
-
         <h2>
-
             Moving Image
-
         </h2>
 
-
-        <button
-            onclick="openFilms()"
-        >
-
+        <button onclick="openFilms()">
             View all →
-
         </button>
-
 
     </div>
 
 
-
     <div class="film-covers">
-
-
-        <!--
-            These are CLEAN CUSTOM COVERS.
-            The YouTube player is NOT displayed here.
-        -->
 
 
         <div
@@ -2029,12 +1521,10 @@ img {
             onclick="openFilms()"
         >
 
-
             <img
                 src="thumb-commercial.webp"
                 alt=""
             >
-
 
             <div class="film-meta">
 
@@ -2048,9 +1538,7 @@ img {
 
             </div>
 
-
         </div>
-
 
 
         <div
@@ -2058,12 +1546,10 @@ img {
             onclick="openFilms()"
         >
 
-
             <img
                 src="product12.webp"
                 alt=""
             >
-
 
             <div class="film-meta">
 
@@ -2077,9 +1563,7 @@ img {
 
             </div>
 
-
         </div>
-
 
 
         <div
@@ -2087,12 +1571,10 @@ img {
             onclick="openFilms()"
         >
 
-
             <img
                 src="jewellery4.webp"
                 alt=""
             >
-
 
             <div class="film-meta">
 
@@ -2106,23 +1588,18 @@ img {
 
             </div>
 
-
         </div>
 
 
     </div>
 
-
 </section>
 
 
 
-<!-- ==========================================================
-     CLIENTS
-=========================================================== -->
+<!-- CLIENTS -->
 
 <section class="clients">
-
 
     <div class="clients-title reveal">
 
@@ -2131,15 +1608,14 @@ img {
     </div>
 
 
-
     <div class="clients-grid reveal">
 
 
         <div class="client">
 
             <img
-                src="logo-rockals.webp"
-                alt="Rockals"
+                src="Client1.webp"
+                alt="Client 1"
                 onerror="this.parentElement.style.display='none'"
             >
 
@@ -2149,41 +1625,8 @@ img {
         <div class="client">
 
             <img
-                src="logo-valtric.webp"
-                alt="Valtric"
-                onerror="this.parentElement.style.display='none'"
-            >
-
-        </div>
-
-
-        <div class="client">
-
-            <img
-                src="logo-meetreats.webp"
-                alt="MeeTreats"
-                onerror="this.parentElement.style.display='none'"
-            >
-
-        </div>
-
-
-        <div class="client">
-
-            <img
-                src="logo-lonitales.webp"
-                alt="Loni Tales"
-                onerror="this.parentElement.style.display='none'"
-            >
-
-        </div>
-
-
-        <div class="client">
-
-            <img
-                src="logo-eps.webp"
-                alt="EPS"
+                src="Client2.webp"
+                alt="Client 2"
                 onerror="this.parentElement.style.display='none'"
             >
 
@@ -2192,20 +1635,16 @@ img {
 
     </div>
 
-
 </section>
 
 
 
-<!-- ==========================================================
-     ABOUT
-=========================================================== -->
+<!-- ABOUT -->
 
 <section
     class="about-contact"
     id="about"
 >
-
 
     <div class="about-label reveal">
 
@@ -2215,7 +1654,6 @@ img {
 
 
     <div class="reveal">
-
 
         <div class="about-copy">
 
@@ -2234,23 +1672,18 @@ img {
 
         </div>
 
-
     </div>
-
 
 </section>
 
 
 
-<!-- ==========================================================
-     CONTACT
-=========================================================== -->
+<!-- CONTACT -->
 
 <section
     class="contact"
     id="contact"
 >
-
 
     <div class="contact-title reveal">
 
@@ -2261,99 +1694,66 @@ img {
     </div>
 
 
-
     <div class="contact-links reveal">
-
 
         <a
             href="mailto:raghavkulkarniphotography@gmail.com"
         >
-
             Email
-
         </a>
 
-
-        <!-- REPLACE # WITH INSTAGRAM LINK -->
 
         <a
             href="#"
             target="_blank"
         >
-
             Instagram
-
         </a>
 
 
         <a
             href="mailto:raghavkulkarniphotography@gmail.com"
         >
-
             Start a project →
-
         </a>
 
-
     </div>
-
 
 
     <div class="footer">
 
-
         <span>
-
             Raghav Kulkarni
-
         </span>
-
 
         <span>
-
             © 2026
-
         </span>
-
 
     </div>
-
 
 </section>
 
 
 
-<!-- ==========================================================
-     PHOTO OVERLAY
-=========================================================== -->
+<!-- PHOTO OVERLAY -->
 
 <div
     class="overlay"
     id="photoOverlay"
 >
 
-
     <div class="overlay-nav">
 
-
         <h3 id="photoOverlayTitle">
-
             Photography
-
         </h3>
 
-
-        <button
-            onclick="closeGallery()"
-        >
-
+        <button onclick="closeGallery()">
             Close
-
         </button>
 
-
     </div>
-
 
 
     <div
@@ -2362,42 +1762,28 @@ img {
     >
     </div>
 
-
 </div>
 
 
 
-<!-- ==========================================================
-     FILM OVERLAY
-=========================================================== -->
+<!-- FILM OVERLAY -->
 
 <div
     class="overlay"
     id="filmOverlay"
 >
 
-
     <div class="overlay-nav">
 
-
         <h3>
-
             Moving Image
-
         </h3>
 
-
-        <button
-            onclick="closeFilms()"
-        >
-
+        <button onclick="closeFilms()">
             Close
-
         </button>
 
-
     </div>
-
 
 
     <div
@@ -2406,14 +1792,11 @@ img {
     >
     </div>
 
-
 </div>
 
 
 
-<!-- ==========================================================
-     LIGHTBOX
-=========================================================== -->
+<!-- LIGHTBOX -->
 
 <div
     class="lightbox"
@@ -2421,13 +1804,11 @@ img {
     onclick="closeLightbox()"
 >
 
-
     <img
         id="lightboxImage"
         src=""
         alt=""
     >
-
 
 </div>
 
@@ -2437,7 +1818,7 @@ img {
 
 
 /* ============================================================
-   HERO CAROUSEL
+   CAROUSEL
 ============================================================ */
 
 const carousel =
@@ -2457,13 +1838,10 @@ let currentSlide = 0;
 let carouselTimer;
 
 
-
 function updateCarousel() {
-
 
     slides.forEach(
         (slide,index) => {
-
 
             slide.className =
                 "carousel-slide hidden";
@@ -2492,37 +1870,28 @@ function updateCarousel() {
                 index === currentSlide
             ) {
 
-
                 slide.className =
                     "carousel-slide current";
 
-
             }
-
 
             else if (
                 index === previous
             ) {
 
-
                 slide.className =
                     "carousel-slide previous";
 
-
             }
-
 
             else if (
                 index === next
             ) {
 
-
                 slide.className =
                     "carousel-slide next";
 
-
             }
-
 
         }
     );
@@ -2549,18 +1918,14 @@ function updateCarousel() {
             "0"
         );
 
-
 }
-
 
 
 function nextSlide() {
 
-
     currentSlide =
         (
-            currentSlide
-            + 1
+            currentSlide + 1
         )
         %
         slides.length;
@@ -2570,13 +1935,10 @@ function nextSlide() {
 
     resetCarousel();
 
-
 }
 
 
-
 function previousSlide() {
-
 
     currentSlide =
         (
@@ -2592,13 +1954,10 @@ function previousSlide() {
 
     resetCarousel();
 
-
 }
 
 
-
 function startCarousel() {
-
 
     carouselTimer =
         setInterval(
@@ -2606,13 +1965,10 @@ function startCarousel() {
             5200
         );
 
-
 }
 
 
-
 function resetCarousel() {
-
 
     clearInterval(
         carouselTimer
@@ -2621,9 +1977,7 @@ function resetCarousel() {
 
     startCarousel();
 
-
 }
-
 
 
 updateCarousel();
@@ -2633,7 +1987,7 @@ startCarousel();
 
 
 /* ============================================================
-   DRAG / SWIPE
+   DRAG
 ============================================================ */
 
 let dragging = false;
@@ -2641,9 +1995,7 @@ let dragging = false;
 let dragStartX = 0;
 
 
-
 function startDrag(x) {
-
 
     dragging = true;
 
@@ -2653,20 +2005,15 @@ function startDrag(x) {
         "dragging"
     );
 
-
 }
-
 
 
 function finishDrag(x) {
 
-
     if (
         !dragging
     ) {
-
         return;
-
     }
 
 
@@ -2686,37 +2033,28 @@ function finishDrag(x) {
         difference < -45
     ) {
 
-
         nextSlide();
 
-
     }
-
 
     else if (
         difference > 45
     ) {
 
-
         previousSlide();
-
 
     }
 
-
 }
-
 
 
 carousel.addEventListener(
     "mousedown",
     event => {
 
-
         startDrag(
             event.clientX
         );
-
 
     }
 );
@@ -2726,11 +2064,9 @@ window.addEventListener(
     "mouseup",
     event => {
 
-
         finishDrag(
             event.clientX
         );
-
 
     }
 );
@@ -2740,11 +2076,9 @@ carousel.addEventListener(
     "touchstart",
     event => {
 
-
         startDrag(
             event.touches[0].clientX
         );
-
 
     },
     {
@@ -2757,11 +2091,9 @@ carousel.addEventListener(
     "touchend",
     event => {
 
-
         finishDrag(
             event.changedTouches[0].clientX
         );
-
 
     }
 );
@@ -2787,11 +2119,9 @@ const previewImages =
 categoryLinks.forEach(
     link => {
 
-
         link.addEventListener(
             "mouseenter",
             () => {
-
 
                 const previewId =
                     link.dataset.preview;
@@ -2800,11 +2130,9 @@ categoryLinks.forEach(
                 previewImages.forEach(
                     image => {
 
-
                         image.classList.remove(
                             "active"
                         );
-
 
                     }
                 );
@@ -2820,18 +2148,14 @@ categoryLinks.forEach(
                     preview
                 ) {
 
-
                     preview.classList.add(
                         "active"
                     );
 
-
                 }
-
 
             }
         );
-
 
     }
 );
@@ -2843,7 +2167,6 @@ categoryLinks.forEach(
 ============================================================ */
 
 const productImages = [
-
 
     "product1.webp",
     "product2.webp",
@@ -2867,11 +2190,6 @@ const productImages = [
     "product21.webp",
     "product22.webp",
 
-
-    /*
-        FUTURE PRODUCT FILES
-    */
-
     "product23.webp",
     "product24.webp",
     "product25.webp",
@@ -2891,26 +2209,14 @@ const productImages = [
     "product39.webp",
     "product40.webp"
 
-
 ];
 
 
 const jewelleryImages = [
 
-
-    /*
-        THESE EXISTING PRODUCT FILES
-        ARE ACTUALLY JEWELLERY
-    */
-
     "product8.webp",
     "product10.webp",
     "product11.webp",
-
-
-    /*
-        NEW JEWELLERY FILES
-    */
 
     "jewellery1.webp",
     "jewellery2.webp",
@@ -2933,12 +2239,10 @@ const jewelleryImages = [
     "jewellery19.webp",
     "jewellery20.webp"
 
-
 ];
 
 
 const interiorImages = [
-
 
     "interior1.webp",
     "interior2.webp",
@@ -2957,19 +2261,17 @@ const interiorImages = [
     "interior15.webp",
     "interior16.webp"
 
-
 ];
 
 
 
 /* ============================================================
-   PHOTO GALLERIES
+   PHOTO GALLERY
 ============================================================ */
 
 function openGallery(
     category
 ) {
-
 
     const overlay =
         document.getElementById(
@@ -2996,44 +2298,33 @@ function openGallery(
         category === "product"
     ) {
 
-
         title.textContent =
             "Product";
-
 
         images =
             productImages;
 
-
     }
-
 
     else if (
         category === "jewellery"
     ) {
 
-
         title.textContent =
             "Jewellery";
-
 
         images =
             jewelleryImages;
 
-
     }
 
-
     else {
-
 
         title.textContent =
             "Interiors";
 
-
         images =
             interiorImages;
-
 
     }
 
@@ -3043,7 +2334,6 @@ function openGallery(
 
     images.forEach(
         source => {
-
 
             const item =
                 document.createElement(
@@ -3072,9 +2362,7 @@ function openGallery(
             image.onerror =
                 () => {
 
-
                     item.remove();
-
 
                 };
 
@@ -3083,11 +2371,9 @@ function openGallery(
                 "click",
                 () => {
 
-
                     openLightbox(
                         source
                     );
-
 
                 }
             );
@@ -3102,7 +2388,6 @@ function openGallery(
                 item
             );
 
-
         }
     );
 
@@ -3116,13 +2401,10 @@ function openGallery(
         "locked"
     );
 
-
 }
 
 
-
 function closeGallery() {
-
 
     document.getElementById(
         "photoOverlay"
@@ -3135,79 +2417,45 @@ function closeGallery() {
         "locked"
     );
 
-
 }
 
 
 
 /* ============================================================
-   FILM DATA
+   FILMS
 ============================================================ */
 
 const videos = [
 
-
     {
-
-        id:
-            "fm0evRNFji0",
-
-        type:
-            "horizontal"
-
+        id: "fm0evRNFji0",
+        type: "horizontal"
     },
 
-
     {
-
-        id:
-            "FvxT5vOnXpc",
-
-        type:
-            "horizontal"
-
+        id: "FvxT5vOnXpc",
+        type: "horizontal"
     },
 
-
     {
-
-        id:
-            "KNQVN4_M2og",
-
-        type:
-            "vertical"
-
+        id: "KNQVN4_M2og",
+        type: "vertical"
     },
 
-
     {
-
-        id:
-            "i3lyAq1bj_c",
-
-        type:
-            "vertical"
-
+        id: "i3lyAq1bj_c",
+        type: "vertical"
     },
 
-
     {
-
-        id:
-            "JoVjSThS46U",
-
-        type:
-            "vertical"
-
+        id: "JoVjSThS46U",
+        type: "vertical"
     }
-
 
 ];
 
 
-
 function openFilms() {
-
 
     const overlay =
         document.getElementById(
@@ -3228,7 +2476,6 @@ function openFilms() {
     videos.forEach(
         video => {
 
-
             const item =
                 document.createElement(
                     "div"
@@ -3236,16 +2483,10 @@ function openFilms() {
 
 
             item.className =
-                video.type
-                ===
-                "vertical"
-
+                video.type === "vertical"
                 ?
-
                 "video-item vertical"
-
                 :
-
                 "video-item";
 
 
@@ -3277,7 +2518,6 @@ function openFilms() {
                 item
             );
 
-
         }
     );
 
@@ -3291,13 +2531,10 @@ function openFilms() {
         "locked"
     );
 
-
 }
 
 
-
 function closeFilms() {
-
 
     document.getElementById(
         "filmOverlay"
@@ -3305,11 +2542,6 @@ function closeFilms() {
         "active"
     );
 
-
-    /*
-        DESTROYS THE YOUTUBE IFRAMES,
-        SO AUDIO STOPS.
-    */
 
     document.getElementById(
         "filmGrid"
@@ -3320,7 +2552,6 @@ function closeFilms() {
     document.body.classList.remove(
         "locked"
     );
-
 
 }
 
@@ -3334,7 +2565,6 @@ function openLightbox(
     source
 ) {
 
-
     document.getElementById(
         "lightboxImage"
     ).src =
@@ -3347,20 +2577,16 @@ function openLightbox(
         "active"
     );
 
-
 }
 
 
-
 function closeLightbox() {
-
 
     document.getElementById(
         "lightbox"
     ).classList.remove(
         "active"
     );
-
 
 }
 
@@ -3373,38 +2599,29 @@ function closeLightbox() {
 const observer =
     new IntersectionObserver(
 
-
         entries => {
-
 
             entries.forEach(
                 entry => {
-
 
                     if (
                         entry.isIntersecting
                     ) {
 
-
                         entry.target.classList.add(
                             "visible"
                         );
 
-
                     }
-
 
                 }
             );
 
-
         },
-
 
         {
             threshold: .08
         }
-
 
     );
 
@@ -3414,11 +2631,9 @@ document.querySelectorAll(
 ).forEach(
     element => {
 
-
         observer.observe(
             element
         );
-
 
     }
 );
@@ -3433,7 +2648,6 @@ window.addEventListener(
     "scroll",
     () => {
 
-
         const nav =
             document.getElementById(
                 "nav"
@@ -3444,25 +2658,19 @@ window.addEventListener(
             window.scrollY > 20
         ) {
 
-
             nav.classList.add(
                 "scrolled"
             );
 
-
         }
 
-
         else {
-
 
             nav.classList.remove(
                 "scrolled"
             );
 
-
         }
-
 
     }
 );
@@ -3470,18 +2678,16 @@ window.addEventListener(
 
 
 /* ============================================================
-   ESCAPE KEY
+   ESC
 ============================================================ */
 
 document.addEventListener(
     "keydown",
     event => {
 
-
         if (
             event.key === "Escape"
         ) {
-
 
             closeGallery();
 
@@ -3489,13 +2695,10 @@ document.addEventListener(
 
             closeLightbox();
 
-
         }
-
 
     }
 );
-
 
 </script>
 

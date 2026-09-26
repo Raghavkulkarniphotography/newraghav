@@ -1,218 +1,2589 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Raghav Kulkarni | Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Inter:wght@200;400;500&display=swap" rel="stylesheet">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Raghav Kulkarni | Commercial Photographer & Filmmaker</title>
+
+    <meta
+        name="description"
+        content="Raghav Kulkarni — Commercial Photographer & Filmmaker specialising in product, jewellery and motion."
+    >
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
 
     <style>
-        :root { --bg: #0a0a0a; --card-bg: #111111; --text: #ffffff; --dim: #999; --border: rgba(255,255,255,0.15); }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png"); }
-        
-        /* --- HERO --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .hero-logo img { width: 280px; height: auto; }
-        .scroll-hint { margin-top: 30px; font-family: 'Montserrat', sans-serif; font-size: 0.6rem; letter-spacing: 5px; text-transform: uppercase; color: var(--dim); animation: bounce 2s infinite; }
 
-        /* --- BACK BUTTON --- */
-        #backBtn { position: fixed; top: 30px; left: 5%; z-index: 2000; display: none; background: rgba(10,10,10,0.9); border: 1px solid var(--border); color: var(--text); padding: 10px 20px; font-family: 'Montserrat', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; backdrop-filter: blur(10px); }
-        #backBtn:hover { background: #fff; color: #000; }
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
 
-        /* --- BENTO CONTAINER --- */
-        .bento-container { padding: 0 5% 100px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1400px; margin: 0 auto; }
-        .card { background: var(--card-bg); border: 1px solid var(--border); overflow: hidden; position: relative; }
-        .about-card { grid-column: span 4; display: grid; grid-template-columns: 0.8fr 1.2fr; min-height: 450px; margin-bottom: 20px; }
-        .about-photo { width: 100%; height: 100%; overflow: hidden; }
-        .about-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: 1s ease; }
-        .about-text { padding: 50px; display: flex; flex-direction: column; justify-content: center; }
-        .about-text h2 { font-family: 'Montserrat', sans-serif; font-size: clamp(1.4rem, 4vw, 2.5rem); font-weight: 600; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; }
-        .about-text p { font-size: 0.95rem; line-height: 1.8; font-weight: 300; color: #ccc; margin-bottom: 15px; }
+        :root {
+            --bg: #111111;
+            --bg-soft: #161616;
+            --bg-card: #181818;
+            --text: #f1efe9;
+            --muted: #8e8e8e;
+            --muted-light: #b5b5b5;
+            --line: rgba(255,255,255,0.12);
+            --accent: #c9c2b5;
 
-        .category-card { grid-column: span 1; height: 65vh; cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 40px; }
-        .category-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
-        .category-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%); z-index: 1; }
-        .category-card h3 { position: relative; z-index: 2; text-align: center; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 5px; width: 100%; }
+            --serif: "Cormorant Garamond", serif;
+            --sans: "Inter", sans-serif;
+        }
 
-        /* --- GALLERY & VIDEOS --- */
-        .gallery-container { padding: 120px 5% 100px; display: none; }
-        .gallery-container.active { display: block; animation: fadeIn 0.8s forwards; }
-        .pinterest-grid { column-count: 3; column-gap: 25px; }
-        .art-item { break-inside: avoid; margin-bottom: 25px; cursor: pointer; }
-        .art-item img { width: 100%; height: auto; border: 1px solid var(--border); transition: 0.4s; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        .video-stack { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; }
-        .video-item { width: 100%; max-width: 800px; position: relative; border: 1px solid var(--border); background: #000; overflow: hidden; }
-        .video-item.is-short { max-width: 350px; aspect-ratio: 9/16; }
-        .video-item iframe { width: 100%; height: 100%; aspect-ratio: 16/9; pointer-events: none; } 
-        .video-item.is-short iframe { aspect-ratio: 9/16; }
+        html {
+            scroll-behavior: smooth;
+        }
 
-        /* Click overlay to unmute */
-        .unmute-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: pointer; display: flex; align-items: flex-end; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.4)); transition: 0.3s; }
-        .unmute-overlay span { font-family: 'Montserrat'; font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 20px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); }
-        .video-item.playing .unmute-overlay { opacity: 0; pointer-events: none; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            overflow-x: hidden;
+        }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} }
+        img {
+            width: 100%;
+            display: block;
+        }
+
+        button,
+        a {
+            font: inherit;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           NAV
+        ===================================================== */
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 82px;
+
+            padding: 0 5%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            z-index: 2000;
+
+            background: rgba(17,17,17,0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            border-bottom: 1px solid transparent;
+            transition: 0.4s ease;
+        }
+
+        .nav.scrolled {
+            border-bottom-color: var(--line);
+        }
+
+        .nav-logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 34px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--muted-light);
+            transition: 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            min-height: 100vh;
+
+            padding: 120px 5% 55px;
+
+            display: grid;
+            grid-template-columns: 0.82fr 1.18fr;
+            gap: 6vw;
+
+            align-items: center;
+
+            position: relative;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 20;
+        }
+
+        .eyebrow {
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--muted);
+
+            margin-bottom: 26px;
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-weight: 400;
+
+            font-size: clamp(62px, 8vw, 125px);
+            line-height: 0.78;
+
+            letter-spacing: -4px;
+        }
+
+        .hero h1 span {
+            display: block;
+        }
+
+        .hero-description {
+            margin-top: 45px;
+
+            max-width: 440px;
+
+            font-size: 14px;
+            line-height: 1.8;
+
+            color: var(--muted-light);
+        }
+
+        .hero-tags {
+            margin-top: 24px;
+
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 22px;
+
+            font-size: 10px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+
+        /* =====================================================
+           HERO CAROUSEL
+        ===================================================== */
+
+        .hero-gallery {
+            height: min(76vh, 780px);
+            min-height: 520px;
+
+            position: relative;
+        }
+
+        .hero-slide {
+            position: absolute;
+
+            width: 78%;
+            height: 88%;
+
+            top: 3%;
+            right: 0;
+
+            overflow: hidden;
+
+            opacity: 0;
+
+            transform:
+                translateX(70px)
+                scale(0.95);
+
+            transition:
+                opacity 0.9s ease,
+                transform 1.15s cubic-bezier(.2,.8,.2,1);
+
+            pointer-events: none;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+
+            transform:
+                translateX(0)
+                scale(1);
+
+            z-index: 5;
+        }
+
+        .hero-slide.previous {
+            opacity: 0;
+
+            transform:
+                translateX(-70px)
+                scale(0.97);
+
+            z-index: 4;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform 8s ease;
+        }
+
+        .hero-slide.active img {
+            transform: scale(1.035);
+        }
+
+        .hero-counter {
+            position: absolute;
+
+            bottom: 3%;
+            left: 4%;
+
+            z-index: 20;
+
+            font-family: var(--serif);
+            font-size: 25px;
+
+            color: var(--muted-light);
+        }
+
+        .hero-next {
+            position: absolute;
+
+            bottom: 2%;
+            right: 1%;
+
+            z-index: 20;
+
+            border: 0;
+            background: transparent;
+
+            color: var(--muted-light);
+
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+
+            cursor: pointer;
+
+            padding: 15px 0;
+
+            transition: color 0.25s ease;
+        }
+
+        .hero-next:hover {
+            color: var(--text);
+        }
+
+
+        /* =====================================================
+           COMMON SECTION
+        ===================================================== */
+
+        section {
+            position: relative;
+        }
+
+        .section {
+            padding: 130px 5%;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 40px;
+
+            margin-bottom: 65px;
+        }
+
+        .section-number {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--muted);
+
+            margin-bottom: 13px;
+        }
+
+        .section-title {
+            font-family: var(--serif);
+            font-size: clamp(52px, 7vw, 100px);
+            font-weight: 400;
+            line-height: 0.9;
+
+            letter-spacing: -2px;
+        }
+
+        .section-description {
+            max-width: 420px;
+
+            font-size: 13px;
+            line-height: 1.8;
+
+            color: var(--muted);
+        }
+
+
+        /* =====================================================
+           SELECTED WORK
+        ===================================================== */
+
+        .work-grid {
+            display: grid;
+
+            grid-template-columns: repeat(12, 1fr);
+
+            gap: 24px;
+        }
+
+        .work-item {
+            overflow: hidden;
+            position: relative;
+
+            background: var(--bg-soft);
+        }
+
+        .work-item img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform 0.8s cubic-bezier(.2,.8,.2,1);
+        }
+
+        .work-item:hover img {
+            transform: scale(1.025);
+        }
+
+        .work-a {
+            grid-column: 1 / 9;
+            aspect-ratio: 1.4 / 1;
+        }
+
+        .work-b {
+            grid-column: 9 / 13;
+            aspect-ratio: 0.72 / 1;
+            margin-top: 120px;
+        }
+
+        .work-c {
+            grid-column: 1 / 5;
+            aspect-ratio: 0.78 / 1;
+            margin-top: 40px;
+        }
+
+        .work-d {
+            grid-column: 5 / 13;
+            aspect-ratio: 1.5 / 1;
+            margin-top: 130px;
+        }
+
+        .work-e {
+            grid-column: 3 / 11;
+            aspect-ratio: 1.25 / 1;
+            margin-top: 50px;
+        }
+
+
+        /* =====================================================
+           PHOTOGRAPHY CATEGORIES
+        ===================================================== */
+
+        .photography-categories {
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .category-row {
+            padding: 42px 0;
+
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            align-items: center;
+
+            border-bottom: 1px solid var(--line);
+
+            cursor: pointer;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-row:last-child {
+            border-bottom: none;
+        }
+
+        .category-number {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .category-name {
+            font-family: var(--serif);
+            font-size: clamp(46px, 6vw, 85px);
+            font-weight: 400;
+
+            transition: transform 0.35s ease;
+        }
+
+        .category-arrow {
+            font-size: 28px;
+            font-weight: 300;
+
+            transition: transform 0.35s ease;
+        }
+
+        .category-row:hover .category-name {
+            transform: translateX(12px);
+        }
+
+        .category-row:hover .category-arrow {
+            transform: translateX(8px);
+        }
+
+
+        /* =====================================================
+           MOTION
+        ===================================================== */
+
+        .motion-feature {
+            display: grid;
+            grid-template-columns: 0.75fr 1.25fr;
+            gap: 70px;
+
+            align-items: center;
+        }
+
+        .motion-copy h3 {
+            font-family: var(--serif);
+
+            font-size: clamp(47px, 6vw, 84px);
+            font-weight: 400;
+
+            line-height: 0.95;
+        }
+
+        .motion-copy p {
+            color: var(--muted);
+
+            font-size: 13px;
+            line-height: 1.8;
+
+            margin-top: 28px;
+
+            max-width: 400px;
+        }
+
+        .motion-links {
+            margin-top: 40px;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .motion-link {
+            padding: 18px 0;
+
+            border-top: 1px solid var(--line);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+
+            cursor: pointer;
+
+            color: var(--muted-light);
+        }
+
+        .motion-link:last-child {
+            border-bottom: 1px solid var(--line);
+        }
+
+        .motion-link:hover {
+            color: var(--text);
+        }
+
+        .motion-preview {
+            position: relative;
+
+            overflow: hidden;
+
+            aspect-ratio: 16 / 10;
+
+            cursor: pointer;
+        }
+
+        .motion-preview img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform 0.8s ease;
+        }
+
+        .motion-preview:hover img {
+            transform: scale(1.025);
+        }
+
+        .play-button {
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            width: 82px;
+            height: 82px;
+
+            border: 1px solid rgba(255,255,255,0.6);
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            backdrop-filter: blur(6px);
+
+            font-size: 11px;
+            letter-spacing: 1px;
+
+            transition:
+                transform 0.35s ease,
+                background 0.35s ease;
+        }
+
+        .motion-preview:hover .play-button {
+            transform: translate(-50%, -50%) scale(1.08);
+
+            background: rgba(255,255,255,0.08);
+        }
+
+
+        /* =====================================================
+           CLIENTS
+        ===================================================== */
+
+        .clients {
+            overflow: hidden;
+        }
+
+        .client-track-wrapper {
+            margin-top: 70px;
+
+            overflow: hidden;
+
+            position: relative;
+
+            mask-image:
+                linear-gradient(
+                    to right,
+                    transparent,
+                    black 7%,
+                    black 93%,
+                    transparent
+                );
+        }
+
+        .client-track {
+            display: flex;
+            align-items: center;
+
+            gap: 90px;
+
+            width: max-content;
+
+            animation: clientScroll 30s linear infinite;
+        }
+
+        .client-logo {
+            width: 150px;
+            height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            opacity: 0.42;
+
+            transition:
+                opacity 0.3s ease,
+                transform 0.3s ease;
+        }
+
+        .client-logo:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .client-logo img {
+            max-width: 100%;
+            max-height: 55px;
+
+            object-fit: contain;
+
+            filter: grayscale(1) brightness(2);
+        }
+
+        @keyframes clientScroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+
+        /* =====================================================
+           ABOUT
+        ===================================================== */
+
+        .about {
+            display: grid;
+
+            grid-template-columns: 1fr 1.2fr;
+
+            gap: 100px;
+
+            align-items: end;
+
+            border-top: 1px solid var(--line);
+        }
+
+        .about-label {
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+
+            color: var(--muted);
+        }
+
+        .about-copy {
+            font-family: var(--serif);
+
+            font-size: clamp(35px, 4.4vw, 65px);
+
+            line-height: 1.06;
+
+            color: var(--text);
+        }
+
+        .about-small {
+            font-family: var(--sans);
+
+            font-size: 12px;
+            line-height: 1.8;
+
+            color: var(--muted);
+
+            margin-top: 35px;
+
+            max-width: 450px;
+        }
+
+
+        /* =====================================================
+           CONTACT
+        ===================================================== */
+
+        .contact {
+            min-height: 78vh;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+
+            border-top: 1px solid var(--line);
+        }
+
+        .contact h2 {
+            font-family: var(--serif);
+
+            font-size: clamp(70px, 11vw, 170px);
+
+            font-weight: 400;
+
+            letter-spacing: -5px;
+
+            line-height: 0.76;
+        }
+
+        .contact-bottom {
+            margin-top: 80px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            gap: 40px;
+        }
+
+        .contact-links {
+            display: flex;
+
+            gap: 30px;
+
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            font-size: 11px;
+
+            letter-spacing: 2px;
+            text-transform: uppercase;
+
+            color: var(--muted-light);
+
+            border-bottom: 1px solid var(--line);
+
+            padding-bottom: 8px;
+        }
+
+        .contact-links a:hover {
+            color: var(--text);
+        }
+
+        .footer-text {
+            color: var(--muted);
+
+            font-size: 10px;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =====================================================
+           FULLSCREEN PORTFOLIO PAGE
+        ===================================================== */
+
+        .portfolio-overlay {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 5000;
+
+            background: var(--bg);
+
+            overflow-y: auto;
+
+            display: none;
+        }
+
+        .portfolio-overlay.active {
+            display: block;
+
+            animation: overlayIn 0.5s ease;
+        }
+
+        @keyframes overlayIn {
+
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+
+        }
+
+        .overlay-header {
+            position: sticky;
+
+            top: 0;
+
+            z-index: 200;
+
+            padding: 25px 5%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            background: rgba(17,17,17,0.88);
+
+            backdrop-filter: blur(18px);
+
+            border-bottom: 1px solid var(--line);
+        }
+
+        .overlay-title {
+            font-family: var(--serif);
+
+            font-size: 32px;
+        }
+
+        .overlay-close {
+            border: 0;
+
+            background: transparent;
+
+            color: var(--text);
+
+            cursor: pointer;
+
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .gallery-grid {
+            padding: 60px 5% 100px;
+
+            columns: 3;
+            column-gap: 22px;
+        }
+
+        .gallery-image {
+            break-inside: avoid;
+
+            margin-bottom: 22px;
+
+            overflow: hidden;
+
+            cursor: zoom-in;
+        }
+
+        .gallery-image img {
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-image:hover img {
+            transform: scale(1.015);
+        }
+
+
+        /* =====================================================
+           FILMS OVERLAY
+        ===================================================== */
+
+        .films-grid {
+            padding: 70px 5% 120px;
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 50px;
+        }
+
+        .film-item {
+            background: #080808;
+        }
+
+        .film-item iframe {
+            width: 100%;
+
+            aspect-ratio: 16 / 9;
+
+            display: block;
+
+            border: 0;
+        }
+
+        .film-item.vertical {
+            max-width: 400px;
+
+            justify-self: center;
+        }
+
+        .film-item.vertical iframe {
+            aspect-ratio: 9 / 16;
+        }
+
+
+        /* =====================================================
+           LIGHTBOX
+        ===================================================== */
+
+        .lightbox {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 9000;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 5%;
+
+            background: rgba(5,5,5,0.96);
+
+            cursor: zoom-out;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 92vw;
+            max-height: 90vh;
+
+            width: auto;
+            height: auto;
+        }
+
+
+        /* =====================================================
+           REVEAL ANIMATION
+        ===================================================== */
+
+        .reveal {
+            opacity: 0;
+
+            transform: translateY(35px);
+
+            transition:
+                opacity 0.9s ease,
+                transform 0.9s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+
+            transform: translateY(0);
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
 
         @media (max-width: 900px) {
-            .bento-container { grid-template-columns: 1fr 1fr; }
-            .about-card { grid-column: span 2; display: block; }
-            .pinterest-grid { column-count: 2; }
+
+            .nav {
+                height: 70px;
+            }
+
+            .nav-logo img {
+                width: 125px;
+            }
+
+            .nav-links a:nth-child(2),
+            .nav-links a:nth-child(3) {
+                display: none;
+            }
+
+            .nav-links {
+                gap: 17px;
+            }
+
+
+            .hero {
+                min-height: auto;
+
+                grid-template-columns: 1fr;
+
+                padding-top: 130px;
+
+                gap: 55px;
+            }
+
+            .hero h1 {
+                letter-spacing: -2px;
+            }
+
+            .hero-gallery {
+                height: 70vh;
+
+                min-height: 520px;
+            }
+
+            .hero-slide {
+                width: 86%;
+                height: 88%;
+            }
+
+
+            .section {
+                padding: 95px 5%;
+            }
+
+            .section-head {
+                display: block;
+            }
+
+            .section-description {
+                margin-top: 30px;
+            }
+
+
+            .work-grid {
+                grid-template-columns: 1fr;
+
+                gap: 15px;
+            }
+
+            .work-a,
+            .work-b,
+            .work-c,
+            .work-d,
+            .work-e {
+                grid-column: auto;
+
+                margin-top: 0;
+
+                aspect-ratio: auto;
+            }
+
+            .work-item img {
+                height: auto;
+            }
+
+
+            .category-row {
+                grid-template-columns: 45px 1fr auto;
+            }
+
+
+            .motion-feature {
+                grid-template-columns: 1fr;
+
+                gap: 55px;
+            }
+
+
+            .about {
+                grid-template-columns: 1fr;
+
+                gap: 50px;
+            }
+
+
+            .contact-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+
+            .gallery-grid {
+                columns: 2;
+            }
+
+
+            .films-grid {
+                grid-template-columns: 1fr;
+            }
+
         }
+
+
+        @media (max-width: 560px) {
+
+            .nav-links a {
+                display: none !important;
+            }
+
+            .nav-links a:last-child {
+                display: block !important;
+            }
+
+
+            .hero-gallery {
+                height: 58vh;
+                min-height: 430px;
+            }
+
+            .hero-slide {
+                width: 93%;
+            }
+
+
+            .hero-description {
+                font-size: 13px;
+            }
+
+
+            .gallery-grid {
+                columns: 1;
+            }
+
+
+            .category-name {
+                font-size: 42px;
+            }
+
+
+            .client-track {
+                gap: 60px;
+            }
+
+            .client-logo {
+                width: 120px;
+            }
+
+        }
+
     </style>
+
 </head>
+
+
 <body>
 
-    <button id="backBtn" onclick="goHome()">← Back</button>
 
-    <section class="hero" id="hero">
-        <div class="hero-logo"><img src="logo.png" alt="Raghav Kulkarni"></div>
-        <div class="scroll-hint">Scroll to Explore</div>
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <nav class="nav" id="navbar">
+
+        <a href="#home" class="nav-logo">
+            <img
+                src="logo.png"
+                alt="Raghav Kulkarni"
+            >
+        </a>
+
+        <div class="nav-links">
+
+            <a href="#work">
+                Work
+            </a>
+
+            <a href="#photography">
+                Photography
+            </a>
+
+            <a href="#films">
+                Films
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+            <a href="#contact">
+                Contact
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section
+        class="hero"
+        id="home"
+    >
+
+        <div class="hero-copy">
+
+            <div class="eyebrow">
+                Commercial Photographer & Filmmaker
+            </div>
+
+            <h1>
+
+                <span>
+                    Raghav
+                </span>
+
+                <span>
+                    Kulkarni
+                </span>
+
+            </h1>
+
+            <p class="hero-description">
+
+                Creating considered commercial imagery
+                across product, jewellery and motion.
+
+            </p>
+
+            <div class="hero-tags">
+
+                <span>
+                    Product
+                </span>
+
+                <span>
+                    Jewellery
+                </span>
+
+                <span>
+                    Motion
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="hero-gallery">
+
+            <!--
+                Change these images later if you want
+                different hero photographs.
+            -->
+
+            <div class="hero-slide active">
+
+                <img
+                    src="product1.webp"
+                    alt=""
+                >
+
+            </div>
+
+
+            <div class="hero-slide">
+
+                <img
+                    src="product8.webp"
+                    alt=""
+                >
+
+            </div>
+
+
+            <div class="hero-slide">
+
+                <img
+                    src="product2.webp"
+                    alt=""
+                >
+
+            </div>
+
+
+            <div class="hero-slide">
+
+                <img
+                    src="product10.webp"
+                    alt=""
+                >
+
+            </div>
+
+
+            <div class="hero-counter">
+
+                <span id="heroCurrent">
+                    01
+                </span>
+
+                /
+
+                <span>
+                    04
+                </span>
+
+            </div>
+
+
+            <button
+                class="hero-next"
+                onclick="nextHero()"
+            >
+                Next →
+            </button>
+
+        </div>
+
     </section>
 
-    <main class="bento-container" id="bentoWrapper">
-        <section class="card about-card">
-            <div class="about-photo"><img src="profile.jpg" alt="Raghav Kulkarni"></div>
-            <div class="about-text">
-                <h2>Raghav Kulkarni</h2>
-                <p>Commercial photographer and cinematographer specializing in high-end product media and architectural interiors.</p>
-                <p>Based in Pune, I deliver technical excellence and conceptual clarity.</p>
+
+
+    <!-- =====================================================
+         SELECTED WORK
+    ====================================================== -->
+
+    <section
+        class="section"
+        id="work"
+    >
+
+        <div class="section-head reveal">
+
+            <div>
+
+                <div class="section-number">
+                    01
+                </div>
+
+                <h2 class="section-title">
+                    Selected Work
+                </h2>
+
             </div>
-        </section>
 
-        <div class="card category-card" onclick="loadCategory('product')">
-            <img src="thumb-product.webp" alt="Product">
-            <h3>Product</h3>
-        </div>
-        <div class="card category-card" onclick="loadCategory('interior')">
-            <img src="thumb-interior.webp" alt="Interior">
-            <h3>Interior</h3>
-        </div>
-        <div class="card category-card" onclick="loadCategory('corporate')">
-            <img src="thumb-corporate.webp" alt="Corporate">
-            <h3>Corporate</h3>
-        </div>
-        <div class="card category-card" onclick="loadCategory('videos')">
-            <img src="thumb-commercial.webp" alt="Videos">
-            <h3>Videos</h3>
-        </div>
-    </main>
 
-    <div id="gallery" class="gallery-container">
-        <div id="contentWrapper"></div>
+            <p class="section-description">
+
+                A selection of commercial photography
+                across products and jewellery.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="work-grid">
+
+            <div class="work-item work-a reveal">
+
+                <img
+                    src="product3.webp"
+                    alt=""
+                >
+
+            </div>
+
+
+            <div class="work-item work-b reveal">
+
+                <img
+                    src="product11.webp"
+                    alt=""
+                >
+
+            </div>
+
+
+            <div class="work-item work-c reveal">
+
+                <img
+                    src="product5.webp"
+                    alt=""
+                >
+
+            </div>
+
+
+            <div class="work-item work-d reveal">
+
+                <img
+                    src="product6.webp"
+                    alt=""
+                >
+
+            </div>
+
+
+            <div class="work-item work-e reveal">
+
+                <img
+                    src="product10.webp"
+                    alt=""
+                >
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PHOTOGRAPHY
+    ====================================================== -->
+
+    <section
+        class="section"
+        id="photography"
+    >
+
+        <div class="section-head reveal">
+
+            <div>
+
+                <div class="section-number">
+                    02
+                </div>
+
+                <h2 class="section-title">
+                    Photography
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="photography-categories reveal">
+
+
+            <div
+                class="category-row"
+                onclick="openGallery('product')"
+            >
+
+                <span class="category-number">
+                    01
+                </span>
+
+                <span class="category-name">
+                    Product
+                </span>
+
+                <span class="category-arrow">
+                    →
+                </span>
+
+            </div>
+
+
+
+            <div
+                class="category-row"
+                onclick="openGallery('jewellery')"
+            >
+
+                <span class="category-number">
+                    02
+                </span>
+
+                <span class="category-name">
+                    Jewellery
+                </span>
+
+                <span class="category-arrow">
+                    →
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MOTION
+    ====================================================== -->
+
+    <section
+        class="section"
+        id="films"
+    >
+
+        <div class="motion-feature">
+
+            <div class="motion-copy reveal">
+
+                <div class="section-number">
+                    03
+                </div>
+
+                <h3>
+                    Motion
+                    <br>
+                    & Films
+                </h3>
+
+                <p>
+
+                    Short-form commercial films,
+                    product reels and jewellery content
+                    designed for digital platforms.
+
+                </p>
+
+
+                <div class="motion-links">
+
+                    <div
+                        class="motion-link"
+                        onclick="openFilms()"
+                    >
+
+                        <span>
+                            Product Films
+                        </span>
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="motion-link"
+                        onclick="openFilms()"
+                    >
+
+                        <span>
+                            Jewellery Films
+                        </span>
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div
+                class="motion-preview reveal"
+                onclick="openFilms()"
+            >
+
+                <img
+                    src="thumb-commercial.webp"
+                    alt="Commercial Films"
+                >
+
+                <div class="play-button">
+                    PLAY
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CLIENTS
+    ====================================================== -->
+
+    <section class="section clients">
+
+        <div class="section-head reveal">
+
+            <div>
+
+                <div class="section-number">
+                    04
+                </div>
+
+                <h2 class="section-title">
+                    Selected Clients
+                </h2>
+
+            </div>
+
+
+            <p class="section-description">
+
+                Brands and businesses I have worked with directly.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="client-track-wrapper reveal">
+
+            <div
+                class="client-track"
+                id="clientTrack"
+            >
+
+                <!--
+                    Upload logos using these names.
+
+                    If a logo file does not exist yet,
+                    JavaScript automatically hides it.
+                -->
+
+
+                <div class="client-logo">
+
+                    <img
+                        src="logo-rockals.webp"
+                        alt="Rockals"
+                        onerror="this.parentElement.style.display='none'"
+                    >
+
+                </div>
+
+
+                <div class="client-logo">
+
+                    <img
+                        src="logo-valtric.webp"
+                        alt="Valtric"
+                        onerror="this.parentElement.style.display='none'"
+                    >
+
+                </div>
+
+
+                <div class="client-logo">
+
+                    <img
+                        src="logo-meetreats.webp"
+                        alt="MeeTreats"
+                        onerror="this.parentElement.style.display='none'"
+                    >
+
+                </div>
+
+
+                <div class="client-logo">
+
+                    <img
+                        src="logo-lonitales.webp"
+                        alt="Loni Tales"
+                        onerror="this.parentElement.style.display='none'"
+                    >
+
+                </div>
+
+
+                <div class="client-logo">
+
+                    <img
+                        src="logo-eps.webp"
+                        alt="EPS"
+                        onerror="this.parentElement.style.display='none'"
+                    >
+
+                </div>
+
+
+                <!-- duplicated for seamless movement -->
+
+
+                <div class="client-logo">
+
+                    <img
+                        src="logo-rockals.webp"
+                        alt=""
+                        onerror="this.parentElement.style.display='none'"
+                    >
+
+                </div>
+
+
+                <div class="client-logo">
+
+                    <img
+                        src="logo-valtric.webp"
+                        alt=""
+                        onerror="this.parentElement.style.display='none'"
+                    >
+
+                </div>
+
+
+                <div class="client-logo">
+
+                    <img
+                        src="logo-meetreats.webp"
+                        alt=""
+                        onerror="this.parentElement.style.display='none'"
+                    >
+
+                </div>
+
+
+                <div class="client-logo">
+
+                    <img
+                        src="logo-lonitales.webp"
+                        alt=""
+                        onerror="this.parentElement.style.display='none'"
+                    >
+
+                </div>
+
+
+                <div class="client-logo">
+
+                    <img
+                        src="logo-eps.webp"
+                        alt=""
+                        onerror="this.parentElement.style.display='none'"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ABOUT
+    ====================================================== -->
+
+    <section
+        class="section about"
+        id="about"
+    >
+
+        <div class="about-label reveal">
+
+            About
+
+        </div>
+
+
+        <div class="reveal">
+
+            <div class="about-copy">
+
+                Commercial photographer
+                and filmmaker creating
+                product, jewellery and
+                motion-led brand content.
+
+            </div>
+
+
+            <p class="about-small">
+
+                Based in Pune, India.
+                Available for commercial projects,
+                campaigns and ongoing brand content.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CONTACT
+    ====================================================== -->
+
+    <section
+        class="section contact"
+        id="contact"
+    >
+
+        <div class="reveal">
+
+            <div class="section-number">
+                05
+            </div>
+
+            <h2>
+
+                Let's
+                <br>
+                Create.
+
+            </h2>
+
+        </div>
+
+
+
+        <div class="contact-bottom reveal">
+
+
+            <div class="contact-links">
+
+                <!-- Replace if necessary -->
+
+                <a
+                    href="mailto:raghavkulkarniphotography@gmail.com"
+                >
+                    Email
+                </a>
+
+
+                <!-- PUT YOUR INSTAGRAM LINK HERE -->
+
+                <a
+                    href="#"
+                    target="_blank"
+                >
+                    Instagram
+                </a>
+
+
+                <a
+                    href="mailto:raghavkulkarniphotography@gmail.com"
+                >
+                    Start a Project →
+                </a>
+
+            </div>
+
+
+            <div class="footer-text">
+
+                © 2026 RaghAV KULKARNI
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PHOTOGRAPHY OVERLAY
+    ====================================================== -->
+
+    <div
+        class="portfolio-overlay"
+        id="portfolioOverlay"
+    >
+
+        <div class="overlay-header">
+
+            <div
+                class="overlay-title"
+                id="overlayTitle"
+            >
+                Photography
+            </div>
+
+            <button
+                class="overlay-close"
+                onclick="closeOverlay()"
+            >
+                Close ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="gallery-grid"
+            id="galleryGrid"
+        >
+        </div>
+
     </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
+
+
+    <!-- =====================================================
+         FILMS OVERLAY
+    ====================================================== -->
+
+    <div
+        class="portfolio-overlay"
+        id="filmsOverlay"
+    >
+
+        <div class="overlay-header">
+
+            <div class="overlay-title">
+                Selected Films
+            </div>
+
+            <button
+                class="overlay-close"
+                onclick="closeFilms()"
+            >
+                Close ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="films-grid"
+            id="filmsGrid"
+        >
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         IMAGE LIGHTBOX
+    ====================================================== -->
+
+    <div
+        class="lightbox"
+        id="lightbox"
+        onclick="closeLightbox()"
+    >
+
+        <img
+            src=""
+            id="lightboxImage"
+            alt=""
+        >
+
+    </div>
+
+
 
     <script>
-        const videoData = [
-            {id: 'fm0evRNFji0', type: 0},
-            {id: 'FvxT5vOnXpc', type: 0},
-            {id: 'KNQVN4_M2og', type: 1},
-            {id: 'i3lyAq1bj_c', type: 1},
-            {id: 'JoVjSThS46U', type: 1}
+
+
+        /* =====================================================
+           HERO CAROUSEL
+        ===================================================== */
+
+
+        let heroIndex = 0;
+
+        const heroSlides =
+            document.querySelectorAll(".hero-slide");
+
+
+        function showHero(index) {
+
+            heroSlides.forEach(
+                (slide, i) => {
+
+                    slide.classList.remove(
+                        "active",
+                        "previous"
+                    );
+
+
+                    if (i === index) {
+
+                        slide.classList.add("active");
+
+                    }
+
+                }
+            );
+
+
+            document.getElementById(
+                "heroCurrent"
+            ).textContent =
+                String(index + 1).padStart(2, "0");
+
+        }
+
+
+
+        function nextHero() {
+
+            const oldIndex = heroIndex;
+
+            heroSlides[oldIndex]
+                .classList.remove("active");
+
+            heroSlides[oldIndex]
+                .classList.add("previous");
+
+
+            heroIndex =
+                (heroIndex + 1)
+                % heroSlides.length;
+
+
+            setTimeout(
+                () => {
+
+                    heroSlides.forEach(
+                        slide =>
+                            slide.classList.remove(
+                                "previous"
+                            )
+                    );
+
+                    showHero(heroIndex);
+
+                },
+                180
+            );
+
+        }
+
+
+        setInterval(
+            nextHero,
+            5500
+        );
+
+
+
+        /* =====================================================
+           IMAGE LISTS
+        ===================================================== */
+
+
+        /*
+            EXISTING PRODUCT FILES
+
+            Jewellery removed from product:
+            product8.webp
+            product10.webp
+            product11.webp
+        */
+
+
+        const productImages = [
+
+            "product1.webp",
+            "product2.webp",
+            "product3.webp",
+            "product4.webp",
+            "product5.webp",
+            "product6.webp",
+            "product7.webp",
+
+            "product9.webp",
+
+            "product12.webp",
+            "product13.webp",
+            "product14.webp",
+            "product15.webp",
+            "product16.webp",
+            "product17.webp",
+            "product18.webp",
+            "product19.webp",
+            "product20.webp",
+            "product21.webp",
+            "product22.webp",
+
+
+            /*
+                NEW PRODUCT FILES
+
+                These automatically disappear
+                if they are not uploaded yet.
+            */
+
+            "product23.webp",
+            "product24.webp",
+            "product25.webp",
+            "product26.webp",
+            "product27.webp",
+            "product28.webp",
+            "product29.webp",
+            "product30.webp",
+            "product31.webp",
+            "product32.webp",
+            "product33.webp",
+            "product34.webp",
+            "product35.webp",
+            "product36.webp",
+            "product37.webp",
+            "product38.webp",
+            "product39.webp",
+            "product40.webp"
+
         ];
 
-        let players = {};
 
-        function onYouTubeIframeAPIReady() {
-            // API global callback
+
+        const jewelleryImages = [
+
+            /*
+                EXISTING JEWELLERY IMAGES
+                CURRENTLY NAMED PRODUCT
+            */
+
+            "product8.webp",
+            "product10.webp",
+            "product11.webp",
+
+
+            /*
+                NEW JEWELLERY FILES
+            */
+
+            "jewellery1.webp",
+            "jewellery2.webp",
+            "jewellery3.webp",
+            "jewellery4.webp",
+            "jewellery5.webp",
+            "jewellery6.webp",
+            "jewellery7.webp",
+            "jewellery8.webp",
+            "jewellery9.webp",
+            "jewellery10.webp",
+            "jewellery11.webp",
+            "jewellery12.webp",
+            "jewellery13.webp",
+            "jewellery14.webp",
+            "jewellery15.webp",
+            "jewellery16.webp",
+            "jewellery17.webp",
+            "jewellery18.webp",
+            "jewellery19.webp",
+            "jewellery20.webp"
+
+        ];
+
+
+
+        /* =====================================================
+           OPEN PHOTOGRAPHY
+        ===================================================== */
+
+
+        function openGallery(type) {
+
+            const overlay =
+                document.getElementById(
+                    "portfolioOverlay"
+                );
+
+
+            const title =
+                document.getElementById(
+                    "overlayTitle"
+                );
+
+
+            const grid =
+                document.getElementById(
+                    "galleryGrid"
+                );
+
+
+            const images =
+                type === "product"
+                ? productImages
+                : jewelleryImages;
+
+
+            title.textContent =
+                type === "product"
+                ? "Product Photography"
+                : "Jewellery Photography";
+
+
+            grid.innerHTML = "";
+
+
+            images.forEach(src => {
+
+                const item =
+                    document.createElement("div");
+
+                item.className =
+                    "gallery-image";
+
+
+                const image =
+                    document.createElement("img");
+
+
+                image.src = src;
+
+                image.alt = "";
+
+                image.loading = "lazy";
+
+
+                /*
+                    If a future image isn't uploaded,
+                    it simply disappears.
+                */
+
+                image.onerror =
+                    () => item.remove();
+
+
+                image.onclick =
+                    () => openLightbox(src);
+
+
+                item.appendChild(image);
+
+                grid.appendChild(item);
+
+            });
+
+
+            overlay.classList.add(
+                "active"
+            );
+
+
+            document.body.style.overflow =
+                "hidden";
+
         }
 
-        function loadCategory(cat) {
-            document.getElementById('bentoWrapper').style.display = 'none';
-            document.getElementById('hero').style.display = 'none';
-            document.getElementById('backBtn').style.display = 'block';
-            const wrapper = document.getElementById('contentWrapper');
-            document.getElementById('gallery').classList.add('active');
-            wrapper.innerHTML = '';
 
-            if (cat === 'videos') {
-                const stack = document.createElement('div');
-                stack.className = 'video-stack';
-                
-                videoData.forEach((video, index) => {
-                    const divId = `player-${index}`;
-                    const item = document.createElement('div');
-                    item.className = video.type === 1 ? 'video-item is-short' : 'video-item';
-                    item.innerHTML = `
-                        <div class="unmute-overlay" onclick="unmuteVideo('${divId}', this)">
-                            <span>Click for Sound</span>
-                        </div>
-                        <div id="${divId}"></div>
-                    `;
-                    stack.appendChild(item);
-                    
-                    setTimeout(() => {
-                        players[divId] = new YT.Player(divId, {
-                            videoId: video.id,
-                            playerVars: { 
-                                'autoplay': 1, 
-                                'mute': 1, 
-                                'controls': 0,
-                                'modestbranding': 1,
-                                'rel': 0,
-                                'origin': window.location.origin
-                            },
-                            events: {
-                                'onReady': (e) => {
-                                    e.target.playVideo();
-                                },
-                                'onStateChange': (e) => {
-                                    // Robust programmatic loop handling to prevent player validation crashes
-                                    if (e.data === YT.PlayerState.ENDED) {
-                                        e.target.seekTo(0);
-                                        e.target.playVideo();
-                                    }
-                                }
+
+        function closeOverlay() {
+
+            document
+                .getElementById(
+                    "portfolioOverlay"
+                )
+                .classList
+                .remove("active");
+
+
+            document.body.style.overflow =
+                "";
+
+        }
+
+
+
+        /* =====================================================
+           FILMS
+        ===================================================== */
+
+
+        /*
+            Your existing YouTube videos
+            from the old website.
+        */
+
+
+        const videoData = [
+
+            {
+                id: "fm0evRNFji0",
+                type: "horizontal"
+            },
+
+            {
+                id: "FvxT5vOnXpc",
+                type: "horizontal"
+            },
+
+            {
+                id: "KNQVN4_M2og",
+                type: "vertical"
+            },
+
+            {
+                id: "i3lyAq1bj_c",
+                type: "vertical"
+            },
+
+            {
+                id: "JoVjSThS46U",
+                type: "vertical"
+            }
+
+        ];
+
+
+
+        function openFilms() {
+
+            const overlay =
+                document.getElementById(
+                    "filmsOverlay"
+                );
+
+
+            const grid =
+                document.getElementById(
+                    "filmsGrid"
+                );
+
+
+            grid.innerHTML = "";
+
+
+            videoData.forEach(video => {
+
+                const item =
+                    document.createElement("div");
+
+
+                item.className =
+                    video.type === "vertical"
+                    ? "film-item vertical"
+                    : "film-item";
+
+
+                item.innerHTML = `
+
+                    <iframe
+
+                        src="https://www.youtube.com/embed/${video.id}?rel=0&modestbranding=1"
+
+                        title="Raghav Kulkarni Film"
+
+                        allow="
+                            accelerometer;
+                            autoplay;
+                            clipboard-write;
+                            encrypted-media;
+                            gyroscope;
+                            picture-in-picture
+                        "
+
+                        allowfullscreen
+
+                    ></iframe>
+
+                `;
+
+
+                grid.appendChild(item);
+
+            });
+
+
+            overlay.classList.add(
+                "active"
+            );
+
+
+            document.body.style.overflow =
+                "hidden";
+
+        }
+
+
+
+        function closeFilms() {
+
+            document
+                .getElementById(
+                    "filmsOverlay"
+                )
+                .classList
+                .remove("active");
+
+
+            /*
+                Remove videos so audio stops
+            */
+
+            document
+                .getElementById(
+                    "filmsGrid"
+                )
+                .innerHTML = "";
+
+
+            document.body.style.overflow =
+                "";
+
+        }
+
+
+
+        /* =====================================================
+           LIGHTBOX
+        ===================================================== */
+
+
+        function openLightbox(src) {
+
+            const lightbox =
+                document.getElementById(
+                    "lightbox"
+                );
+
+
+            const image =
+                document.getElementById(
+                    "lightboxImage"
+                );
+
+
+            image.src = src;
+
+
+            lightbox.classList.add(
+                "active"
+            );
+
+        }
+
+
+
+        function closeLightbox() {
+
+            document
+                .getElementById(
+                    "lightbox"
+                )
+                .classList
+                .remove("active");
+
+        }
+
+
+
+        /* =====================================================
+           SCROLL REVEALS
+        ===================================================== */
+
+
+        const revealObserver =
+            new IntersectionObserver(
+
+                entries => {
+
+                    entries.forEach(
+                        entry => {
+
+                            if (
+                                entry.isIntersecting
+                            ) {
+
+                                entry.target
+                                    .classList
+                                    .add("visible");
+
                             }
-                        });
-                    }, 100);
-                });
-                wrapper.appendChild(stack);
-            } else {
-                const grid = document.createElement('div');
-                grid.className = 'pinterest-grid';
-                const imgs = { product: 22, interior: 16, corporate: 6 };
-                for(let i=1; i<=imgs[cat]; i++) {
-                    grid.innerHTML += `<div class="art-item"><img src="${cat}${i}.webp" onclick="openFullscreen(this.src)"></div>`;
+
+                        }
+                    );
+
+                },
+
+                {
+                    threshold: 0.12
                 }
-                wrapper.appendChild(grid);
+
+            );
+
+
+        document
+            .querySelectorAll(".reveal")
+            .forEach(
+
+                item =>
+                    revealObserver.observe(
+                        item
+                    )
+
+            );
+
+
+
+        /* =====================================================
+           NAV SCROLL
+        ===================================================== */
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                const nav =
+                    document.getElementById(
+                        "navbar"
+                    );
+
+
+                if (
+                    window.scrollY > 30
+                ) {
+
+                    nav.classList.add(
+                        "scrolled"
+                    );
+
+                }
+
+                else {
+
+                    nav.classList.remove(
+                        "scrolled"
+                    );
+
+                }
+
             }
-            window.scrollTo(0,0);
-        }
+        );
 
-        function unmuteVideo(divId, overlay) {
-            const player = players[divId];
-            if (player) {
-                player.unMute();
-                player.setVolume(100);
-                player.seekTo(0); 
-                player.playVideo();
-                overlay.parentElement.classList.add('playing');
+
+
+        /* =====================================================
+           ESC CLOSE
+        ===================================================== */
+
+
+        document.addEventListener(
+
+            "keydown",
+
+            event => {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    closeOverlay();
+
+                    closeFilms();
+
+                    closeLightbox();
+
+                }
+
             }
-        }
 
-        function goHome() {
-            Object.values(players).forEach(p => { if(p && typeof p.destroy === 'function') p.destroy(); });
-            players = {};
-            
-            document.getElementById('gallery').classList.remove('active');
-            document.getElementById('bentoWrapper').style.display = 'grid';
-            document.getElementById('hero').style.display = 'flex';
-            document.getElementById('backBtn').style.display = 'none';
-            window.scrollTo(0,0);
-        }
+        );
 
-        function openFullscreen(src) {
-            const viewer = document.createElement('div');
-            viewer.style = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:5000; display:flex; align-items:center; justify-content:center; cursor:zoom-out;";
-            viewer.innerHTML = `<img src="${src}" style="max-width:90%; max-height:90%; border: 1px solid var(--border);">`;
-            viewer.onclick = () => viewer.remove();
-            document.body.appendChild(viewer);
-        }
+
     </script>
+
+
 </body>
+
 </html>

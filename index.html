@@ -10,11 +10,11 @@
     content="width=device-width, initial-scale=1.0"
 >
 
-<title>Raghav Kulkarni — Photography & Film</title>
+<title>Raghav Kulkarni — Product Photographer & Filmmaker</title>
 
 <meta
     name="description"
-    content="Raghav Kulkarni — commercial photographer and filmmaker working across product, jewellery, interiors and motion."
+    content="Raghav Kulkarni — commercial product photographer and filmmaker working across product, jewellery, interiors and motion."
 >
 
 <link
@@ -24,39 +24,38 @@
 
 <style>
 
-/* ============================================================
-   ROOT
-============================================================ */
+/* =========================================================
+   VARIABLES
+========================================================= */
 
 :root {
 
     --bg: #111111;
     --bg-soft: #171717;
 
-    --text: #f1f1ed;
-    --soft: #a8a8a2;
-    --dim: #70706d;
+    --text: #f2f1ed;
+    --soft: #aaa9a4;
+    --dim: #72716d;
 
     --line: rgba(255,255,255,0.11);
 
-    --radius-large: 30px;
-    --radius-medium: 22px;
-    --radius-small: 16px;
+    --radius-large: 28px;
+    --radius-medium: 20px;
+    --radius-small: 14px;
 
     --font: "Inter", sans-serif;
 
 }
 
 
-/* ============================================================
+/* =========================================================
    RESET
-============================================================ */
+========================================================= */
 
 * {
 
     margin: 0;
     padding: 0;
-
     box-sizing: border-box;
 
 }
@@ -94,7 +93,6 @@ body.locked {
 a {
 
     color: inherit;
-
     text-decoration: none;
 
 }
@@ -110,15 +108,14 @@ button {
 img {
 
     display: block;
-
     max-width: 100%;
 
 }
 
 
-/* ============================================================
+/* =========================================================
    NAVIGATION
-============================================================ */
+========================================================= */
 
 .nav {
 
@@ -128,26 +125,22 @@ img {
     left: 0;
 
     width: 100%;
-    height: 72px;
+    height: 70px;
 
     padding: 0 4vw;
 
-    display: grid;
-
-    grid-template-columns:
-        1fr
-        auto
-        1fr;
+    display: flex;
 
     align-items: center;
+    justify-content: center;
 
-    z-index: 5000;
+    z-index: 6000;
 
     background:
-        rgba(17,17,17,0.55);
+        rgba(17,17,17,0.35);
 
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 
     border-bottom:
         1px solid transparent;
@@ -162,7 +155,7 @@ img {
 .nav.scrolled {
 
     background:
-        rgba(17,17,17,0.86);
+        rgba(17,17,17,0.88);
 
     border-bottom-color:
         var(--line);
@@ -170,35 +163,22 @@ img {
 }
 
 
-.nav-brand {
-
-    justify-self: start;
-
-    font-size: 12px;
-
-    font-weight: 500;
-
-}
-
-
 .nav-menu {
-
-    justify-self: center;
 
     display: flex;
 
-    align-items: center;
+    gap: 30px;
 
-    gap: 28px;
+    align-items: center;
 
 }
 
 
 .nav-menu a {
 
-    font-size: 10px;
+    color: rgba(255,255,255,.67);
 
-    color: var(--soft);
+    font-size: 10px;
 
     transition:
         color .25s ease;
@@ -208,183 +188,420 @@ img {
 
 .nav-menu a:hover {
 
-    color: var(--text);
+    color: white;
 
 }
 
 
-.nav-mail {
+/* =========================================================
+   ANIMATED LANDING PAGE
+========================================================= */
 
-    justify-self: end;
-
-    font-size: 10px;
-
-    color: var(--soft);
-
-}
-
-
-.nav-mail:hover {
-
-    color: var(--text);
-
-}
-
-
-/* ============================================================
-   LOGO SCROLL ANIMATION
-============================================================ */
-
-.logo-scroll-section {
+.hero {
 
     position: relative;
-
-    height: 320vh;
-
-    background: var(--bg);
-
-}
-
-
-.logo-scroll-sticky {
-
-    position: sticky;
-
-    top: 0;
 
     width: 100%;
     height: 100vh;
 
+    min-height: 720px;
+
     overflow: hidden;
 
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
+    background: #0e0e0e;
 
 }
 
 
-.logo-animation-wrap {
+/* IMAGE WALL */
+
+.hero-wall {
+
+    position: absolute;
+
+    inset: -4vh -2vw;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, 1fr);
+
+    grid-auto-rows:
+        minmax(120px, 1fr);
+
+    gap: 11px;
+
+    transform:
+        rotate(-1deg)
+        scale(1.03);
+
+}
+
+
+/* INDIVIDUAL MINI IMAGE */
+
+.hero-tile {
 
     position: relative;
 
-    width:
-        min(
-            1300px,
-            94vw
-        );
+    overflow: hidden;
 
-    height:
-        min(
-            78vh,
-            800px
-        );
+    border-radius: 15px;
 
-    display: flex;
+    background: #181818;
 
-    align-items: center;
-    justify-content: center;
+    opacity: 0;
+
+    transform:
+        translateX(-110vw)
+        scale(.85);
+
+    animation:
+        tileEnter
+        1.15s
+        cubic-bezier(.18,.78,.25,1)
+        forwards;
 
 }
 
 
-.logo-animation-image {
+.hero-tile img {
 
     width: 100%;
     height: 100%;
 
-    object-fit: contain;
-
-    user-select: none;
-
-    pointer-events: none;
+    object-fit: cover;
 
 }
 
 
-.logo-intro-copy {
+/* SOME LARGER TILES */
+
+.hero-tile:nth-child(6n + 2) {
+
+    grid-row: span 2;
+
+}
+
+
+.hero-tile:nth-child(9n + 4) {
+
+    grid-column: span 2;
+
+}
+
+
+.hero-tile:nth-child(13n + 3) {
+
+    grid-row: span 2;
+
+    grid-column: span 2;
+
+}
+
+
+@keyframes tileEnter {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translateX(-110vw)
+            scale(.82);
+
+    }
+
+
+    70% {
+
+        opacity: 1;
+
+    }
+
+
+    100% {
+
+        opacity: 1;
+
+        transform:
+            translateX(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* DARKEN WALL AFTER ENTRY */
+
+.hero-wall::after {
+
+    content: "";
 
     position: absolute;
 
-    left: 4vw;
-    right: 4vw;
-
-    bottom: 38px;
-
-    z-index: 10;
-
-    display: flex;
-
-    align-items: flex-end;
-    justify-content: space-between;
-
-    gap: 30px;
+    inset: 0;
 
     pointer-events: none;
+
+    background:
+        rgba(8,8,8,0);
+
+    backdrop-filter:
+        blur(0px);
+
+    animation:
+        wallSettle
+        1.3s
+        ease
+        2.65s
+        forwards;
 
 }
 
 
-.logo-intro-name {
+@keyframes wallSettle {
+
+    from {
+
+        background:
+            rgba(8,8,8,0);
+
+        backdrop-filter:
+            blur(0px);
+
+    }
+
+
+    to {
+
+        background:
+            rgba(8,8,8,.48);
+
+        backdrop-filter:
+            blur(1px);
+
+    }
+
+}
+
+
+/* EDGE VIGNETTE */
+
+.hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 5;
+
+    background:
+
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.40),
+            transparent 18%,
+            transparent 68%,
+            rgba(0,0,0,.45)
+        ),
+
+        linear-gradient(
+            to right,
+            rgba(0,0,0,.25),
+            transparent 18%,
+            transparent 82%,
+            rgba(0,0,0,.25)
+        );
+
+}
+
+
+/* HERO TEXT */
+
+.hero-content {
+
+    position: absolute;
+
+    z-index: 20;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -43%);
+
+    width: min(900px, 90vw);
+
+    text-align: center;
+
+}
+
+
+.hero-name {
 
     font-size:
         clamp(
-            30px,
-            4.7vw,
-            66px
+            56px,
+            9vw,
+            145px
         );
+
+    line-height: .85;
 
     font-weight: 300;
 
-    line-height: .95;
+    letter-spacing: -7px;
 
-    letter-spacing: -2.5px;
-
-}
-
-
-.logo-intro-info {
-
-    max-width: 300px;
-
-    text-align: right;
-
-    color: var(--soft);
-
-    font-size: 11px;
-
-    line-height: 1.7;
-
-}
-
-
-.scroll-hint {
-
-    position: absolute;
-
-    left: 50%;
-
-    bottom: 38px;
+    opacity: 0;
 
     transform:
-        translateX(-50%);
+        translateY(35px);
 
-    font-size: 9px;
-
-    color: var(--dim);
+    animation:
+        heroTextReveal
+        .95s
+        cubic-bezier(.2,.7,.2,1)
+        3.05s
+        forwards;
 
 }
 
 
-/* ============================================================
+.hero-role {
+
+    margin-top: 26px;
+
+    color:
+        rgba(255,255,255,.77);
+
+    font-size:
+        clamp(
+            12px,
+            1.25vw,
+            17px
+        );
+
+    letter-spacing: .2px;
+
+    opacity: 0;
+
+    transform:
+        translateY(20px);
+
+    animation:
+        heroTextReveal
+        .85s
+        ease
+        3.3s
+        forwards;
+
+}
+
+
+.hero-button-wrap {
+
+    margin-top: 34px;
+
+    opacity: 0;
+
+    transform:
+        translateY(18px);
+
+    animation:
+        heroTextReveal
+        .8s
+        ease
+        3.55s
+        forwards;
+
+}
+
+
+@keyframes heroTextReveal {
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+.explore-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding:
+        14px
+        22px;
+
+    border-radius:
+        999px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.28);
+
+    background:
+        rgba(17,17,17,.38);
+
+    backdrop-filter:
+        blur(14px);
+
+    font-size:
+        11px;
+
+    transition:
+        background .25s ease,
+        transform .25s ease,
+        border-color .25s ease;
+
+}
+
+
+.explore-button:hover {
+
+    background:
+        rgba(255,255,255,.12);
+
+    border-color:
+        rgba(255,255,255,.45);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+.explore-arrow {
+
+    font-size: 15px;
+
+}
+
+
+/* =========================================================
    GENERAL SECTION
-============================================================ */
+========================================================= */
 
 .section {
 
     padding:
-        100px
+        105px
         4vw
         120px;
 
@@ -398,20 +615,20 @@ img {
     align-items: flex-end;
     justify-content: space-between;
 
-    gap: 40px;
+    gap: 35px;
 
-    margin-bottom: 34px;
+    margin-bottom: 36px;
 
 }
 
 
 .section-label {
 
-    font-size: 10px;
+    margin-bottom: 11px;
 
     color: var(--dim);
 
-    margin-bottom: 11px;
+    font-size: 10px;
 
 }
 
@@ -425,9 +642,9 @@ img {
             55px
         );
 
-    font-weight: 300;
-
     line-height: 1;
+
+    font-weight: 300;
 
     letter-spacing: -2px;
 
@@ -443,9 +660,9 @@ img {
 }
 
 
-/* ============================================================
+/* =========================================================
    SELECTED WORK
-============================================================ */
+========================================================= */
 
 .work-grid {
 
@@ -458,21 +675,23 @@ img {
 
 .work-item {
 
-    width: 100%;
-
     display: inline-block;
+
+    width: 100%;
 
     break-inside: avoid;
 
     margin-bottom: 14px;
 
+    overflow: hidden;
+
     border-radius:
         var(--radius-medium);
 
-    overflow: hidden;
-
     background:
         var(--bg-soft);
+
+    cursor: zoom-in;
 
 }
 
@@ -498,16 +717,16 @@ img {
 }
 
 
-/* ============================================================
+/* =========================================================
    CATEGORY CARDS
-============================================================ */
+========================================================= */
 
 .category-grid {
 
     display: grid;
 
     grid-template-columns:
-        repeat(3, 1fr);
+        repeat(3,1fr);
 
     gap: 16px;
 
@@ -525,10 +744,10 @@ img {
     border-radius:
         var(--radius-large);
 
-    cursor: pointer;
-
     background:
         var(--bg-soft);
+
+    cursor: pointer;
 
     isolation: isolate;
 
@@ -578,13 +797,12 @@ img {
 
             to top,
 
-            rgba(0,0,0,.82)
-            0%,
+            rgba(0,0,0,.82),
 
-            rgba(0,0,0,.25)
-            42%,
+            rgba(0,0,0,.18)
+            48%,
 
-            rgba(0,0,0,.02)
+            transparent
             75%
 
         );
@@ -596,11 +814,11 @@ img {
 
     position: absolute;
 
+    z-index: 3;
+
     left: 25px;
     right: 25px;
     bottom: 24px;
-
-    z-index: 3;
 
 }
 
@@ -612,7 +830,7 @@ img {
     font-size: 9px;
 
     color:
-        rgba(255,255,255,.60);
+        rgba(255,255,255,.55);
 
 }
 
@@ -640,14 +858,14 @@ img {
     font-size: 11px;
 
     color:
-        rgba(255,255,255,.72);
+        rgba(255,255,255,.7);
 
 }
 
 
-/* ============================================================
+/* =========================================================
    VIDEO
-============================================================ */
+========================================================= */
 
 .video-grid {
 
@@ -672,10 +890,10 @@ img {
     border-radius:
         var(--radius-large);
 
-    cursor: pointer;
-
     background:
         var(--bg-soft);
+
+    cursor: pointer;
 
     isolation: isolate;
 
@@ -685,7 +903,7 @@ img {
 .video-card.main-video {
 
     aspect-ratio:
-        16 / 9;
+        16/9;
 
 }
 
@@ -693,7 +911,7 @@ img {
 .video-card.vertical-video {
 
     aspect-ratio:
-        9 / 14;
+        9/14;
 
 }
 
@@ -706,9 +924,7 @@ img {
     object-fit: cover;
 
     transition:
-        transform
-        .7s
-        ease;
+        transform .7s ease;
 
 }
 
@@ -739,7 +955,8 @@ img {
 
             rgba(0,0,0,.72),
 
-            transparent 50%
+            transparent
+            50%
 
         );
 
@@ -750,30 +967,29 @@ img {
 
     position: absolute;
 
+    z-index: 5;
+
     top: 18px;
     right: 18px;
-
-    z-index: 5;
 
     padding:
         9px
         14px;
 
+    border-radius:
+        999px;
+
     border:
         1px solid
         rgba(255,255,255,.18);
 
-    border-radius:
-        999px;
-
     background:
-        rgba(0,0,0,.22);
+        rgba(0,0,0,.24);
 
     backdrop-filter:
-        blur(10px);
+        blur(12px);
 
-    font-size:
-        10px;
+    font-size: 10px;
 
 }
 
@@ -782,11 +998,11 @@ img {
 
     position: absolute;
 
+    z-index: 5;
+
     left: 20px;
     right: 20px;
     bottom: 18px;
-
-    z-index: 5;
 
     display: flex;
 
@@ -809,102 +1025,17 @@ img {
 
 .video-type {
 
-    font-size: 10px;
-
     color:
         rgba(255,255,255,.65);
 
-}
-
-
-/* ============================================================
-   CLIENTS
-============================================================ */
-
-.clients-section {
-
-    padding:
-        20px
-        4vw
-        100px;
-
-}
-
-
-.clients-title {
-
-    color: var(--dim);
-
     font-size: 10px;
 
-    margin-bottom: 30px;
-
 }
 
 
-.clients-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(5,1fr);
-
-    gap:
-        35px
-        55px;
-
-    align-items: center;
-
-}
-
-
-.client-item {
-
-    min-height: 75px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-}
-
-
-.client-item img {
-
-    width: auto;
-
-    max-width: 135px;
-    max-height: 52px;
-
-    object-fit: contain;
-
-    opacity: .62;
-
-    filter:
-        grayscale(1)
-        brightness(2);
-
-    transition:
-        opacity .25s ease,
-        transform .25s ease;
-
-}
-
-
-.client-item:hover img {
-
-    opacity: 1;
-
-    transform:
-        scale(1.03);
-
-}
-
-
-/* ============================================================
+/* =========================================================
    ABOUT
-============================================================ */
+========================================================= */
 
 .about-layout {
 
@@ -929,7 +1060,7 @@ img {
         var(--radius-large);
 
     aspect-ratio:
-        4 / 5;
+        4/5;
 
     background:
         var(--bg-soft);
@@ -951,16 +1082,16 @@ img {
 
     font-size:
         clamp(
-            34px,
-            4.8vw,
-            65px
+            38px,
+            5vw,
+            70px
         );
 
     font-weight: 300;
 
-    letter-spacing: -2.5px;
+    line-height: .94;
 
-    line-height: .95;
+    letter-spacing: -3px;
 
 }
 
@@ -969,7 +1100,7 @@ img {
 
     margin-top: 25px;
 
-    max-width: 650px;
+    max-width: 620px;
 
     color: var(--soft);
 
@@ -980,14 +1111,14 @@ img {
 }
 
 
-/* ============================================================
+/* =========================================================
    CTA
-============================================================ */
+========================================================= */
 
 .cta {
 
     padding:
-        80px
+        90px
         4vw
         45px;
 
@@ -996,7 +1127,7 @@ img {
 
 .cta-inner {
 
-    padding-top: 55px;
+    padding-top: 58px;
 
     border-top:
         1px solid
@@ -1016,16 +1147,16 @@ img {
 
     font-size:
         clamp(
-            48px,
+            50px,
             8vw,
             120px
         );
 
     font-weight: 300;
 
-    letter-spacing: -5px;
+    line-height: .84;
 
-    line-height: .85;
+    letter-spacing: -6px;
 
 }
 
@@ -1049,9 +1180,9 @@ img {
 
     flex-direction: column;
 
-    gap: 20px;
-
     align-items: flex-start;
+
+    gap: 20px;
 
 }
 
@@ -1074,17 +1205,6 @@ img {
 
     font-size: 11px;
 
-    transition:
-        background .25s ease;
-
-}
-
-
-.contact-button:hover {
-
-    background:
-        rgba(255,255,255,.08);
-
 }
 
 
@@ -1101,15 +1221,16 @@ img {
 
 .social-button {
 
-    width: 41px;
-    height: 41px;
-
-    border-radius: 50%;
+    width: 42px;
+    height: 42px;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
+
+    border-radius:
+        50%;
 
     border:
         1px solid
@@ -1161,9 +1282,9 @@ img {
 }
 
 
-/* ============================================================
-   GALLERY OVERLAY
-============================================================ */
+/* =========================================================
+   GALLERY
+========================================================= */
 
 .gallery-overlay {
 
@@ -1196,22 +1317,22 @@ img {
 
     top: 0;
 
+    z-index: 30;
+
     height: 70px;
 
     padding: 0 4vw;
-
-    z-index: 10;
 
     display: flex;
 
     align-items: center;
     justify-content: space-between;
 
-    backdrop-filter:
-        blur(12px);
-
     background:
-        rgba(17,17,17,.87);
+        rgba(17,17,17,.88);
+
+    backdrop-filter:
+        blur(14px);
 
     border-bottom:
         1px solid
@@ -1266,10 +1387,10 @@ img {
 
     margin-bottom: 14px;
 
+    overflow: hidden;
+
     border-radius:
         var(--radius-medium);
-
-    overflow: hidden;
 
     cursor: zoom-in;
 
@@ -1284,9 +1405,9 @@ img {
 }
 
 
-/* ============================================================
+/* =========================================================
    LIGHTBOX
-============================================================ */
+========================================================= */
 
 .lightbox {
 
@@ -1332,9 +1453,9 @@ img {
 }
 
 
-/* ============================================================
+/* =========================================================
    VIDEO MODAL
-============================================================ */
+========================================================= */
 
 .video-modal {
 
@@ -1414,33 +1535,33 @@ img {
     width: 100%;
 
     aspect-ratio:
-        16 / 9;
+        16/9;
 
     overflow: hidden;
 
     border-radius:
         var(--radius-medium);
 
-    background: #000;
+    background: black;
 
 }
 
 
 .video-frame iframe {
 
-    display: block;
-
     width: 100%;
     height: 100%;
+
+    display: block;
 
     border: none;
 
 }
 
 
-/* ============================================================
-   REVEAL
-============================================================ */
+/* =========================================================
+   SCROLL REVEAL
+========================================================= */
 
 .reveal {
 
@@ -1465,16 +1586,17 @@ img {
 }
 
 
-/* ============================================================
+/* =========================================================
    TABLET
-============================================================ */
+========================================================= */
 
 @media
 (max-width: 950px) {
 
-    .nav-mail {
+    .hero-wall {
 
-        visibility: hidden;
+        grid-template-columns:
+            repeat(5,1fr);
 
     }
 
@@ -1533,14 +1655,6 @@ img {
     }
 
 
-    .clients-grid {
-
-        grid-template-columns:
-            repeat(3,1fr);
-
-    }
-
-
     .gallery-grid {
 
         columns: 2;
@@ -1550,37 +1664,23 @@ img {
 }
 
 
-/* ============================================================
+/* =========================================================
    MOBILE
-============================================================ */
+========================================================= */
 
 @media
 (max-width: 650px) {
 
     .nav {
 
-        height: 66px;
-
-        padding: 0 4vw;
-
-        display: flex;
-
-        justify-content: center;
-
-    }
-
-
-    .nav-brand,
-    .nav-mail {
-
-        display: none;
+        height: 64px;
 
     }
 
 
     .nav-menu {
 
-        gap: 17px;
+        gap: 16px;
 
     }
 
@@ -1592,54 +1692,54 @@ img {
     }
 
 
-    .logo-scroll-section {
+    .hero {
 
-        height: 260vh;
-
-    }
-
-
-    .logo-animation-wrap {
-
-        width: 96vw;
-
-        height: 57vh;
+        min-height: 680px;
 
     }
 
 
-    .logo-intro-copy {
+    .hero-wall {
 
-        bottom: 62px;
+        inset:
+            0
+            -25vw;
 
-        display: block;
+        grid-template-columns:
+            repeat(4,1fr);
 
-    }
-
-
-    .logo-intro-name {
-
-        font-size: 35px;
-
-        letter-spacing: -1.6px;
+        gap: 8px;
 
     }
 
 
-    .logo-intro-info {
+    .hero-tile {
 
-        margin-top: 13px;
-
-        text-align: left;
-
-        font-size: 10px;
+        border-radius: 11px;
 
     }
 
 
-    .scroll-hint {
+    .hero-name {
 
-        display: none;
+        font-size:
+            clamp(
+                52px,
+                18vw,
+                82px
+            );
+
+        letter-spacing:
+            -4px;
+
+    }
+
+
+    .hero-role {
+
+        margin-top: 20px;
+
+        font-size: 11px;
 
     }
 
@@ -1677,7 +1777,7 @@ img {
 
     .category-card {
 
-        min-height: 470px;
+        min-height: 460px;
 
     }
 
@@ -1701,31 +1801,24 @@ img {
     .video-card.vertical-video {
 
         aspect-ratio:
-            4 / 5;
-
-    }
-
-
-    .clients-grid {
-
-        grid-template-columns:
-            repeat(2,1fr);
+            4/5;
 
     }
 
 
     .cta-inner {
 
-        align-items: flex-start;
-
         flex-direction: column;
+
+        align-items: flex-start;
 
     }
 
 
     .cta-title {
 
-        letter-spacing: -3px;
+        letter-spacing:
+            -3px;
 
     }
 
@@ -1746,22 +1839,14 @@ img {
 <body>
 
 
-<!-- ============================================================
-     NAVIGATION
-============================================================ -->
+<!-- =========================================================
+     CENTER NAVIGATION
+========================================================= -->
 
 <nav
     class="nav"
     id="navigation"
 >
-
-    <a
-        href="#top"
-        class="nav-brand"
-    >
-        Raghav Kulkarni
-    </a>
-
 
     <div class="nav-menu">
 
@@ -1774,7 +1859,7 @@ img {
         </a>
 
         <a href="#video">
-            Video
+            Film
         </a>
 
         <a href="#about">
@@ -1787,89 +1872,89 @@ img {
 
     </div>
 
-
-    <a
-        href="mailto:raghavkulkarniphotography@gmail.com"
-        class="nav-mail"
-    >
-        Email
-    </a>
-
 </nav>
 
 
 
-<!-- ============================================================
-     LOGO SCROLL ANIMATION
-============================================================ -->
+<!-- =========================================================
+     ANIMATED HERO
+========================================================= -->
 
 <section
-    class="logo-scroll-section"
+    class="hero"
     id="top"
 >
 
-    <div class="logo-scroll-sticky">
+
+    <!-- DYNAMIC PORTFOLIO IMAGE WALL -->
+
+    <div
+        class="hero-wall"
+        id="heroWall"
+    >
+    </div>
 
 
-        <div class="logo-animation-wrap">
 
-            <img
-                id="logoSequence"
-                class="logo-animation-image"
-                src="Logo Animation/ezgif-frame-001.jpg"
-                alt="Raghav Kulkarni logo animation"
-                draggable="false"
+    <!-- HERO COPY -->
+
+    <div class="hero-content">
+
+
+        <h1 class="hero-name">
+
+            Raghav Kulkarni
+
+        </h1>
+
+
+        <div class="hero-role">
+
+            Product Photographer & Filmmaker
+
+        </div>
+
+
+        <div class="hero-button-wrap">
+
+            <a
+                href="#work"
+                class="explore-button"
             >
 
-        </div>
+                Explore Work
 
+                <span class="explore-arrow">
+                    ↓
+                </span>
 
-        <div class="logo-intro-copy">
-
-            <div class="logo-intro-name">
-
-                Raghav Kulkarni
-
-            </div>
-
-
-            <div class="logo-intro-info">
-
-                Commercial Photography / Film
-                <br>
-                Product · Jewellery · Interiors
-
-            </div>
-
-        </div>
-
-
-        <div class="scroll-hint">
-
-            Scroll
+            </a>
 
         </div>
 
 
     </div>
 
+
 </section>
 
 
 
-<!-- ============================================================
+<!-- =========================================================
      SELECTED WORK
-============================================================ -->
+========================================================= -->
 
 <section
     class="section"
     id="work"
 >
 
+
     <div class="section-head reveal">
 
 
         <div>
+
 
             <div class="section-label">
 
@@ -1880,9 +1965,10 @@ img {
 
             <h2 class="section-title">
 
-                Recent favourites.
+                A few favourites.
 
             </h2>
+
 
         </div>
 
@@ -1901,85 +1987,184 @@ img {
     <div class="work-grid">
 
 
-        <div class="work-item reveal">
-            <img src="product2.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('product2.webp')"
+        >
+
+            <img
+                src="product2.webp"
+                alt=""
+            >
+
         </div>
 
 
-        <div class="work-item reveal">
-            <img src="jewellery3.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('jewellery3.webp')"
+        >
+
+            <img
+                src="jewellery3.webp"
+                alt=""
+            >
+
         </div>
 
 
-        <div class="work-item reveal">
-            <img src="product3.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('product3.webp')"
+        >
+
+            <img
+                src="product3.webp"
+                alt=""
+            >
+
         </div>
 
 
-        <div class="work-item reveal">
-            <img src="jewellery2.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('jewellery2.webp')"
+        >
+
+            <img
+                src="jewellery2.webp"
+                alt=""
+            >
+
         </div>
 
 
-        <div class="work-item reveal">
-            <img src="product12.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('product12.webp')"
+        >
+
+            <img
+                src="product12.webp"
+                alt=""
+            >
+
         </div>
 
 
-        <div class="work-item reveal">
-            <img src="product8.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('product8.webp')"
+        >
+
+            <img
+                src="product8.webp"
+                alt=""
+            >
+
         </div>
 
 
-        <div class="work-item reveal">
-            <img src="jewellery4.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('jewellery4.webp')"
+        >
+
+            <img
+                src="jewellery4.webp"
+                alt=""
+            >
+
         </div>
 
 
-        <div class="work-item reveal">
-            <img src="product5.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('product5.webp')"
+        >
+
+            <img
+                src="product5.webp"
+                alt=""
+            >
+
         </div>
 
 
-        <div class="work-item reveal">
-            <img src="product10.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('product10.webp')"
+        >
+
+            <img
+                src="product10.webp"
+                alt=""
+            >
+
         </div>
 
 
-        <div class="work-item reveal">
-            <img src="product6.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('product6.webp')"
+        >
+
+            <img
+                src="product6.webp"
+                alt=""
+            >
+
         </div>
 
 
-        <div class="work-item reveal">
-            <img src="product11.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('product11.webp')"
+        >
+
+            <img
+                src="product11.webp"
+                alt=""
+            >
+
         </div>
 
 
-        <div class="work-item reveal">
-            <img src="product9.webp" alt="">
+        <div
+            class="work-item reveal"
+            onclick="openLightbox('product9.webp')"
+        >
+
+            <img
+                src="product9.webp"
+                alt=""
+            >
+
         </div>
 
 
     </div>
 
+
 </section>
 
 
 
-<!-- ============================================================
-     PHOTOGRAPHY CATEGORIES
-============================================================ -->
+<!-- =========================================================
+     CATEGORIES
+========================================================= -->
 
 <section
     class="section"
     id="categories"
 >
 
+
     <div class="section-head reveal">
 
 
         <div>
+
 
             <div class="section-label">
 
@@ -1993,6 +2178,7 @@ img {
                 Explore the work.
 
             </h2>
+
 
         </div>
 
@@ -2011,6 +2197,8 @@ img {
     <div class="category-grid">
 
 
+        <!-- PRODUCT -->
+
         <div
             class="category-card reveal"
             onclick="openGallery('product')"
@@ -2024,23 +2212,36 @@ img {
 
             <div class="category-content">
 
+
                 <div class="category-number">
+
                     01
+
                 </div>
+
 
                 <div class="category-name">
+
                     Product
+
                 </div>
+
 
                 <div class="category-link">
+
                     View work →
+
                 </div>
 
+
             </div>
+
 
         </div>
 
 
+
+        <!-- JEWELLERY -->
 
         <div
             class="category-card reveal"
@@ -2055,23 +2256,36 @@ img {
 
             <div class="category-content">
 
+
                 <div class="category-number">
+
                     02
+
                 </div>
+
 
                 <div class="category-name">
+
                     Jewellery
+
                 </div>
+
 
                 <div class="category-link">
+
                     View work →
+
                 </div>
 
+
             </div>
+
 
         </div>
 
 
+
+        <!-- INTERIOR -->
 
         <div
             class="category-card reveal"
@@ -2086,42 +2300,56 @@ img {
 
             <div class="category-content">
 
+
                 <div class="category-number">
+
                     03
+
                 </div>
+
 
                 <div class="category-name">
+
                     Interior
+
                 </div>
+
 
                 <div class="category-link">
+
                     View work →
+
                 </div>
 
+
             </div>
+
 
         </div>
 
 
     </div>
 
+
 </section>
 
 
 
-<!-- ============================================================
+<!-- =========================================================
      VIDEO
-============================================================ -->
+========================================================= -->
 
 <section
     class="section"
     id="video"
 >
 
+
     <div class="section-head reveal">
 
 
         <div>
+
 
             <div class="section-label">
 
@@ -2136,12 +2364,13 @@ img {
 
             </h2>
 
+
         </div>
 
 
         <div class="section-side">
 
-            Commercial Motion
+            Motion
 
         </div>
 
@@ -2155,7 +2384,10 @@ img {
 
         <div
             class="video-card main-video reveal"
-            onclick="openVideo('fm0evRNFji0','Product Film')"
+            onclick="openVideo(
+                'fm0evRNFji0',
+                'Product Film'
+            )"
         >
 
             <img
@@ -2174,6 +2406,7 @@ img {
 
             <div class="video-info">
 
+
                 <div class="video-name">
 
                     Product Film
@@ -2187,7 +2420,9 @@ img {
 
                 </div>
 
+
             </div>
+
 
         </div>
 
@@ -2195,7 +2430,10 @@ img {
 
         <div
             class="video-card vertical-video reveal"
-            onclick="openVideo('KNQVN4_M2og','Product Reel')"
+            onclick="openVideo(
+                'KNQVN4_M2og',
+                'Product Reel'
+            )"
         >
 
             <img
@@ -2213,6 +2451,7 @@ img {
 
             <div class="video-info">
 
+
                 <div class="video-name">
 
                     Product Reel
@@ -2226,7 +2465,9 @@ img {
 
                 </div>
 
+
             </div>
+
 
         </div>
 
@@ -2234,7 +2475,10 @@ img {
 
         <div
             class="video-card vertical-video reveal"
-            onclick="openVideo('i3lyAq1bj_c','Jewellery Reel')"
+            onclick="openVideo(
+                'i3lyAq1bj_c',
+                'Jewellery Reel'
+            )"
         >
 
             <img
@@ -2252,6 +2496,7 @@ img {
 
             <div class="video-info">
 
+
                 <div class="video-name">
 
                     Jewellery Reel
@@ -2265,59 +2510,42 @@ img {
 
                 </div>
 
+
             </div>
+
 
         </div>
 
 
     </div>
 
-</section>
-
-
-
-<!-- ============================================================
-     CLIENTS
-============================================================ -->
-
-<section class="clients-section">
-
-    <div class="clients-title reveal">
-
-        Selected Clients
-
-    </div>
-
-
-    <div
-        class="clients-grid reveal"
-        id="clientsGrid"
-    >
-    </div>
 
 </section>
 
 
 
-<!-- ============================================================
+<!-- =========================================================
      ABOUT
-============================================================ -->
+========================================================= -->
 
 <section
     class="section"
     id="about"
 >
 
+
     <div class="about-layout">
 
 
         <div class="about-image reveal">
+
 
             <img
                 src="profile.jpg"
                 alt="Raghav Kulkarni"
                 id="profileImage"
             >
+
 
         </div>
 
@@ -2354,7 +2582,7 @@ img {
 
             <p>
 
-                My work focuses on clean composition,
+                My work focuses on clean compositions,
                 considered lighting and imagery that
                 feels refined without becoming
                 over-designed.
@@ -2376,18 +2604,20 @@ img {
 
     </div>
 
+
 </section>
 
 
 
-<!-- ============================================================
+<!-- =========================================================
      CTA
-============================================================ -->
+========================================================= -->
 
 <section
     class="cta"
     id="contact"
 >
+
 
     <div class="cta-inner">
 
@@ -2397,9 +2627,9 @@ img {
 
             <h2 class="cta-title">
 
-                Let's make
+                Let's create
                 <br>
-                something good.
+                something.
 
             </h2>
 
@@ -2437,8 +2667,8 @@ img {
 
                 <a
                     href="#"
-                    class="social-button"
                     target="_blank"
+                    class="social-button"
                     aria-label="Instagram"
                 >
 
@@ -2456,8 +2686,8 @@ img {
 
                 <a
                     href="#"
-                    class="social-button"
                     target="_blank"
+                    class="social-button"
                     aria-label="WhatsApp"
                 >
 
@@ -2482,6 +2712,7 @@ img {
 
     <div class="footer">
 
+
         <span>
 
             Raghav Kulkarni
@@ -2495,20 +2726,23 @@ img {
 
         </span>
 
+
     </div>
+
 
 </section>
 
 
 
-<!-- ============================================================
-     GALLERY OVERLAY
-============================================================ -->
+<!-- =========================================================
+     PHOTO GALLERY
+========================================================= -->
 
 <div
     class="gallery-overlay"
     id="galleryOverlay"
 >
+
 
     <div class="gallery-header">
 
@@ -2543,13 +2777,14 @@ img {
     >
     </div>
 
+
 </div>
 
 
 
-<!-- ============================================================
+<!-- =========================================================
      LIGHTBOX
-============================================================ -->
+========================================================= -->
 
 <div
     class="lightbox"
@@ -2557,24 +2792,27 @@ img {
     onclick="closeLightbox()"
 >
 
+
     <img
         id="lightboxImage"
         src=""
         alt=""
     >
 
+
 </div>
 
 
 
-<!-- ============================================================
+<!-- =========================================================
      VIDEO MODAL
-============================================================ -->
+========================================================= -->
 
 <div
     class="video-modal"
     id="videoModal"
 >
+
 
     <div class="video-modal-inner">
 
@@ -2605,13 +2843,14 @@ img {
         </div>
 
 
+
         <div class="video-frame">
 
 
             <iframe
                 id="videoPlayer"
                 src=""
-                title="Portfolio video"
+                title="Portfolio Film"
                 allow="
                     accelerometer;
                     autoplay;
@@ -2630,15 +2869,16 @@ img {
 
     </div>
 
+
 </div>
 
 
 
 <script>
 
-/* ============================================================
-   NAVIGATION
-============================================================ */
+/* =========================================================
+   NAV
+========================================================= */
 
 const navigation =
     document.getElementById(
@@ -2679,9 +2919,124 @@ window.addEventListener(
 );
 
 
-/* ============================================================
-   REVEAL
-============================================================ */
+/* =========================================================
+   HERO IMAGE WALL
+
+   This list can contain images that don't exist.
+   Broken images are automatically removed.
+========================================================= */
+
+const heroImages = [
+
+    "jewellery4.webp",
+    "product2.webp",
+    "interior1.webp",
+    "jewellery3.webp",
+    "product3.webp",
+    "product5.webp",
+    "jewellery2.webp",
+    "product12.webp",
+    "interior2.webp",
+    "product6.webp",
+    "product8.webp",
+    "interior3.webp",
+    "product10.webp",
+    "jewellery1.webp",
+    "product9.webp",
+    "interior4.webp",
+    "jewellery5.webp",
+    "product13.webp",
+    "interior5.webp",
+    "product14.webp",
+    "jewellery6.webp",
+    "product15.webp",
+    "interior6.webp",
+    "product16.webp",
+    "jewellery7.webp",
+    "product17.webp",
+    "interior7.webp",
+    "product18.webp",
+    "jewellery8.webp",
+    "product19.webp",
+    "interior8.webp",
+    "product20.webp",
+    "jewellery9.webp",
+    "product21.webp",
+    "interior9.webp"
+
+];
+
+
+const heroWall =
+    document.getElementById(
+        "heroWall"
+    );
+
+
+heroImages.forEach(
+
+    (source,index) => {
+
+
+        const tile =
+            document.createElement(
+                "div"
+            );
+
+
+        tile.className =
+            "hero-tile";
+
+
+        /*
+            Stagger makes images move
+            from left to right one after another.
+        */
+
+        tile.style.animationDelay =
+            `${index * 0.055}s`;
+
+
+        const image =
+            document.createElement(
+                "img"
+            );
+
+
+        image.src =
+            source;
+
+
+        image.alt =
+            "";
+
+
+        image.onerror =
+            () => {
+
+                tile.remove();
+
+            };
+
+
+        tile.appendChild(
+            image
+        );
+
+
+        heroWall.appendChild(
+            tile
+        );
+
+
+    }
+
+);
+
+
+/* =========================================================
+   SCROLL REVEAL
+========================================================= */
 
 const revealObserver =
     new IntersectionObserver(
@@ -2732,295 +3087,9 @@ document
     );
 
 
-/* ============================================================
-   LOGO SCROLL ANIMATION
-   Folder:
-   Logo Animation
-============================================================ */
-
-const TOTAL_LOGO_FRAMES =
-    55;
-
-
-const logoScrollSection =
-    document.querySelector(
-        ".logo-scroll-section"
-    );
-
-
-const logoSequence =
-    document.getElementById(
-        "logoSequence"
-    );
-
-
-const logoFrames =
-    Array.from(
-
-        {
-            length:
-                TOTAL_LOGO_FRAMES
-        },
-
-        (_, index) => {
-
-            const frameNumber =
-                String(
-                    index + 1
-                )
-                .padStart(
-                    3,
-                    "0"
-                );
-
-
-            return (
-                "Logo Animation/"
-                +
-                "ezgif-frame-"
-                +
-                frameNumber
-                +
-                ".jpg"
-            );
-
-        }
-
-    );
-
-
-/* ============================================================
-   PRELOAD LOGO FRAMES
-============================================================ */
-
-const preloadedLogoFrames =
-    [];
-
-
-logoFrames.forEach(
-    source => {
-
-        const image =
-            new Image();
-
-
-        image.src =
-            source;
-
-
-        preloadedLogoFrames
-            .push(
-                image
-            );
-
-    }
-);
-
-
-/* ============================================================
-   CLAMP
-============================================================ */
-
-function clamp(
-    number,
-    minimum,
-    maximum
-) {
-
-    return Math.min(
-
-        Math.max(
-            number,
-            minimum
-        ),
-
-        maximum
-
-    );
-
-}
-
-
-/* ============================================================
-   UPDATE LOGO FRAME
-============================================================ */
-
-let previousLogoFrame =
-    -1;
-
-
-function updateLogoAnimation() {
-
-    const rectangle =
-        logoScrollSection
-            .getBoundingClientRect();
-
-
-    const scrollableDistance =
-
-        logoScrollSection
-            .offsetHeight
-
-        -
-
-        window.innerHeight;
-
-
-    if (
-        scrollableDistance <= 0
-    ) {
-
-        return;
-
-    }
-
-
-    const distance =
-        clamp(
-
-            -rectangle.top,
-
-            0,
-
-            scrollableDistance
-
-        );
-
-
-    const progress =
-        distance
-        /
-        scrollableDistance;
-
-
-    const frameIndex =
-        Math.min(
-
-            TOTAL_LOGO_FRAMES - 1,
-
-            Math.round(
-
-                progress
-                *
-                (
-                    TOTAL_LOGO_FRAMES
-                    -
-                    1
-                )
-
-            )
-
-        );
-
-
-    if (
-        frameIndex
-        !==
-        previousLogoFrame
-    ) {
-
-        logoSequence.src =
-            logoFrames[
-                frameIndex
-            ];
-
-
-        previousLogoFrame =
-            frameIndex;
-
-    }
-
-}
-
-
-updateLogoAnimation();
-
-
-window.addEventListener(
-    "scroll",
-    updateLogoAnimation,
-    {
-        passive: true
-    }
-);
-
-
-window.addEventListener(
-    "resize",
-    updateLogoAnimation
-);
-
-
-/* ============================================================
-   CLIENT LOGOS
-   Automatically checks
-   Client1.webp to Client10.webp
-============================================================ */
-
-const clientsGrid =
-    document.getElementById(
-        "clientsGrid"
-    );
-
-
-for (
-    let clientNumber = 1;
-
-    clientNumber <= 10;
-
-    clientNumber++
-) {
-
-    const clientItem =
-        document.createElement(
-            "div"
-        );
-
-
-    clientItem.className =
-        "client-item";
-
-
-    const clientImage =
-        document.createElement(
-            "img"
-        );
-
-
-    clientImage.src =
-        `Client${clientNumber}.webp`;
-
-
-    clientImage.alt =
-        `Client ${clientNumber}`;
-
-
-    clientImage.onerror =
-        () => {
-
-            clientItem
-                .remove();
-
-        };
-
-
-    clientItem
-        .appendChild(
-            clientImage
-        );
-
-
-    clientsGrid
-        .appendChild(
-            clientItem
-        );
-
-}
-
-
-/* ============================================================
+/* =========================================================
    PROFILE FALLBACK
-============================================================ */
+========================================================= */
 
 const profileImage =
     document.getElementById(
@@ -3028,7 +3097,7 @@ const profileImage =
     );
 
 
-const profileFallbacks = [
+const profileFiles = [
 
     "profile.jpg",
     "profile.webp",
@@ -3039,16 +3108,16 @@ const profileFallbacks = [
 ];
 
 
-let profileFallbackIndex =
-    0;
+let profileIndex = 0;
 
 
-function tryProfileImage() {
+function checkProfile() {
+
 
     if (
-        profileFallbackIndex
+        profileIndex
         >=
-        profileFallbacks.length
+        profileFiles.length
     ) {
 
         return;
@@ -3057,16 +3126,16 @@ function tryProfileImage() {
 
 
     const source =
-        profileFallbacks[
-            profileFallbackIndex
+        profileFiles[
+            profileIndex
         ];
 
 
-    const testImage =
+    const test =
         new Image();
 
 
-    testImage.onload =
+    test.onload =
         () => {
 
             profileImage.src =
@@ -3075,28 +3144,28 @@ function tryProfileImage() {
         };
 
 
-    testImage.onerror =
+    test.onerror =
         () => {
 
-            profileFallbackIndex++;
+            profileIndex++;
 
-            tryProfileImage();
+            checkProfile();
 
         };
 
 
-    testImage.src =
+    test.src =
         source;
 
 }
 
 
-tryProfileImage();
+checkProfile();
 
 
-/* ============================================================
-   PHOTO DATA
-============================================================ */
+/* =========================================================
+   GALLERY FILES
+========================================================= */
 
 const productImages = [
 
@@ -3196,13 +3265,14 @@ const interiorImages = [
 ];
 
 
-/* ============================================================
-   OPEN GALLERY
-============================================================ */
+/* =========================================================
+   OPEN CATEGORY GALLERY
+========================================================= */
 
 function openGallery(
     category
 ) {
+
 
     const overlay =
         document.getElementById(
@@ -3210,7 +3280,7 @@ function openGallery(
         );
 
 
-    const galleryTitle =
+    const title =
         document.getElementById(
             "galleryTitle"
         );
@@ -3230,10 +3300,8 @@ function openGallery(
         category === "product"
     ) {
 
-        galleryTitle
-            .textContent =
+        title.textContent =
             "Product";
-
 
         images =
             productImages;
@@ -3245,10 +3313,8 @@ function openGallery(
         category === "jewellery"
     ) {
 
-        galleryTitle
-            .textContent =
+        title.textContent =
             "Jewellery";
-
 
         images =
             jewelleryImages;
@@ -3258,10 +3324,8 @@ function openGallery(
 
     else {
 
-        galleryTitle
-            .textContent =
+        title.textContent =
             "Interior";
-
 
         images =
             interiorImages;
@@ -3274,7 +3338,9 @@ function openGallery(
 
 
     images.forEach(
+
         source => {
+
 
             const item =
                 document.createElement(
@@ -3307,22 +3373,19 @@ function openGallery(
             image.onerror =
                 () => {
 
-                    item
-                        .remove();
+                    item.remove();
 
                 };
 
 
-            image.addEventListener(
-                "click",
+            image.onclick =
                 () => {
 
                     openLightbox(
                         source
                     );
 
-                }
-            );
+                };
 
 
             item.appendChild(
@@ -3334,7 +3397,9 @@ function openGallery(
                 item
             );
 
+
         }
+
     );
 
 
@@ -3352,14 +3417,16 @@ function openGallery(
             "locked"
         );
 
+
 }
 
 
-/* ============================================================
+/* =========================================================
    CLOSE GALLERY
-============================================================ */
+========================================================= */
 
 function closeGallery() {
+
 
     document
         .getElementById(
@@ -3378,16 +3445,18 @@ function closeGallery() {
             "locked"
         );
 
+
 }
 
 
-/* ============================================================
+/* =========================================================
    LIGHTBOX
-============================================================ */
+========================================================= */
 
 function openLightbox(
     source
 ) {
+
 
     document
         .getElementById(
@@ -3406,10 +3475,12 @@ function openLightbox(
             "active"
         );
 
+
 }
 
 
 function closeLightbox() {
+
 
     document
         .getElementById(
@@ -3420,17 +3491,23 @@ function closeLightbox() {
             "active"
         );
 
+
 }
 
 
-/* ============================================================
-   OPEN VIDEO
-============================================================ */
+/* =========================================================
+   VIDEO
+
+   YouTube is NOT visible on the homepage.
+
+   The iframe is only created after visitor clicks Play.
+========================================================= */
 
 function openVideo(
     videoID,
     title
 ) {
+
 
     const modal =
         document.getElementById(
@@ -3444,13 +3521,11 @@ function openVideo(
         );
 
 
-    const modalTitle =
-        document.getElementById(
+    document
+        .getElementById(
             "videoModalTitle"
-        );
-
-
-    modalTitle.textContent =
+        )
+        .textContent =
         title;
 
 
@@ -3463,9 +3538,9 @@ function openVideo(
         +
         "&rel=0"
         +
-        "&modestbranding=1"
+        "&playsinline=1"
         +
-        "&playsinline=1";
+        "&modestbranding=1";
 
 
     modal
@@ -3482,14 +3557,12 @@ function openVideo(
             "locked"
         );
 
+
 }
 
 
-/* ============================================================
-   CLOSE VIDEO
-============================================================ */
-
 function closeVideo() {
+
 
     const modal =
         document.getElementById(
@@ -3510,6 +3583,11 @@ function closeVideo() {
         );
 
 
+    /*
+        Removes YouTube completely
+        when video modal closes.
+    */
+
     player.src =
         "";
 
@@ -3521,21 +3599,23 @@ function closeVideo() {
             "locked"
         );
 
+
 }
 
 
-/* ============================================================
-   ESCAPE KEY
-============================================================ */
+/* =========================================================
+   ESCAPE
+========================================================= */
 
 document.addEventListener(
+
     "keydown",
+
     event => {
 
+
         if (
-            event.key
-            ===
-            "Escape"
+            event.key === "Escape"
         ) {
 
             closeGallery();
@@ -3546,7 +3626,9 @@ document.addEventListener(
 
         }
 
+
     }
+
 );
 
 </script>

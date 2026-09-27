@@ -24,16 +24,12 @@
 
 <style>
 
-/* =========================================================
-   VARIABLES
-========================================================= */
-
 :root {
 
     --bg: #111111;
     --bg-soft: #171717;
 
-    --text: #f2f1ed;
+    --text: #f3f2ee;
     --soft: #aaa9a4;
     --dim: #72716d;
 
@@ -47,26 +43,20 @@
 
 }
 
-
-/* =========================================================
-   RESET
-========================================================= */
-
 * {
 
     margin: 0;
     padding: 0;
+
     box-sizing: border-box;
 
 }
-
 
 html {
 
     scroll-behavior: smooth;
 
 }
-
 
 body {
 
@@ -82,21 +72,19 @@ body {
 
 }
 
-
 body.locked {
 
     overflow: hidden;
 
 }
 
-
 a {
 
     color: inherit;
+
     text-decoration: none;
 
 }
-
 
 button {
 
@@ -104,10 +92,10 @@ button {
 
 }
 
-
 img {
 
     display: block;
+
     max-width: 100%;
 
 }
@@ -129,15 +117,10 @@ img {
 
     padding: 0 4vw;
 
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
     z-index: 6000;
 
     background:
-        rgba(17,17,17,0.35);
+        rgba(10,10,10,0.28);
 
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -152,18 +135,65 @@ img {
 }
 
 
-.nav.scrolled {
+/* SMALL LOGO TOP LEFT */
 
-    background:
-        rgba(17,17,17,0.88);
+.nav-logo {
 
-    border-bottom-color:
-        var(--line);
+    position: absolute;
+
+    left: 4vw;
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    display: flex;
+
+    align-items: center;
+
+    z-index: 5;
 
 }
 
 
+.nav-logo img {
+
+    width: 38px;
+
+    height: auto;
+
+    object-fit: contain;
+
+    opacity: .92;
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease;
+
+}
+
+
+.nav-logo:hover img {
+
+    opacity: 1;
+
+    transform:
+        scale(1.05);
+
+}
+
+
+/* CENTER MENU */
+
 .nav-menu {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
 
     display: flex;
 
@@ -171,12 +201,15 @@ img {
 
     align-items: center;
 
+    white-space: nowrap;
+
 }
 
 
 .nav-menu a {
 
-    color: rgba(255,255,255,.67);
+    color:
+        rgba(255,255,255,.68);
 
     font-size: 10px;
 
@@ -188,13 +221,24 @@ img {
 
 .nav-menu a:hover {
 
-    color: white;
+    color: #fff;
+
+}
+
+
+.nav.scrolled {
+
+    background:
+        rgba(17,17,17,0.90);
+
+    border-bottom-color:
+        var(--line);
 
 }
 
 
 /* =========================================================
-   ANIMATED LANDING PAGE
+   LANDING PAGE
 ========================================================= */
 
 .hero {
@@ -208,58 +252,58 @@ img {
 
     overflow: hidden;
 
-    background: #0e0e0e;
+    background: #080808;
 
 }
 
 
-/* IMAGE WALL */
+/* =========================================================
+   UNIFORM PHOTO GRID
+========================================================= */
 
 .hero-wall {
 
     position: absolute;
 
-    inset: -4vh -2vw;
+    inset: -18px;
 
     display: grid;
 
     grid-template-columns:
-        repeat(7, 1fr);
+        repeat(6, 1fr);
 
-    grid-auto-rows:
-        minmax(120px, 1fr);
+    grid-template-rows:
+        repeat(4, 1fr);
 
-    gap: 11px;
+    gap: 10px;
 
-    transform:
-        rotate(-1deg)
-        scale(1.03);
+    z-index: 1;
 
 }
 
-
-/* INDIVIDUAL MINI IMAGE */
 
 .hero-tile {
 
     position: relative;
 
+    min-width: 0;
+    min-height: 0;
+
     overflow: hidden;
 
-    border-radius: 15px;
+    border-radius: 13px;
 
-    background: #181818;
+    background: #151515;
 
     opacity: 0;
 
     transform:
-        translateX(-110vw)
-        scale(.85);
+        translateX(-105vw);
 
     animation:
-        tileEnter
-        1.15s
-        cubic-bezier(.18,.78,.25,1)
+        heroTileEnter
+        1.25s
+        cubic-bezier(.17,.8,.25,1)
         forwards;
 
 }
@@ -272,50 +316,32 @@ img {
 
     object-fit: cover;
 
-}
+    transform:
+        scale(1.06);
 
-
-/* SOME LARGER TILES */
-
-.hero-tile:nth-child(6n + 2) {
-
-    grid-row: span 2;
-
-}
-
-
-.hero-tile:nth-child(9n + 4) {
-
-    grid-column: span 2;
+    filter:
+        blur(3.8px)
+        brightness(.68)
+        saturate(.78);
 
 }
 
 
-.hero-tile:nth-child(13n + 3) {
-
-    grid-row: span 2;
-
-    grid-column: span 2;
-
-}
-
-
-@keyframes tileEnter {
+@keyframes heroTileEnter {
 
     0% {
 
         opacity: 0;
 
         transform:
-            translateX(-110vw)
-            scale(.82);
+            translateX(-105vw);
 
     }
 
 
-    70% {
+    35% {
 
-        opacity: 1;
+        opacity: .35;
 
     }
 
@@ -325,104 +351,106 @@ img {
         opacity: 1;
 
         transform:
-            translateX(0)
-            scale(1);
+            translateX(0);
 
     }
 
 }
 
 
-/* DARKEN WALL AFTER ENTRY */
+/* =========================================================
+   BLACK GRADIENT FROM BEGINNING
+========================================================= */
 
-.hero-wall::after {
-
-    content: "";
+.hero-darkness {
 
     position: absolute;
 
     inset: 0;
 
-    pointer-events: none;
-
-    background:
-        rgba(8,8,8,0);
-
-    backdrop-filter:
-        blur(0px);
-
-    animation:
-        wallSettle
-        1.3s
-        ease
-        2.65s
-        forwards;
-
-}
-
-
-@keyframes wallSettle {
-
-    from {
-
-        background:
-            rgba(8,8,8,0);
-
-        backdrop-filter:
-            blur(0px);
-
-    }
-
-
-    to {
-
-        background:
-            rgba(8,8,8,.48);
-
-        backdrop-filter:
-            blur(1px);
-
-    }
-
-}
-
-
-/* EDGE VIGNETTE */
-
-.hero::after {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
+    z-index: 4;
 
     pointer-events: none;
 
-    z-index: 5;
-
     background:
 
-        linear-gradient(
-            to bottom,
-            rgba(0,0,0,.40),
-            transparent 18%,
-            transparent 68%,
-            rgba(0,0,0,.45)
+        radial-gradient(
+
+            ellipse
+            at center,
+
+            rgba(0,0,0,.28)
+            0%,
+
+            rgba(0,0,0,.43)
+            40%,
+
+            rgba(0,0,0,.68)
+            100%
+
         ),
 
         linear-gradient(
-            to right,
-            rgba(0,0,0,.25),
-            transparent 18%,
-            transparent 82%,
-            rgba(0,0,0,.25)
+
+            to bottom,
+
+            rgba(0,0,0,.52)
+            0%,
+
+            rgba(0,0,0,.22)
+            27%,
+
+            rgba(0,0,0,.28)
+            65%,
+
+            rgba(0,0,0,.70)
+            100%
+
         );
 
 }
 
 
-/* HERO TEXT */
+.hero-focus {
+
+    position: absolute;
+
+    z-index: 5;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    width: 75vw;
+    height: 52vh;
+
+    pointer-events: none;
+
+    background:
+
+        radial-gradient(
+
+            ellipse at center,
+
+            rgba(0,0,0,.10)
+            0%,
+
+            rgba(0,0,0,.16)
+            37%,
+
+            rgba(0,0,0,0)
+            72%
+
+        );
+
+}
+
+
+/* =========================================================
+   HERO COPY
+========================================================= */
 
 .hero-content {
 
@@ -434,9 +462,13 @@ img {
     top: 50%;
 
     transform:
-        translate(-50%, -43%);
+        translate(-50%,-47%);
 
-    width: min(900px, 90vw);
+    width:
+        min(
+            1100px,
+            92vw
+        );
 
     text-align: center;
 
@@ -447,66 +479,84 @@ img {
 
     font-size:
         clamp(
-            56px,
-            9vw,
-            145px
+            62px,
+            10.5vw,
+            165px
         );
 
-    line-height: .85;
+    line-height: .80;
 
     font-weight: 300;
 
-    letter-spacing: -7px;
+    letter-spacing:
+        clamp(
+            -8px,
+            -.55vw,
+            -3px
+        );
+
+    color: #fff;
+
+    text-shadow:
+        0 5px 45px
+        rgba(0,0,0,.45);
 
     opacity: 0;
 
     transform:
-        translateY(35px);
+        translateY(30px);
 
     animation:
-        heroTextReveal
-        .95s
+        heroNameReveal
+        1.15s
         cubic-bezier(.2,.7,.2,1)
-        3.05s
+        .85s
         forwards;
+
+}
+
+
+@keyframes heroNameReveal {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(30px);
+
+    }
+
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
 
 }
 
 
 .hero-role {
 
-    margin-top: 26px;
+    margin-top: 30px;
 
     color:
-        rgba(255,255,255,.77);
+        rgba(255,255,255,.82);
 
     font-size:
         clamp(
             12px,
-            1.25vw,
+            1.3vw,
             17px
         );
 
+    font-weight: 400;
+
     letter-spacing: .2px;
-
-    opacity: 0;
-
-    transform:
-        translateY(20px);
-
-    animation:
-        heroTextReveal
-        .85s
-        ease
-        3.3s
-        forwards;
-
-}
-
-
-.hero-button-wrap {
-
-    margin-top: 34px;
 
     opacity: 0;
 
@@ -514,16 +564,35 @@ img {
         translateY(18px);
 
     animation:
-        heroTextReveal
-        .8s
+        heroCopyReveal
+        .9s
         ease
-        3.55s
+        1.2s
         forwards;
 
 }
 
 
-@keyframes heroTextReveal {
+.hero-button-wrap {
+
+    margin-top: 35px;
+
+    opacity: 0;
+
+    transform:
+        translateY(15px);
+
+    animation:
+        heroCopyReveal
+        .9s
+        ease
+        1.45s
+        forwards;
+
+}
+
+
+@keyframes heroCopyReveal {
 
     to {
 
@@ -554,16 +623,17 @@ img {
 
     border:
         1px solid
-        rgba(255,255,255,.28);
+        rgba(255,255,255,.32);
 
     background:
-        rgba(17,17,17,.38);
+        rgba(0,0,0,.25);
 
     backdrop-filter:
-        blur(14px);
+        blur(15px);
 
-    font-size:
-        11px;
+    color: #fff;
+
+    font-size: 11px;
 
     transition:
         background .25s ease,
@@ -575,14 +645,14 @@ img {
 
 .explore-button:hover {
 
-    background:
-        rgba(255,255,255,.12);
-
-    border-color:
-        rgba(255,255,255,.45);
-
     transform:
         translateY(-2px);
+
+    background:
+        rgba(255,255,255,.10);
+
+    border-color:
+        rgba(255,255,255,.50);
 
 }
 
@@ -858,7 +928,7 @@ img {
     font-size: 11px;
 
     color:
-        rgba(255,255,255,.7);
+        rgba(255,255,255,.70);
 
 }
 
@@ -955,8 +1025,7 @@ img {
 
             rgba(0,0,0,.72),
 
-            transparent
-            50%
+            transparent 50%
 
         );
 
@@ -1598,6 +1667,9 @@ img {
         grid-template-columns:
             repeat(5,1fr);
 
+        grid-template-rows:
+            repeat(5,1fr);
+
     }
 
 
@@ -1678,9 +1750,23 @@ img {
     }
 
 
+    .nav-logo {
+
+        left: 16px;
+
+    }
+
+
+    .nav-logo img {
+
+        width: 30px;
+
+    }
+
+
     .nav-menu {
 
-        gap: 16px;
+        gap: 14px;
 
     }
 
@@ -1688,6 +1774,14 @@ img {
     .nav-menu a {
 
         font-size: 9px;
+
+    }
+
+
+    .nav-menu a:nth-child(2),
+    .nav-menu a:nth-child(4) {
+
+        display: none;
 
     }
 
@@ -1701,21 +1795,32 @@ img {
 
     .hero-wall {
 
-        inset:
-            0
-            -25vw;
+        inset: -10px;
 
         grid-template-columns:
             repeat(4,1fr);
 
-        gap: 8px;
+        grid-template-rows:
+            repeat(6,1fr);
+
+        gap: 7px;
 
     }
 
 
     .hero-tile {
 
-        border-radius: 11px;
+        border-radius: 9px;
+
+    }
+
+
+    .hero-tile img {
+
+        filter:
+            blur(3.3px)
+            brightness(.62)
+            saturate(.76);
 
     }
 
@@ -1724,10 +1829,12 @@ img {
 
         font-size:
             clamp(
-                52px,
+                53px,
                 18vw,
-                82px
+                85px
             );
+
+        line-height: .82;
 
         letter-spacing:
             -4px;
@@ -1737,9 +1844,16 @@ img {
 
     .hero-role {
 
-        margin-top: 20px;
+        margin-top: 21px;
 
         font-size: 11px;
+
+    }
+
+
+    .hero-button-wrap {
+
+        margin-top: 28px;
 
     }
 
@@ -1817,8 +1931,7 @@ img {
 
     .cta-title {
 
-        letter-spacing:
-            -3px;
+        letter-spacing: -3px;
 
     }
 
@@ -1840,13 +1953,33 @@ img {
 
 
 <!-- =========================================================
-     CENTER NAVIGATION
+     NAVIGATION
 ========================================================= -->
 
 <nav
     class="nav"
     id="navigation"
 >
+
+
+    <!-- SMALL LOGO LEFT -->
+
+    <a
+        href="#top"
+        class="nav-logo"
+        aria-label="Home"
+    >
+
+        <img
+            src="logo.png"
+            alt="Raghav Kulkarni Logo"
+        >
+
+    </a>
+
+
+
+    <!-- CENTER MENU -->
 
     <div class="nav-menu">
 
@@ -1872,12 +2005,13 @@ img {
 
     </div>
 
+
 </nav>
 
 
 
 <!-- =========================================================
-     ANIMATED HERO
+     LANDING PAGE
 ========================================================= -->
 
 <section
@@ -1886,8 +2020,6 @@ img {
 >
 
 
-    <!-- DYNAMIC PORTFOLIO IMAGE WALL -->
-
     <div
         class="hero-wall"
         id="heroWall"
@@ -1895,8 +2027,10 @@ img {
     </div>
 
 
+    <div class="hero-darkness"></div>
 
-    <!-- HERO COPY -->
+    <div class="hero-focus"></div>
+
 
     <div class="hero-content">
 
@@ -1917,6 +2051,7 @@ img {
 
         <div class="hero-button-wrap">
 
+
             <a
                 href="#work"
                 class="explore-button"
@@ -1925,10 +2060,14 @@ img {
                 Explore Work
 
                 <span class="explore-arrow">
+
                     ↓
+
                 </span>
 
+
             </a>
+
 
         </div>
 
@@ -1987,159 +2126,63 @@ img {
     <div class="work-grid">
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('product2.webp')"
-        >
-
-            <img
-                src="product2.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('product2.webp')">
+            <img src="product2.webp" alt="">
         </div>
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('jewellery3.webp')"
-        >
-
-            <img
-                src="jewellery3.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('jewellery3.webp')">
+            <img src="jewellery3.webp" alt="">
         </div>
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('product3.webp')"
-        >
-
-            <img
-                src="product3.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('product3.webp')">
+            <img src="product3.webp" alt="">
         </div>
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('jewellery2.webp')"
-        >
-
-            <img
-                src="jewellery2.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('jewellery2.webp')">
+            <img src="jewellery2.webp" alt="">
         </div>
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('product12.webp')"
-        >
-
-            <img
-                src="product12.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('product12.webp')">
+            <img src="product12.webp" alt="">
         </div>
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('product8.webp')"
-        >
-
-            <img
-                src="product8.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('product8.webp')">
+            <img src="product8.webp" alt="">
         </div>
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('jewellery4.webp')"
-        >
-
-            <img
-                src="jewellery4.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('jewellery4.webp')">
+            <img src="jewellery4.webp" alt="">
         </div>
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('product5.webp')"
-        >
-
-            <img
-                src="product5.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('product5.webp')">
+            <img src="product5.webp" alt="">
         </div>
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('product10.webp')"
-        >
-
-            <img
-                src="product10.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('product10.webp')">
+            <img src="product10.webp" alt="">
         </div>
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('product6.webp')"
-        >
-
-            <img
-                src="product6.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('product6.webp')">
+            <img src="product6.webp" alt="">
         </div>
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('product11.webp')"
-        >
-
-            <img
-                src="product11.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('product11.webp')">
+            <img src="product11.webp" alt="">
         </div>
 
 
-        <div
-            class="work-item reveal"
-            onclick="openLightbox('product9.webp')"
-        >
-
-            <img
-                src="product9.webp"
-                alt=""
-            >
-
+        <div class="work-item reveal" onclick="openLightbox('product9.webp')">
+            <img src="product9.webp" alt="">
         </div>
 
 
@@ -2197,8 +2240,6 @@ img {
     <div class="category-grid">
 
 
-        <!-- PRODUCT -->
-
         <div
             class="category-card reveal"
             onclick="openGallery('product')"
@@ -2212,36 +2253,23 @@ img {
 
             <div class="category-content">
 
-
                 <div class="category-number">
-
                     01
-
                 </div>
-
 
                 <div class="category-name">
-
                     Product
-
                 </div>
-
 
                 <div class="category-link">
-
                     View work →
-
                 </div>
 
-
             </div>
-
 
         </div>
 
 
-
-        <!-- JEWELLERY -->
 
         <div
             class="category-card reveal"
@@ -2256,36 +2284,23 @@ img {
 
             <div class="category-content">
 
-
                 <div class="category-number">
-
                     02
-
                 </div>
-
 
                 <div class="category-name">
-
                     Jewellery
-
                 </div>
-
 
                 <div class="category-link">
-
                     View work →
-
                 </div>
 
-
             </div>
-
 
         </div>
 
 
-
-        <!-- INTERIOR -->
 
         <div
             class="category-card reveal"
@@ -2300,30 +2315,19 @@ img {
 
             <div class="category-content">
 
-
                 <div class="category-number">
-
                     03
-
                 </div>
-
 
                 <div class="category-name">
-
                     Interior
-
                 </div>
-
 
                 <div class="category-link">
-
                     View work →
-
                 </div>
 
-
             </div>
-
 
         </div>
 
@@ -2384,10 +2388,7 @@ img {
 
         <div
             class="video-card main-video reveal"
-            onclick="openVideo(
-                'fm0evRNFji0',
-                'Product Film'
-            )"
+            onclick="openVideo('fm0evRNFji0','Product Film')"
         >
 
             <img
@@ -2398,31 +2399,21 @@ img {
 
 
             <div class="video-play">
-
                 Play
-
             </div>
 
 
             <div class="video-info">
 
-
                 <div class="video-name">
-
                     Product Film
-
                 </div>
-
 
                 <div class="video-type">
-
                     Commercial
-
                 </div>
 
-
             </div>
-
 
         </div>
 
@@ -2430,10 +2421,7 @@ img {
 
         <div
             class="video-card vertical-video reveal"
-            onclick="openVideo(
-                'KNQVN4_M2og',
-                'Product Reel'
-            )"
+            onclick="openVideo('KNQVN4_M2og','Product Reel')"
         >
 
             <img
@@ -2443,31 +2431,21 @@ img {
 
 
             <div class="video-play">
-
                 Play
-
             </div>
 
 
             <div class="video-info">
 
-
                 <div class="video-name">
-
                     Product Reel
-
                 </div>
-
 
                 <div class="video-type">
-
                     Vertical
-
                 </div>
 
-
             </div>
-
 
         </div>
 
@@ -2475,10 +2453,7 @@ img {
 
         <div
             class="video-card vertical-video reveal"
-            onclick="openVideo(
-                'i3lyAq1bj_c',
-                'Jewellery Reel'
-            )"
+            onclick="openVideo('i3lyAq1bj_c','Jewellery Reel')"
         >
 
             <img
@@ -2488,31 +2463,21 @@ img {
 
 
             <div class="video-play">
-
                 Play
-
             </div>
 
 
             <div class="video-info">
 
-
                 <div class="video-name">
-
                     Jewellery Reel
-
                 </div>
-
 
                 <div class="video-type">
-
                     Vertical
-
                 </div>
 
-
             </div>
-
 
         </div>
 
@@ -2663,8 +2628,6 @@ img {
             <div class="social-icons">
 
 
-                <!-- INSTAGRAM -->
-
                 <a
                     href="#"
                     target="_blank"
@@ -2681,8 +2644,6 @@ img {
                 </a>
 
 
-
-                <!-- WHATSAPP -->
 
                 <a
                     href="#"
@@ -2714,16 +2675,12 @@ img {
 
 
         <span>
-
             Raghav Kulkarni
-
         </span>
 
 
         <span>
-
             © 2026
-
         </span>
 
 
@@ -2735,7 +2692,7 @@ img {
 
 
 <!-- =========================================================
-     PHOTO GALLERY
+     GALLERY
 ========================================================= -->
 
 <div
@@ -2751,9 +2708,7 @@ img {
             class="gallery-title"
             id="galleryTitle"
         >
-
             Gallery
-
         </div>
 
 
@@ -2761,9 +2716,7 @@ img {
             class="gallery-close"
             onclick="closeGallery()"
         >
-
             Close
-
         </button>
 
 
@@ -2824,9 +2777,7 @@ img {
                 class="video-modal-title"
                 id="videoModalTitle"
             >
-
                 Film
-
             </div>
 
 
@@ -2834,9 +2785,7 @@ img {
                 class="video-close"
                 onclick="closeVideo()"
             >
-
                 Close
-
             </button>
 
 
@@ -2887,8 +2836,11 @@ const navigation =
 
 
 window.addEventListener(
+
     "scroll",
+
     () => {
+
 
         if (
             window.scrollY > 20
@@ -2912,18 +2864,18 @@ window.addEventListener(
 
         }
 
+
     },
+
     {
         passive: true
     }
+
 );
 
 
 /* =========================================================
-   HERO IMAGE WALL
-
-   This list can contain images that don't exist.
-   Broken images are automatically removed.
+   HERO IMAGES
 ========================================================= */
 
 const heroImages = [
@@ -2934,35 +2886,27 @@ const heroImages = [
     "jewellery3.webp",
     "product3.webp",
     "product5.webp",
+
     "jewellery2.webp",
     "product12.webp",
     "interior2.webp",
     "product6.webp",
     "product8.webp",
     "interior3.webp",
+
     "product10.webp",
     "jewellery1.webp",
     "product9.webp",
     "interior4.webp",
     "jewellery5.webp",
     "product13.webp",
+
     "interior5.webp",
     "product14.webp",
     "jewellery6.webp",
     "product15.webp",
     "interior6.webp",
-    "product16.webp",
-    "jewellery7.webp",
-    "product17.webp",
-    "interior7.webp",
-    "product18.webp",
-    "jewellery8.webp",
-    "product19.webp",
-    "interior8.webp",
-    "product20.webp",
-    "jewellery9.webp",
-    "product21.webp",
-    "interior9.webp"
+    "product16.webp"
 
 ];
 
@@ -2988,13 +2932,8 @@ heroImages.forEach(
             "hero-tile";
 
 
-        /*
-            Stagger makes images move
-            from left to right one after another.
-        */
-
         tile.style.animationDelay =
-            `${index * 0.055}s`;
+            `${index * .045}s`;
 
 
         const image =
@@ -3035,7 +2974,7 @@ heroImages.forEach(
 
 
 /* =========================================================
-   SCROLL REVEAL
+   REVEAL
 ========================================================= */
 
 const revealObserver =
@@ -3043,8 +2982,11 @@ const revealObserver =
 
         entries => {
 
+
             entries.forEach(
+
                 entry => {
+
 
                     if (
                         entry.isIntersecting
@@ -3059,8 +3001,11 @@ const revealObserver =
 
                     }
 
+
                 }
+
             );
+
 
         },
 
@@ -3076,19 +3021,20 @@ document
         ".reveal"
     )
     .forEach(
+
         element => {
 
-            revealObserver
-                .observe(
-                    element
-                );
+            revealObserver.observe(
+                element
+            );
 
         }
+
     );
 
 
 /* =========================================================
-   PROFILE FALLBACK
+   PROFILE IMAGE
 ========================================================= */
 
 const profileImage =
@@ -3108,7 +3054,8 @@ const profileFiles = [
 ];
 
 
-let profileIndex = 0;
+let profileIndex =
+    0;
 
 
 function checkProfile() {
@@ -3157,6 +3104,7 @@ function checkProfile() {
     test.src =
         source;
 
+
 }
 
 
@@ -3164,7 +3112,7 @@ checkProfile();
 
 
 /* =========================================================
-   GALLERY FILES
+   GALLERY DATA
 ========================================================= */
 
 const productImages = [
@@ -3266,7 +3214,7 @@ const interiorImages = [
 
 
 /* =========================================================
-   OPEN CATEGORY GALLERY
+   OPEN GALLERY
 ========================================================= */
 
 function openGallery(
@@ -3421,10 +3369,6 @@ function openGallery(
 }
 
 
-/* =========================================================
-   CLOSE GALLERY
-========================================================= */
-
 function closeGallery() {
 
 
@@ -3497,10 +3441,6 @@ function closeLightbox() {
 
 /* =========================================================
    VIDEO
-
-   YouTube is NOT visible on the homepage.
-
-   The iframe is only created after visitor clicks Play.
 ========================================================= */
 
 function openVideo(
@@ -3582,11 +3522,6 @@ function closeVideo() {
             "active"
         );
 
-
-    /*
-        Removes YouTube completely
-        when video modal closes.
-    */
 
     player.src =
         "";

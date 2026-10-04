@@ -43,6 +43,11 @@
 
 }
 
+
+/* =========================================================
+   RESET
+========================================================= */
+
 * {
 
     margin: 0;
@@ -52,11 +57,13 @@
 
 }
 
+
 html {
 
     scroll-behavior: smooth;
 
 }
+
 
 body {
 
@@ -72,11 +79,13 @@ body {
 
 }
 
+
 body.locked {
 
     overflow: hidden;
 
 }
+
 
 a {
 
@@ -86,11 +95,13 @@ a {
 
 }
 
+
 button {
 
     font: inherit;
 
 }
+
 
 img {
 
@@ -134,8 +145,6 @@ img {
 
 }
 
-
-/* SMALL LOGO TOP LEFT */
 
 .nav-logo {
 
@@ -182,8 +191,6 @@ img {
 
 }
 
-
-/* CENTER MENU */
 
 .nav-menu {
 
@@ -258,7 +265,7 @@ img {
 
 
 /* =========================================================
-   UNIFORM PHOTO GRID
+   HERO PHOTO GRID
 ========================================================= */
 
 .hero-wall {
@@ -338,13 +345,11 @@ img {
 
     }
 
-
     35% {
 
         opacity: .35;
 
     }
-
 
     100% {
 
@@ -359,7 +364,7 @@ img {
 
 
 /* =========================================================
-   BLACK GRADIENT FROM BEGINNING
+   HERO BLACK GRADIENT
 ========================================================= */
 
 .hero-darkness {
@@ -376,8 +381,7 @@ img {
 
         radial-gradient(
 
-            ellipse
-            at center,
+            ellipse at center,
 
             rgba(0,0,0,.28)
             0%,
@@ -526,7 +530,6 @@ img {
             translateY(30px);
 
     }
-
 
     to {
 
@@ -939,14 +942,7 @@ img {
 
 .video-grid {
 
-    display: grid;
-
-    grid-template-columns:
-        1.35fr
-        .75fr
-        .75fr;
-
-    gap: 14px;
+    width: 100%;
 
 }
 
@@ -954,6 +950,12 @@ img {
 .video-card {
 
     position: relative;
+
+    width:
+        min(
+            1100px,
+            100%
+        );
 
     overflow: hidden;
 
@@ -973,15 +975,7 @@ img {
 .video-card.main-video {
 
     aspect-ratio:
-        16/9;
-
-}
-
-
-.video-card.vertical-video {
-
-    aspect-ratio:
-        9/14;
+        16 / 9;
 
 }
 
@@ -1129,7 +1123,7 @@ img {
         var(--radius-large);
 
     aspect-ratio:
-        4/5;
+        4 / 5;
 
     background:
         var(--bg-soft);
@@ -1298,8 +1292,7 @@ img {
     align-items: center;
     justify-content: center;
 
-    border-radius:
-        50%;
+    border-radius: 50%;
 
     border:
         1px solid
@@ -1604,7 +1597,7 @@ img {
     width: 100%;
 
     aspect-ratio:
-        16/9;
+        16 / 9;
 
     overflow: hidden;
 
@@ -1629,7 +1622,7 @@ img {
 
 
 /* =========================================================
-   SCROLL REVEAL
+   REVEAL
 ========================================================= */
 
 .reveal {
@@ -1691,23 +1684,6 @@ img {
     .category-card {
 
         min-height: 500px;
-
-    }
-
-
-    .video-grid {
-
-        grid-template-columns:
-            1fr
-            1fr;
-
-    }
-
-
-    .video-card.main-video {
-
-        grid-column:
-            span 2;
 
     }
 
@@ -1836,8 +1812,7 @@ img {
 
         line-height: .82;
 
-        letter-spacing:
-            -4px;
+        letter-spacing: -4px;
 
     }
 
@@ -1896,30 +1871,6 @@ img {
     }
 
 
-    .video-grid {
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-
-    .video-card.main-video {
-
-        grid-column:
-            span 1;
-
-    }
-
-
-    .video-card.vertical-video {
-
-        aspect-ratio:
-            4/5;
-
-    }
-
-
     .cta-inner {
 
         flex-direction: column;
@@ -1961,9 +1912,6 @@ img {
     id="navigation"
 >
 
-
-    <!-- SMALL LOGO LEFT -->
-
     <a
         href="#top"
         class="nav-logo"
@@ -1977,9 +1925,6 @@ img {
 
     </a>
 
-
-
-    <!-- CENTER MENU -->
 
     <div class="nav-menu">
 
@@ -2005,7 +1950,6 @@ img {
 
     </div>
 
-
 </nav>
 
 
@@ -2018,7 +1962,6 @@ img {
     class="hero"
     id="top"
 >
-
 
     <div
         class="hero-wall"
@@ -2060,11 +2003,8 @@ img {
                 Explore Work
 
                 <span class="explore-arrow">
-
                     ↓
-
                 </span>
-
 
             </a>
 
@@ -2073,7 +2013,6 @@ img {
 
 
     </div>
-
 
 </section>
 
@@ -2094,28 +2033,20 @@ img {
 
         <div>
 
-
             <div class="section-label">
-
                 Selected Work
-
             </div>
 
 
             <h2 class="section-title">
-
                 A few favourites.
-
             </h2>
-
 
         </div>
 
 
         <div class="section-side">
-
             Photography
-
         </div>
 
 
@@ -2208,28 +2139,20 @@ img {
 
         <div>
 
-
             <div class="section-label">
-
                 Photography
-
             </div>
 
 
             <h2 class="section-title">
-
                 Explore the work.
-
             </h2>
-
 
         </div>
 
 
         <div class="section-side">
-
             Select a category
-
         </div>
 
 
@@ -2340,7 +2263,7 @@ img {
 
 
 <!-- =========================================================
-     VIDEO
+     PRODUCT FILM
 ========================================================= -->
 
 <section
@@ -2354,28 +2277,20 @@ img {
 
         <div>
 
-
             <div class="section-label">
-
                 Moving Image
-
             </div>
 
 
             <h2 class="section-title">
-
-                Films & reels.
-
+                Film.
             </h2>
-
 
         </div>
 
 
         <div class="section-side">
-
             Motion
-
         </div>
 
 
@@ -2393,7 +2308,7 @@ img {
 
             <img
                 src="thumb-commercial.webp"
-                alt=""
+                alt="Product Film"
                 onerror="this.src='product12.webp'"
             >
 
@@ -2411,70 +2326,6 @@ img {
 
                 <div class="video-type">
                     Commercial
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div
-            class="video-card vertical-video reveal"
-            onclick="openVideo('KNQVN4_M2og','Product Reel')"
-        >
-
-            <img
-                src="product12.webp"
-                alt=""
-            >
-
-
-            <div class="video-play">
-                Play
-            </div>
-
-
-            <div class="video-info">
-
-                <div class="video-name">
-                    Product Reel
-                </div>
-
-                <div class="video-type">
-                    Vertical
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div
-            class="video-card vertical-video reveal"
-            onclick="openVideo('i3lyAq1bj_c','Jewellery Reel')"
-        >
-
-            <img
-                src="jewellery4.webp"
-                alt=""
-            >
-
-
-            <div class="video-play">
-                Play
-            </div>
-
-
-            <div class="video-info">
-
-                <div class="video-name">
-                    Jewellery Reel
-                </div>
-
-                <div class="video-type">
-                    Vertical
                 </div>
 
             </div>
@@ -2504,13 +2355,11 @@ img {
 
         <div class="about-image reveal">
 
-
             <img
                 src="profile.jpg"
                 alt="Raghav Kulkarni"
                 id="profileImage"
             >
-
 
         </div>
 
@@ -2520,9 +2369,7 @@ img {
 
 
             <div class="section-label">
-
                 About
-
             </div>
 
 
@@ -2673,7 +2520,6 @@ img {
 
     <div class="footer">
 
-
         <span>
             Raghav Kulkarni
         </span>
@@ -2682,7 +2528,6 @@ img {
         <span>
             © 2026
         </span>
-
 
     </div>
 
@@ -2745,13 +2590,11 @@ img {
     onclick="closeLightbox()"
 >
 
-
     <img
         id="lightboxImage"
         src=""
         alt=""
     >
-
 
 </div>
 
@@ -2777,7 +2620,7 @@ img {
                 class="video-modal-title"
                 id="videoModalTitle"
             >
-                Film
+                Product Film
             </div>
 
 
@@ -3368,6 +3211,10 @@ function openGallery(
 
 }
 
+
+/* =========================================================
+   CLOSE GALLERY
+========================================================= */
 
 function closeGallery() {
 
